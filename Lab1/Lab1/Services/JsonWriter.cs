@@ -12,6 +12,8 @@
     /// </summary>
     internal class JsonWriter : IWriter
     {
+        private const string Extension = ".json";
+
         /// <summary>
         /// Writes collections to json file.
         /// </summary>
@@ -24,13 +26,12 @@
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             };
 
-            var studentData = JsonSerializer.Serialize(report.StudentResults, options);
-            var examData = JsonSerializer.Serialize(report.ExamResults);
+            var result = JsonSerializer.Serialize(report, options);
 
-            using var writer = new StreamWriter(filePath, false, Encoding.UTF8);
-            writer.WriteLine(studentData);
-            writer.WriteLine(examData);
-            writer.WriteLine(report.Average);
+            var pathWithExtension = Path.ChangeExtension(filePath, Extension);
+
+            using var writer = new StreamWriter(pathWithExtension, false, Encoding.UTF8);
+            writer.WriteLine(result);
         }
     }
 }

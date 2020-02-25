@@ -1,5 +1,6 @@
 ﻿namespace Lab1.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -11,6 +12,7 @@
     /// </summary>
     internal static class CsvReader
     {
+        private const int PersonalInfoCount = 3;
         /// <summary>
         /// This method reads student collection from given file.
         /// </summary>
@@ -26,7 +28,7 @@
             csv.Read();
             csv.ReadHeader();
 
-            var subjectNames = csv.Context.HeaderRecord.Skip(3).ToList();
+            var subjectNames = csv.Context.HeaderRecord.Skip(PersonalInfoCount).ToList();
 
             while (csv.Read())
             {
@@ -36,6 +38,13 @@
                     LastName = csv.GetField<string>(1),
                     MiddleName = csv.GetField<string>(2),
                 };
+
+                var recordFieldCount = csv.Context.Record.Length - PersonalInfoCount;
+
+                if (subjectNames.Count() != recordFieldCount)
+                {
+                    throw new ArgumentException("Invalid marks count");
+                }
 
                 var subjects = new List<Exam>();
 

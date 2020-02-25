@@ -18,6 +18,8 @@
 
         private const string Average = "G1";
 
+        private const string Extension = ".xlsx";
+
         /// <summary>
         /// This method creates worksheet and writes all date at first cell.
         /// </summary>
@@ -25,7 +27,8 @@
         /// <param name="report">Peport DTO.</param>
         public void Write(string filePath, FinalReport report)
         {
-            var file = new FileInfo(filePath);
+            var pathWithExtension = Path.ChangeExtension(filePath, Extension);
+            var file = new FileInfo(pathWithExtension);
             using ExcelPackage excelPackage = new ExcelPackage(file);
             var count = excelPackage.Workbook.Worksheets.Count + 1;
             var worksheet = excelPackage.Workbook.Worksheets.Add(string.Format(WorksheetName, count));

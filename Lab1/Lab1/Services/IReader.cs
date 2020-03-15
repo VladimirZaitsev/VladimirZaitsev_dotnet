@@ -1,8 +1,8 @@
-﻿namespace Lab1.Services
-{
-    using System.Collections.Generic;
-    using Lab1.Domain;
+﻿using System.Collections.Generic;
+using Lab1.Domain;
 
+namespace Lab1.Services
+{
     /// <summary>
     /// Provides methods for reading data from file.
     /// </summary>

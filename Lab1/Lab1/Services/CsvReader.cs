@@ -1,12 +1,12 @@
-﻿namespace Lab1.Services
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using Lab1.Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using Lab1.Domain;
 
+namespace Lab1.Services
+{
     /// <summary>
     /// This class reads student collection from .csv file.
     /// </summary>

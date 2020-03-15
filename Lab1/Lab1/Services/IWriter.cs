@@ -1,8 +1,7 @@
-﻿namespace Lab1.Services
-{
-    using System.Collections.Generic;
-    using Lab1.Domain;
+﻿using Lab1.Domain;
 
+namespace Lab1.Services
+{
     /// <summary>
     /// Provides method for writing collections to file.
     /// </summary>

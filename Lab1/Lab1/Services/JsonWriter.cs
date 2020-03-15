@@ -1,12 +1,11 @@
-﻿namespace Lab1.Services
-{
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using System.Text.Encodings.Web;
-    using System.Text.Json;
-    using Lab1.Domain;
+﻿using System.IO;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using Lab1.Domain;
 
+namespace Lab1.Services
+{
     /// <summary>
     /// Provide method for writing in json format.
     /// </summary>

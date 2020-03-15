@@ -1,7 +1,7 @@
-﻿namespace Lab1.CommandLineOptions
-{
-    using CommandLine;
+﻿using CommandLine;
 
+namespace Lab1.CommandLineOptions
+{
     /// <summary>
     /// Class to receive parsed values.
     /// </summary>

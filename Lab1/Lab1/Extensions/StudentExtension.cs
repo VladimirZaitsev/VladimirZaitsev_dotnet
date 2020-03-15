@@ -1,9 +1,9 @@
-﻿namespace Lab1.Business
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using Lab1.Domain;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Lab1.Domain;
 
+namespace Lab1.Business
+{
     /// <summary>
     /// Provides methods to work with student collection.
     /// </summary>

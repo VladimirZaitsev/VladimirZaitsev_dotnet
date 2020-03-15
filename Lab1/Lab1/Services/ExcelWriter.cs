@@ -1,10 +1,10 @@
-﻿namespace Lab1.Services
-{
-    using System.Collections.Generic;
-    using System.IO;
-    using Lab1.Domain;
-    using OfficeOpenXml;
+﻿using System.Collections.Generic;
+using System.IO;
+using Lab1.Domain;
+using OfficeOpenXml;
 
+namespace Lab1.Services
+{
     /// <summary>
     /// Excel writer class.
     /// </summary>

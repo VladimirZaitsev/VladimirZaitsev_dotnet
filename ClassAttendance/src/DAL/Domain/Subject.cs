@@ -1,4 +1,4 @@
-﻿using DAL.Core;
+﻿using DAL.Interfaces;
 
 namespace DAL.Domain
 {

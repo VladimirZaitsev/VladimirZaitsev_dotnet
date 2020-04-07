@@ -1,21 +1,19 @@
-﻿using DAL.Interfaces;
+﻿using BLL.Interfaces;
 using DAL.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BLL.Interfaces;
 
 namespace BLL.Service
 {
-    internal class StudentService : IService<Person>
+    public class LecturerService : IService<Person>
     {
-        private readonly IStore<Person> _persons;
-        private readonly IStore<MissedLectures> _lectures;
+        private readonly IService<MissedLectures> _lectures;
+        private readonly IService<Person> _persons;
 
-        public StudentService(IStore<Person> persons, IStore<MissedLectures> lectures)
+        public LecturerService(IService<Person> persons)
         {
             _persons = persons;
-            _lectures = lectures;
         }
 
         public int Add(Person item)
@@ -42,8 +40,8 @@ namespace BLL.Service
         public void Delete(int itemId)
         {
             var hasRecords = _lectures
-                .GetAll()
-                .Any(lecture => lecture.StudentId == itemId);
+               .GetAll()
+               .Any(lecture => lecture.LecturerId == itemId);
 
             if (hasRecords)
             {
@@ -55,32 +53,19 @@ namespace BLL.Service
 
         public IEnumerable<Person> GetAll()
         {
-            return _persons.GetAll().Where(person => person.IsStudent);
+            return _persons.GetAll().Where(person => !person.IsStudent);
         }
 
         public Person GetById(int itemId)
         {
-            var result = _persons
-                .GetAll()
-                .FirstOrDefault(person => person.Id == itemId);
-
-            if (result == null)
-            {
-                throw new ArgumentException("Student not found");
-            }
-
-            return result;
+            return _persons.GetById(itemId);
         }
 
         public void Update(Person item)
         {
-            var result = _persons
-                .GetAll()
-                .FirstOrDefault(person => person.Id == item.Id);
-
-            if (result == null)
+            if (item == null)
             {
-                throw new ArgumentException("Class not found");
+                throw new ArgumentNullException(nameof(item));
             }
 
             _persons.Update(item);

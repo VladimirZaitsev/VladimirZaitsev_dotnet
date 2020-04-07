@@ -1,4 +1,4 @@
-﻿namespace DAL.Core
+﻿namespace DAL.Interfaces
 {
     public interface IEntity
     {

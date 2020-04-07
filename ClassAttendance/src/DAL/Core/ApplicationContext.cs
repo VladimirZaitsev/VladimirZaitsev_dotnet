@@ -11,9 +11,7 @@ namespace DAL.Core
 
         public DbSet<Group> Groups { get; set; }
 
-        public DbSet<Lecturer> Lecturers { get; set; }
-
-        public DbSet<Student> Students { get; set; }
+        public DbSet<Person> Persons { get; set; }
 
         public DbSet<Subject> Subjects { get; set; }
 

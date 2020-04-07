@@ -1,4 +1,4 @@
-﻿using DAL.Core;
+﻿using DAL.Interfaces;
 using System.Collections.Generic;
 
 namespace DAL.Domain
@@ -9,6 +9,8 @@ namespace DAL.Domain
 
         public string Name { get; set; }
 
-        public List<Student> Students { get; set; }
+        public int LecturerId { get; set; }
+
+        public List<int> StudentIds { get; set; }
     }
 }

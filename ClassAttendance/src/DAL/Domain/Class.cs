@@ -1,4 +1,4 @@
-﻿using DAL.Core;
+﻿using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -8,12 +8,16 @@ namespace DAL.Domain
     {
         public int Id { get; set; }
 
-        public Lecturer Lecturer { get; set; }
+        public int LecturerId { get; set; }
 
-        public Subject Subject { get; set; }
+        public int SubjectId { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Beginning { get; set; }
 
-        public List<Group> Groups { get; set; }
+        public DateTime Ending { get; set; }
+
+        public List<int> GroupIds { get; set; }
+
+        public int CabinetId { get; set; }
     }
 }

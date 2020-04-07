@@ -1,4 +1,4 @@
-﻿using DAL.Core;
+﻿using DAL.Interfaces;
 
 namespace DAL.Domain
 {
@@ -8,6 +8,8 @@ namespace DAL.Domain
 
         public int StudentId { get; set; }
 
-        public int LectureId { get; set; }
+        public int ClassId { get; set; }
+
+        public int SubjectId { get; set; }
     }
 }

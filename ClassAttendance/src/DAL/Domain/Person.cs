@@ -1,4 +1,4 @@
-﻿using DAL.Core;
+﻿using DAL.Interfaces;
 
 namespace DAL.Domain
 {
@@ -17,5 +17,7 @@ namespace DAL.Domain
         public string Passport { get; set; }
 
         public string Phone { get; set; }
+
+        public bool IsStudent { get; set; }
     }
 }

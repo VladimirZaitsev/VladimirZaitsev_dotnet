@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 
-namespace DAL.Core
+namespace BLL.Interfaces
 {
-    public interface IStore<T>
+    public interface IService<T>
         where T : class
     {
         T GetById(int itemId);
@@ -13,6 +13,6 @@ namespace DAL.Core
 
         void Update(T item);
 
-        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll();
     }
 }

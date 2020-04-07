@@ -1,18 +1,19 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
     public interface IStore<T>
         where T : class
     {
-        T GetById(int itemId);
+        Task<T> GetByIdAsync(int itemId);
 
-        int Add(T item);
+        Task<int> AddAsync(T item);
 
-        void Delete(int itemId);
+        Task DeleteAsync(int itemId);
 
-        void Update(T item);
+        Task UpdateAsync(T item);
 
-        IQueryable<T> GetAll();
+        IQueryable<T> GetAllAsync();
     }
 }

@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Core
 {
@@ -14,39 +15,39 @@ namespace DAL.Core
             _context = context;
         }
 
-        public int Add(T item)
+        public async Task<int> AddAsync(T item)
         {
-            _context.Set<T>().Add(item);
-            _context.SaveChanges();
+            await _context.Set<T>().AddAsync(item);
+            await _context.SaveChangesAsync();
 
             return item.Id;
         }
 
-        public void Delete(int itemId)
+        public async Task DeleteAsync(int itemId)
         {
-            var itemToRemove = _context.Set<T>().First(item => item.Id == itemId);
+            var itemToRemove = await _context.Set<T>().FirstAsync(item => item.Id == itemId);
             _context.Set<T>().Remove(itemToRemove);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAllAsync()
         {
             var items = _context.Set<T>()
-                .AsNoTracking()
+                .AsNoTracking();
 
             return items;
         }
 
-        public void Update(T item)
+        public async Task UpdateAsync(T item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public T GetById(int itemId)
+        public Task<T> GetByIdAsync(int itemId)
         {
             var result = _context.Set<T>()
-                  .FirstOrDefault(item => item.Id == itemId);
+                  .FirstOrDefaultAsync(item => item.Id == itemId);
 
             _context.Entry(result).State = EntityState.Detached;
 

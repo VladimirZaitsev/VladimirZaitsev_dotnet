@@ -22,12 +22,12 @@ namespace BLL.Service
             _classes = classes;
         }
 
-        public IAsyncEnumerable<Person> GetLecturers()
+        public IAsyncEnumerable<Person> GetAll()
         {
             return _persons.GetAll().Where(person => !person.IsStudent).AsAsyncEnumerable();
         }
 
-        public async Task<int> AddLecturerAsync(Person lecturer)
+        public async Task<int> AddAsync(Person lecturer)
         {
             if (lecturer == null)
             {
@@ -53,25 +53,25 @@ namespace BLL.Service
             return lecturer.Id;
         }
 
-        public async Task DeleteLecturerAsync(int lecturerId)
+        public async Task DeleteAsync(int id)
         {
             var classes = from classModel in _classes.GetAll()
                           join lecture in _lectures.GetAll() on classModel.Id equals lecture.ClassId
                           select classModel;
 
-            var hasRecords = await classes.AnyAsync(classModel => classModel.LecturerId == lecturerId);
+            var hasRecords = await classes.AnyAsync(classModel => classModel.LecturerId == id);
 
             if (hasRecords)
             {
                 throw new InvalidOperationException("Student has related records");
             }
 
-            await _persons.DeleteAsync(lecturerId);
+            await _persons.DeleteAsync(id);
         }
 
-        public async Task<Person> GetLecturer(int lecturerId)
+        public async Task<Person> GetByIdAsync(int id)
         {
-            var lecturer = await _persons.GetByIdAsync(lecturerId);
+            var lecturer = await _persons.GetByIdAsync(id);
 
             if (lecturer == null)
             {
@@ -86,19 +86,7 @@ namespace BLL.Service
             return lecturer;
         }
 
-        public async Task<IAsyncEnumerable<MissedLectures>> GetMissedLecturesAsync(int lecturerId)
-        {
-            var lecturer = await GetLecturer(lecturerId);
-
-            var lectures = from lecture in _lectures.GetAll()
-                           join classModel in _classes.GetAll() on lecture.ClassId equals classModel.Id
-                           where classModel.LecturerId == lecturerId
-                           select lecture;
-
-            return lectures.AsAsyncEnumerable();
-        }
-
-        public async Task UpdateLecturerAsync(Person lecturer)
+        public async Task UpdateAsync(Person lecturer)
         {
             if (lecturer == null)
             {

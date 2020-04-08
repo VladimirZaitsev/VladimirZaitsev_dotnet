@@ -20,7 +20,7 @@ namespace BLL.Service
             _lectures = lectures;
         }
 
-        public async Task<int> AddStudentAsync(Person student)
+        public async Task<int> AddAsync(Person student)
         {
             if (student == null)
             {
@@ -46,7 +46,7 @@ namespace BLL.Service
             return student.Id;
         }
 
-        public async Task DeleteStudentAsync(int studentId)
+        public async Task DeleteAsync(int studentId)
         {
             var hasRecords = await _lectures
                .GetAll()
@@ -60,35 +60,7 @@ namespace BLL.Service
             await _persons.DeleteAsync(studentId);
         }
 
-        public async Task<IAsyncEnumerable<MissedLectures>> GetMissedLecturesAsync(int studentId)
-        {
-            var student = await GetStudent(studentId);
-
-            var missedLectures = _lectures
-                .GetAll()
-                .Where(lecture => lecture.StudentId == student.Id)
-                .AsAsyncEnumerable();
-
-            return missedLectures;
-        }
-
-        public async Task<IAsyncEnumerable<Person>> GetSlackersAsync(Class classModel)
-        {
-            var slackerIds = await _lectures
-                .GetAll()
-                .Where(lecture => lecture.ClassId == classModel.Id)
-                .Select(lecture => lecture.StudentId)
-                .ToListAsync();
-
-            var slackers = from person in _persons.GetAll()
-                           where person.IsStudent
-                           join slacker in slackerIds on person.Id equals slacker
-                           select person;
-
-            return slackers.AsAsyncEnumerable();
-        }
-
-        public async Task<Person> GetStudent(int studentId)
+        public async Task<Person> GetByIdAsync(int studentId)
         {
             var student = await _persons.GetByIdAsync(studentId);
 
@@ -105,7 +77,7 @@ namespace BLL.Service
             return student;
         }
 
-        public IAsyncEnumerable<Person> GetStudents()
+        public IAsyncEnumerable<Person> GetAll()
         {
             return _persons
                 .GetAll()
@@ -113,7 +85,7 @@ namespace BLL.Service
                 .AsAsyncEnumerable();
         }
 
-        public async Task UpdateStudentAsync(Person student)
+        public async Task UpdateAsync(Person student)
         {
             var result = await _persons
                .GetAll()

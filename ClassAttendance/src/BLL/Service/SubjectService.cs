@@ -22,7 +22,7 @@ namespace BLL.Service
             _lectures = lectures;
         }
 
-        public async Task<int> AddSubjectAsync(Subject subject)
+        public async Task<int> AddAsync(Subject subject)
         {
             if (subject == null)
             {
@@ -38,7 +38,7 @@ namespace BLL.Service
             return subject.Id;
         }
 
-        public async Task DeleteSubjectAsync(int subjectId)
+        public async Task DeleteAsync(int subjectId)
         {
             var hasRecords =  _lectures
                .GetAll()
@@ -52,37 +52,7 @@ namespace BLL.Service
             await _subjects.DeleteAsync(subjectId);
         }
 
-        public async Task<IAsyncEnumerable<Person>> GetLecturersAsync(int subjectId)
-        {
-            var lecturerIds = _classes
-                .GetAll()
-                .Where(classModel => classModel.SubjectId == subjectId)
-                .Select(classModel => classModel.LecturerId);
-
-            var lecturers = from lecturer in _persons.GetAll()
-                            where !lecturer.IsStudent
-                            join id in lecturerIds on lecturer.Id equals id
-                            select lecturer;
-
-            return await lecturers.ToListAsync();
-        }
-
-        public async Task<IAsyncEnumerable<Person>> GetStudentsAsync(int subjectId)
-        {
-            var lecturerIds = _classes
-                .GetAll()
-                .Where(classModel => classModel.SubjectId == subjectId)
-                .Select(classModel => classModel.LecturerId);
-
-            var lecturers = from lecturer in _persons.GetAll()
-                            where lecturer.IsStudent
-                            join id in lecturerIds on lecturer.Id equals id
-                            select lecturer;
-
-            return await lecturers.AsAsyncEnumerable();
-        }
-
-        public async Task<Subject> GetSubjectAsync(int subjectId)
+        public async Task<Subject> GetByIdAsync(int subjectId)
         {
             var result = await _subjects.GetByIdAsync(subjectId);
 
@@ -94,12 +64,12 @@ namespace BLL.Service
             return result;
         }
 
-        public IAsyncEnumerable<Subject> GetSubjectsAsync()
+        public IAsyncEnumerable<Subject> GetAll()
         {
             return _subjects.GetAll().AsAsyncEnumerable();
         }
 
-        public  async Task UpdatedSubjectAsync(Subject subject)
+        public  async Task UpdateAsync(Subject subject)
         {
             if (subject == null)
             {
@@ -108,5 +78,36 @@ namespace BLL.Service
 
             await _subjects.UpdateAsync(subject);
         }
+
+        public IAsyncEnumerable<Person> GetLecturersAsync(int subjectId)
+        {
+            var lecturerIds = _classes
+                .GetAll()
+                .Where(classModel => classModel.SubjectId == subjectId)
+                .Select(classModel => classModel.LecturerId);
+
+            var lecturers = from lecturer in _persons.GetAll()
+                            where !lecturer.IsStudent
+                            join id in lecturerIds on lecturer.Id equals id
+                            select lecturer;
+
+            return lecturers.AsAsyncEnumerable();
+        }
+
+        public IAsyncEnumerable<Person> GetStudentsAsync(int subjectId)
+        {
+            var lecturerIds = _classes
+                .GetAll()
+                .Where(classModel => classModel.SubjectId == subjectId)
+                .Select(classModel => classModel.LecturerId);
+
+            var lecturers = from lecturer in _persons.GetAll()
+                            where lecturer.IsStudent
+                            join id in lecturerIds on lecturer.Id equals id
+                            select lecturer;
+
+            return lecturers.AsAsyncEnumerable();
+        }
+
     }
 }

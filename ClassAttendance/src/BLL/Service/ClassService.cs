@@ -12,20 +12,21 @@ namespace BLL.Service
     public class ClassService : IClassService
     {
         private readonly IStore<Class> _classes;
+        private readonly IStore<MissedLectures> _lectures;
 
-        public async Task<int> AddClassAsync(Class classModel)
+        public async Task<int> AddAsync(Class item)
         {
-            if (classModel == null)
+            if (item == null)
             {
-                throw new ArgumentNullException(nameof(classModel));
+                throw new ArgumentNullException(nameof(item));
             }
 
             var sameTimeClasses = await _classes.GetAll()
-                .Where(lesson => lesson.Beginning < classModel.Ending || classModel.Beginning < lesson.Ending)
+                .Where(lesson => lesson.Beginning < item.Ending || item.Beginning < lesson.Ending)
                 .ToListAsync();
 
             var isCabinetTaken = sameTimeClasses
-                .Any(lesson => lesson.CabinetId == classModel.CabinetId);
+                .Any(lesson => lesson.CabinetId == item.CabinetId);
 
             if (isCabinetTaken)
             {
@@ -33,35 +34,53 @@ namespace BLL.Service
             }
 
             var isLecturerBusy = sameTimeClasses
-                .Any(lesson => lesson.LecturerId == classModel.LecturerId);
+                .Any(lesson => lesson.LecturerId == item.LecturerId);
 
             if (isLecturerBusy)
             {
                 throw new ArgumentException("Lecturer has other class at that time");
             }
 
-            await _classes.AddAsync(classModel);
-            return classModel.Id;
+            await _classes.AddAsync(item);
+            return item.Id;
         }
 
-        public Task DeleteClassAsync(int classId)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var hasRecords = await _lectures.GetAll()
+                .AnyAsync(lecture => lecture.ClassId == id);
         }
 
-        public Task<Class> GetClassAsync(int classId)
+        public async Task<Class> GetByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var classModel = await _classes.GetByIdAsync(id);
+
+            if (classModel == null)
+            {
+                throw new ArgumentException("Class not found");
+            }
+
+
+            return classModel;
         }
 
-        public IAsyncEnumerable<Class> GetClasses()
+        public IAsyncEnumerable<Class> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _classes.GetAll().AsAsyncEnumerable();
         }
 
-        public Task UpdateClassAsync(Class classModel)
+        public async Task UpdateAsync(Class item)
         {
-            throw new System.NotImplementedException();
+            var result = await _classes
+               .GetAll()
+               .FirstOrDefaultAsync(item => item.Id == item.Id);
+
+            if (result == null)
+            {
+                throw new ArgumentException("Class not found");
+            }
+
+            await _classes.UpdateAsync(item);
         }
     }
 }

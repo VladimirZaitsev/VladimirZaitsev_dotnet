@@ -14,6 +14,6 @@ namespace DAL.Interfaces
 
         Task UpdateAsync(T item);
 
-        IQueryable<T> GetAllAsync();
+        IQueryable<T> GetAll();
     }
 }

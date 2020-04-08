@@ -1,16 +1,20 @@
 ﻿using BLL.Interfaces;
 using DAL.Domain;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLL.Service
 {
-    public class SubjectService : IService<Subject>
+    public class SubjectService : ISubjectService
     {
         private readonly IStore<Subject> _subjects;
         private readonly IStore<MissedLectures> _lectures;
+        private readonly IStore<Class> _classes;
+        private readonly IStore<Person> _persons;
 
         public SubjectService(IStore<Subject> subjects, IStore<MissedLectures> lectures)
         {
@@ -18,61 +22,91 @@ namespace BLL.Service
             _lectures = lectures;
         }
 
-        public int Add(Subject item)
+        public async Task<int> AddSubjectAsync(Subject subject)
         {
-            if (item == null)
+            if (subject == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new ArgumentNullException(nameof(subject));
             }
 
-            if (string.IsNullOrEmpty(item.Name))
+            if (string.IsNullOrEmpty(subject.Name))
             {
-                throw new ArgumentException(nameof(item.Name));
+                throw new ArgumentException(nameof(subject.Name));
             }
 
-            _subjects.Add(item);
-            return item.Id;
+            await _subjects.AddAsync(subject);
+            return subject.Id;
         }
 
-        public void Delete(int itemId)
+        public async Task DeleteSubjectAsync(int subjectId)
         {
-            var hasRecords = _lectures
+            var hasRecords =  _lectures
                .GetAll()
-               .Any(lecture => lecture.SubjectId == itemId);
+               .Any(lecture => lecture.SubjectId == subjectId);
 
             if (hasRecords)
             {
                 throw new InvalidOperationException("Student has related records");
             }
 
-            _subjects.Delete(itemId);
+            await _subjects.DeleteAsync(subjectId);
         }
 
-        public IEnumerable<Subject> GetAll()
+        public async Task<IAsyncEnumerable<Person>> GetLecturersAsync(int subjectId)
         {
-            return _subjects.GetAll();
+            var lecturerIds = _classes
+                .GetAll()
+                .Where(classModel => classModel.SubjectId == subjectId)
+                .Select(classModel => classModel.LecturerId);
+
+            var lecturers = from lecturer in _persons.GetAll()
+                            where !lecturer.IsStudent
+                            join id in lecturerIds on lecturer.Id equals id
+                            select lecturer;
+
+            return await lecturers.ToListAsync();
         }
 
-        public Subject GetById(int itemId)
+        public async Task<IAsyncEnumerable<Person>> GetStudentsAsync(int subjectId)
         {
-            var result = _subjects.GetById(itemId);
+            var lecturerIds = _classes
+                .GetAll()
+                .Where(classModel => classModel.SubjectId == subjectId)
+                .Select(classModel => classModel.LecturerId);
+
+            var lecturers = from lecturer in _persons.GetAll()
+                            where lecturer.IsStudent
+                            join id in lecturerIds on lecturer.Id equals id
+                            select lecturer;
+
+            return await lecturers.AsAsyncEnumerable();
+        }
+
+        public async Task<Subject> GetSubjectAsync(int subjectId)
+        {
+            var result = await _subjects.GetByIdAsync(subjectId);
 
             if (result == null)
             {
-                throw new ArgumentException(nameof(itemId));
+                throw new ArgumentException("Subject not found");
             }
 
             return result;
         }
 
-        public void Update(Subject item)
+        public IAsyncEnumerable<Subject> GetSubjectsAsync()
         {
-            if (item == null)
+            return _subjects.GetAll().AsAsyncEnumerable();
+        }
+
+        public  async Task UpdatedSubjectAsync(Subject subject)
+        {
+            if (subject == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new ArgumentNullException(nameof(subject));
             }
 
-            _subjects.Update(item);
+            await _subjects.UpdateAsync(subject);
         }
     }
 }

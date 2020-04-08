@@ -30,7 +30,7 @@ namespace DAL.Core
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<T> GetAllAsync()
+        public IQueryable<T> GetAll()
         {
             var items = _context.Set<T>()
                 .AsNoTracking();

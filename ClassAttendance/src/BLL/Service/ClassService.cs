@@ -3,97 +3,65 @@ using DAL.Domain;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Service
 {
-    public class ClassService : IService<Class>
+    public class ClassService : IClassService
     {
         private readonly IStore<Class> _classes;
-        private readonly IStore<Person> _persons;
-        private readonly IStore<Subject> _subjects;
-        private readonly IStore<MissedLectures> _lectures;
 
-        public int Add(Class item)
+        public async Task<int> AddClassAsync(Class classModel)
         {
-            if (item == null)
+            if (classModel == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new ArgumentNullException(nameof(classModel));
             }
 
-            var lecturer = _persons
-                .GetAll()
-                .Where(person => !person.IsStudent)
-                .FirstOrDefault(person => person.Id == item.LecturerId);
+            var sameTimeClasses = await _classes.GetAll()
+                .Where(lesson => lesson.Beginning < classModel.Ending || classModel.Beginning < lesson.Ending)
+                .ToListAsync();
 
-            if (lecturer == null)
+            var isCabinetTaken = sameTimeClasses
+                .Any(lesson => lesson.CabinetId == classModel.CabinetId);
+
+            if (isCabinetTaken)
             {
-                throw new ArgumentException("Lecturer do not exists");
+                throw new ArgumentException("Cabinet is already taken");
             }
 
-            var subject = _subjects
-               .GetAll()
-               .FirstOrDefault(subject => subject.Id == item.SubjectId);
+            var isLecturerBusy = sameTimeClasses
+                .Any(lesson => lesson.LecturerId == classModel.LecturerId);
 
-            if (subject == null)
+            if (isLecturerBusy)
             {
-                throw new ArgumentException("Subject do not exists");
+                throw new ArgumentException("Lecturer has other class at that time");
             }
 
-            var isTaken = _classes
-                .GetAll()
-                .Where(classModel => classModel.CabinetId == item.CabinetId)
-                .Any(eventModel => eventModel.Beginning < item.Ending || eventModel.Ending > item.Beginning);                .
-
-            _classes.Add(item);
-            return item.Id;
+            await _classes.AddAsync(classModel);
+            return classModel.Id;
         }
 
-        public void Delete(int itemId)
+        public Task DeleteClassAsync(int classId)
         {
-            var hasRecords = _lectures
-                .GetAll()
-                .Any(lecture => lecture.ClassId == itemId);
-
-            if (hasRecords)
-            {
-                throw new InvalidOperationException("Class has related records");
-            }
-
-            _classes.Delete(itemId);
+            throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Class> GetAll()
+        public Task<Class> GetClassAsync(int classId)
         {
-            return _classes.GetAll();
+            throw new System.NotImplementedException();
         }
 
-        public Class GetById(int itemId)
+        public IAsyncEnumerable<Class> GetClasses()
         {
-            var result = _classes
-                .GetAll()
-                .FirstOrDefault(classModel => classModel.Id == itemId);
-
-            if (result == null)
-            {
-                throw new ArgumentException("Class not found");
-            }
-
-            return result;
+            throw new System.NotImplementedException();
         }
 
-        public void Update(Class item)
+        public Task UpdateClassAsync(Class classModel)
         {
-            var result = _classes
-                .GetAll()
-                .FirstOrDefault(classModel => classModel.Id == item.Id);
-
-            if (result == null)
-            {
-                throw new ArgumentException("Class not found");
-            }
-
-            _classes.Update(item);
+            throw new System.NotImplementedException();
         }
     }
 }

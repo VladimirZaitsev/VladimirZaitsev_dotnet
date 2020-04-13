@@ -1,5 +1,7 @@
-﻿using BLL.Interfaces;
-using DAL.Domain;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.Models;
+using DAL.DTO;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,19 +9,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BLL.Service
+namespace BLL.Services
 {
     public class SubjectService : ISubjectService
     {
-        private readonly IStore<Subject> _subjects;
-        private readonly IStore<MissedLectures> _lectures;
-        private readonly IStore<Class> _classes;
-        private readonly IStore<Person> _persons;
+        private readonly IStore<SubjectDto> _subjects;
+        private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IStore<ClassDto> _classes;
+        private readonly IStore<PersonDto> _persons;
+        private readonly IMapper _mapper;
 
-        public SubjectService(IStore<Subject> subjects, IStore<MissedLectures> lectures)
+        public SubjectService(IStore<SubjectDto> subjects, IStore<MissedLecturesDto> lectures, IStore<ClassDto> classes, IStore<PersonDto> persons, IMapper mapper)
         {
             _subjects = subjects;
             _lectures = lectures;
+            _classes = classes;
+            _persons = persons;
+            _mapper = mapper;
         }
 
         public async Task<int> AddAsync(Subject subject)
@@ -34,8 +40,9 @@ namespace BLL.Service
                 throw new ArgumentException(nameof(subject.Name));
             }
 
-            await _subjects.AddAsync(subject);
-            return subject.Id;
+            var dto = _mapper.Map<SubjectDto>(subject);
+            await _subjects.AddAsync(dto);
+            return dto.Id;
         }
 
         public async Task DeleteAsync(int subjectId)
@@ -61,12 +68,17 @@ namespace BLL.Service
                 throw new ArgumentException("Subject not found");
             }
 
-            return result;
+            var model = _mapper.Map<Subject>(result);
+
+            return model;
         }
 
         public IAsyncEnumerable<Subject> GetAll()
         {
-            return _subjects.GetAll().AsAsyncEnumerable();
+            var dtos = _subjects.GetAll().AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<Subject>>(dtos);
+
+            return models;
         }
 
         public  async Task UpdateAsync(Subject subject)
@@ -76,7 +88,8 @@ namespace BLL.Service
                 throw new ArgumentNullException(nameof(subject));
             }
 
-            await _subjects.UpdateAsync(subject);
+            var dto = _mapper.Map<SubjectDto>(subject);
+            await _subjects.UpdateAsync(dto);
         }
 
         public IAsyncEnumerable<Person> GetLecturersAsync(int subjectId)
@@ -91,7 +104,9 @@ namespace BLL.Service
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            return lecturers.AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<Person>>(lecturers.AsAsyncEnumerable());
+
+            return models;
         }
 
         public IAsyncEnumerable<Person> GetStudentsAsync(int subjectId)
@@ -106,7 +121,9 @@ namespace BLL.Service
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            return lecturers.AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<Person>>(lecturers.AsAsyncEnumerable());
+
+            return models;
         }
 
     }

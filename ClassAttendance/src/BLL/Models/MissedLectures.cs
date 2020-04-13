@@ -1,8 +1,6 @@
-﻿using DAL.Interfaces;
-
-namespace DAL.Domain
+﻿namespace BLL.Models
 {
-    public class MissedLectures : IEntity
+    public class MissedLectures
     {
         public int Id { get; set; }
 

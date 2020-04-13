@@ -1,4 +1,4 @@
-﻿using DAL.Domain;
+﻿using BLL.Models;
 using System.Collections.Generic;
 
 namespace BLL.Interfaces

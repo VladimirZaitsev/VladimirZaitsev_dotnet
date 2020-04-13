@@ -1,9 +1,8 @@
-﻿using DAL.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DAL.Domain
+namespace BLL.Models
 {
-    public class Group : IEntity
+    public class Group
     {
         public int Id { get; set; }
 

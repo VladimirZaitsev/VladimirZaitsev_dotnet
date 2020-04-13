@@ -1,5 +1,7 @@
-﻿using BLL.Interfaces;
-using DAL.Domain;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.Models;
+using DAL.DTO;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,14 +9,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BLL.Service
+namespace BLL.Services
 {
     public class MissedLecturesService : IMissedLecturesService
     {
-        private readonly IStore<MissedLectures> _lectures;
-        private readonly IStore<Person> _persons;
-        private readonly IStore<Subject> _subjects;
-        private readonly IStore<Class> _classes;
+        private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IStore<PersonDto> _persons;
+        private readonly IStore<SubjectDto> _subjects;
+        private readonly IStore<ClassDto> _classes;
+        private readonly IMapper _mapper;
+
+        public MissedLecturesService(IStore<MissedLecturesDto> lectures,
+            IStore<PersonDto> persons,
+            IStore<SubjectDto> subjects,
+            IStore<ClassDto> classes,
+            IMapper mapper)
+        {
+            _lectures = lectures;
+            _persons = persons;
+            _subjects = subjects;
+            _classes = classes;
+            _mapper = mapper;
+        }
 
         public async Task<int> AddAsync(MissedLectures lecture)
         {
@@ -49,8 +65,10 @@ namespace BLL.Service
                 throw new ArgumentException("Class not found");
             }
 
-            await _lectures.AddAsync(lecture);
-            return lecture.Id;
+            var dto = _mapper.Map<MissedLecturesDto>(lecture);
+            await _lectures.AddAsync(dto);
+
+            return dto.Id;
         }
 
         public async Task DeleteAsync(int id)
@@ -95,7 +113,8 @@ namespace BLL.Service
                 throw new ArgumentException("Class not found");
             }
 
-            await _lectures.UpdateAsync(lecture);
+            var dto = _mapper.Map<MissedLecturesDto>(lecture);
+            await _lectures.UpdateAsync(dto);
         }
 
         public async Task<MissedLectures> GetByIdAsync(int id)
@@ -107,12 +126,17 @@ namespace BLL.Service
                 throw new ArgumentException("Lecture not found");
             }
 
-            return lecture;
+            var model = _mapper.Map<MissedLectures>(lecture);
+
+            return model;
         }
 
         public IAsyncEnumerable<MissedLectures> GetAll()
         {
-            return _lectures.GetAll().AsAsyncEnumerable();
+            var dtos = _lectures.GetAll().AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<MissedLectures>>(dtos);
+
+            return models; 
         }
 
         public async Task<IAsyncEnumerable<MissedLectures>> GetMissedLecturesByStudentAsync(int studentId)
@@ -134,7 +158,9 @@ namespace BLL.Service
                 .Where(lecture => lecture.StudentId == studentId)
                 .AsAsyncEnumerable();
 
-            return missedLectures;
+            var models = _mapper.Map<IAsyncEnumerable<MissedLectures>>(missedLectures);
+
+            return models;
         }
 
         public async Task<IAsyncEnumerable<Person>> GetSlackersAsync(Class classModel)
@@ -149,8 +175,9 @@ namespace BLL.Service
                            where person.IsStudent
                            join slacker in slackerIds on person.Id equals slacker
                            select person;
+            var models = _mapper.Map<IAsyncEnumerable<Person>>(slackers.AsAsyncEnumerable());
 
-            return slackers.AsAsyncEnumerable();
+            return models;
         }
 
         public async Task<IAsyncEnumerable<MissedLectures>> GetMissedLecturesByLecturerAsync(int id)
@@ -172,7 +199,9 @@ namespace BLL.Service
                            where classModel.LecturerId == id
                            select lecture;
 
-            return lectures.AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<MissedLectures>>(lectures.AsAsyncEnumerable());
+
+            return models;
         }
     }
 }

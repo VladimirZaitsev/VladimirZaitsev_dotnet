@@ -1,8 +1,6 @@
-﻿using DAL.Interfaces;
-
-namespace DAL.Domain
-{
-    public class Subject : IEntity
+﻿namespace BLL.Models
+{ 
+    public class Subject
     {
         public int Id { get; set; }
 

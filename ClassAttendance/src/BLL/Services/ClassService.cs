@@ -1,18 +1,28 @@
 ﻿using BLL.Interfaces;
-using DAL.Domain;
+using DAL.DTO;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using BLL.Models;
+using AutoMapper;
 
-namespace BLL.Service
+namespace BLL.Services
 {
     public class ClassService : IClassService
     {
-        private readonly IStore<Class> _classes;
-        private readonly IStore<MissedLectures> _lectures;
+        private readonly IStore<ClassDto> _classes;
+        private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IMapper _mapper;
+
+        public ClassService(IStore<ClassDto> classes, IStore<MissedLecturesDto> lectures, IMapper mapper)
+        {
+            _classes = classes;
+            _lectures = lectures;
+            _mapper = mapper;
+        }
 
         public async Task<int> AddAsync(Class item)
         {
@@ -41,8 +51,9 @@ namespace BLL.Service
                 throw new ArgumentException("Lecturer has other class at that time");
             }
 
-            await _classes.AddAsync(item);
-            return item.Id;
+            var dto = _mapper.Map<ClassDto>(item);
+            await _classes.AddAsync(dto);
+            return dto.Id;
         }
 
         public async Task DeleteAsync(int id)
@@ -53,34 +64,36 @@ namespace BLL.Service
 
         public async Task<Class> GetByIdAsync(int id)
         {
-            var classModel = await _classes.GetByIdAsync(id);
+            var dto = await _classes.GetByIdAsync(id);
 
-            if (classModel == null)
+            if (dto == null)
             {
                 throw new ArgumentException("Class not found");
             }
 
-
-            return classModel;
+            var model = _mapper.Map<Class>(dto);
+            return model;
         }
 
         public IAsyncEnumerable<Class> GetAll()
         {
-            return _classes.GetAll().AsAsyncEnumerable();
+            var dtos = _classes.GetAll().AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<Class>>(dtos);
+
+            return models;
         }
 
         public async Task UpdateAsync(Class item)
         {
-            var result = await _classes
-               .GetAll()
-               .FirstOrDefaultAsync(item => item.Id == item.Id);
+            var lesson = await GetByIdAsync(item.Id);
 
-            if (result == null)
+            if (lesson == null)
             {
                 throw new ArgumentException("Class not found");
             }
 
-            await _classes.UpdateAsync(item);
+            var dto = _mapper.Map<ClassDto>(item);
+            await _classes.UpdateAsync(dto);
         }
     }
 }

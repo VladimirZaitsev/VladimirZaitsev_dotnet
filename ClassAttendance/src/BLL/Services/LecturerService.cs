@@ -1,5 +1,7 @@
-﻿using BLL.Interfaces;
-using DAL.Domain;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.Models;
+using DAL.DTO;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,24 +9,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BLL.Service
+namespace BLL.Services
 {
     public class LecturerService : ILecturerService
     {
-        private readonly IStore<MissedLectures> _lectures;
-        private readonly IStore<Person> _persons;
-        private readonly IStore<Class> _classes;
+        private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IStore<PersonDto> _persons;
+        private readonly IStore<ClassDto> _classes;
+        private readonly IMapper _mapper;
 
-        public LecturerService(IStore<MissedLectures> lectures, IStore<Person> persons, IStore<Class> classes)
+        public LecturerService(IStore<MissedLecturesDto> lectures, IStore<PersonDto> persons, IStore<ClassDto> classes, IMapper mapper)
         {
             _lectures = lectures;
             _persons = persons;
             _classes = classes;
+            _mapper = mapper;
         }
 
         public IAsyncEnumerable<Person> GetAll()
         {
-            return _persons.GetAll().Where(person => !person.IsStudent).AsAsyncEnumerable();
+            var dtos = _persons.GetAll().Where(person => !person.IsStudent).AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<Person>>(dtos);
+
+            return models;
         }
 
         public async Task<int> AddAsync(Person lecturer)
@@ -49,8 +56,9 @@ namespace BLL.Service
                 throw new ArgumentNullException("Lecturer can't be a student");
             }
 
-            await _persons.AddAsync(lecturer);
-            return lecturer.Id;
+            var dto = _mapper.Map<PersonDto>(lecturer);
+            await _persons.AddAsync(dto);
+            return dto.Id;
         }
 
         public async Task DeleteAsync(int id)
@@ -83,7 +91,8 @@ namespace BLL.Service
                 throw new ArgumentException("Invalid id");
             }
 
-            return lecturer;
+            var model = _mapper.Map<Person>(lecturer);
+            return model;
         }
 
         public async Task UpdateAsync(Person lecturer)
@@ -108,7 +117,8 @@ namespace BLL.Service
                 throw new ArgumentNullException("Lecturer can't be a student");
             }
 
-            await _persons.UpdateAsync(lecturer);
+            var dto = _mapper.Map<PersonDto>(lecturer);
+            await _persons.UpdateAsync(dto);
         }
     }
 }

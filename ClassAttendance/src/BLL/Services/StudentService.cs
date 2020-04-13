@@ -1,23 +1,27 @@
 ﻿using DAL.Interfaces;
-using DAL.Domain;
+using DAL.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using BLL.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using BLL.Models;
+using AutoMapper;
 
-namespace BLL.Service
+namespace BLL.Services
 {
     internal class StudentService : IStudentService
     {
-        private readonly IStore<Person> _persons;
-        private readonly IStore<MissedLectures> _lectures;
+        private readonly IStore<PersonDto> _persons;
+        private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IMapper _mapper;
 
-        public StudentService(IStore<Person> persons, IStore<MissedLectures> lectures)
+        public StudentService(IStore<PersonDto> persons, IStore<MissedLecturesDto> lectures, IMapper mapper)
         {
             _persons = persons;
             _lectures = lectures;
+            _mapper = mapper;
         }
 
         public async Task<int> AddAsync(Person student)
@@ -42,8 +46,9 @@ namespace BLL.Service
                 throw new ArgumentNullException("Student can't be a lecturer");
             }
 
-            await _persons.AddAsync(student);
-            return student.Id;
+            var dto = _mapper.Map<PersonDto>(student);
+            await _persons.AddAsync(dto);
+            return dto.Id;
         }
 
         public async Task DeleteAsync(int studentId)
@@ -74,15 +79,17 @@ namespace BLL.Service
                 throw new ArgumentException("Invalid id");
             }
 
-            return student;
+            var dto = _mapper.Map<Person>(student);
+
+            return dto;
         }
 
         public IAsyncEnumerable<Person> GetAll()
         {
-            return _persons
-                .GetAll()
-                .Where(person => person.IsStudent)
-                .AsAsyncEnumerable();
+            var dtos = _persons.GetAll().Where(person => person.IsStudent).AsAsyncEnumerable();
+            var models = _mapper.Map<IAsyncEnumerable<Person>>(dtos);
+
+            return models;
         }
 
         public async Task UpdateAsync(Person student)
@@ -96,7 +103,8 @@ namespace BLL.Service
                 throw new ArgumentException("Class not found");
             }
 
-            await _persons.UpdateAsync(student);
+            var dto = _mapper.Map<PersonDto>(student);
+            await _persons.UpdateAsync(dto);
         }
     }
 }

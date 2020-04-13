@@ -1,4 +1,4 @@
-﻿using DAL.Domain;
+﻿using DAL.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Core
@@ -7,14 +7,14 @@ namespace DAL.Core
     {
         public ApplicationContext() { }
 
-        public DbSet<Class> Classes { get; set; }
+        public DbSet<ClassDto> Classes { get; set; }
 
-        public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupDto> Groups { get; set; }
 
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<PersonDto> Persons { get; set; }
 
-        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<SubjectDto> Subjects { get; set; }
 
-        public DbSet<MissedLectures> Lectures { get; set; }
+        public DbSet<MissedLecturesDto> Lectures { get; set; }
     }
 }

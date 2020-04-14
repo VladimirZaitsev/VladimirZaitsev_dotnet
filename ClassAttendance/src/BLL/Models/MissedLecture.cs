@@ -1,6 +1,6 @@
 ﻿namespace BLL.Models
 {
-    public class MissedLectures
+    public class MissedLecture
     {
         public int Id { get; set; }
 

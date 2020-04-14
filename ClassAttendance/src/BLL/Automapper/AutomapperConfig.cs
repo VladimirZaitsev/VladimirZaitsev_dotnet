@@ -10,7 +10,7 @@ namespace BLL.Automapper
         {
             CreateMap<Class, ClassDto>().ReverseMap();
             CreateMap<Group, GroupDto>().ReverseMap();
-            CreateMap<MissedLectures, MissedLecturesDto>().ReverseMap();
+            CreateMap<MissedLecture, MissedLecturesDto>().ReverseMap();
             CreateMap<Person, PersonDto>().ReverseMap();
             CreateMap<Subject, SubjectDto>().ReverseMap();
         }

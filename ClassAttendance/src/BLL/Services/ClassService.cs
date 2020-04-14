@@ -60,6 +60,13 @@ namespace BLL.Services
         {
             var hasRecords = await _lectures.GetAll()
                 .AnyAsync(lecture => lecture.ClassId == id);
+
+            if (hasRecords)
+            {
+                throw new InvalidOperationException("Class has related records");
+            }
+
+            await _classes.DeleteAsync(id);
         }
 
         public async Task<Class> GetByIdAsync(int id)

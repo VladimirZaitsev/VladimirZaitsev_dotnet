@@ -1,6 +1,8 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.Models;
 using ConsoleUI.Contollers.Interfaces;
-using ConsoleUI.Models.Lecturer;
+using ConsoleUI.ViewModels.Lecturer;
 using ConsoleUI.Views.Implementations.SubMenus;
 using System;
 using System.Collections.Generic;
@@ -10,13 +12,15 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
     public class LecturerController : ISubController
     {
-        private readonly ILecturerService _lecturerService;
+        private readonly IService<Person> _lecturerService;
         private readonly LecturerMenuView _lecturerMenu;
+        private readonly IMapper _mapper;
 
-        public LecturerController(ILecturerService lecturerService, LecturerMenuView lecturerMenu)
+        public LecturerController(IService<Person> lecturerService, LecturerMenuView lecturerMenu, IMapper mapper)
         {
             _lecturerService = lecturerService;
             _lecturerMenu = lecturerMenu;
+            _mapper = mapper;
         }
 
         private bool exitFlag;
@@ -60,7 +64,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
         private async Task AddLecturer()
         {
-            var student = _lecturerMenu.GetLectureFromInput();
+            var student = _lecturerMenu.GetLecturerFromInput();
 
             await _lecturerService.AddAsync(student);
         }
@@ -76,7 +80,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         {
             var id = _lecturerMenu.GetIdFromInput();
             var student = await _lecturerService.GetByIdAsync(id);
-            var updatedUser = _lecturerMenu.UpdateStudent(student);
+            var updatedUser = _lecturerMenu.UpdateLecturer(student);
 
             await _lecturerService.UpdateAsync(updatedUser);
         }
@@ -84,19 +88,19 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         private void PrintLecturers()
         {
             var students = _lecturerService.GetAll();
-            var viewModels = new List<LecturerViewModel>();
+            var lecturerViewModels = _mapper.Map<IEnumerable<LecturerViewModel>>(students);
 
-            _lecturerMenu.PrintLectures(viewModels);
+            _lecturerMenu.PrintLecturers(lecturerViewModels);
         }
 
         private async Task PrintLecturer()
         {
-            var input = Console.ReadLine();
-            var id = int.Parse(input);
+            var id = _lecturerMenu.GetIdFromInput();
 
-            var student = await _lecturerService.GetByIdAsync(id);
+            var lecturer = await _lecturerService.GetByIdAsync(id);
+            var lecturerViewModel = _mapper.Map<LecturerViewModel>(lecturer);
 
-            _lecturerMenu.PrintLecturer(student);
+            _lecturerMenu.PrintLecturer(lecturerViewModel);
         }
     }
 }

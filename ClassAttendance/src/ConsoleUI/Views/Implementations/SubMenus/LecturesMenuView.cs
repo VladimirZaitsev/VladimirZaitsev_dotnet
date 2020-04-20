@@ -1,5 +1,5 @@
 ﻿using BLL.Models;
-using ConsoleUI.Models.MissedLectures;
+using ConsoleUI.ViewModels.MissedLectures;
 using ConsoleUI.Views.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -49,7 +49,6 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             {
                 ClassId = classId,
                 StudentId = studentId,
-                SubjectId = subjectId,
             };
 
             return lecture;
@@ -63,7 +62,7 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             return id;
         }
 
-        public MissedClass UpdateLecture(MissedLectureViewModel lecture)
+        public MissedClass UpdateLecture(MissedClassViewModel lecture)
         {
             Console.WriteLine("Keep input empty if you don't want to update");
             Console.WriteLine($"Current classId - {lecture.StudentName}");

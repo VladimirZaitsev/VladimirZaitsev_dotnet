@@ -82,10 +82,10 @@ namespace BLL.Services
             return model;
         }
 
-        public IAsyncEnumerable<Class> GetAll()
+        public IEnumerable<Class> GetAll()
         {
             var dtos = _classes.GetAll().AsAsyncEnumerable();
-            var models = _mapper.Map<IAsyncEnumerable<Class>>(dtos);
+            var models = _mapper.Map<IEnumerable<Class>>(dtos);
 
             return models;
         }

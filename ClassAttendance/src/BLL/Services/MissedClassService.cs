@@ -13,60 +13,51 @@ namespace BLL.Services
 {
     public class MissedClassService : IMissedClassService
     {
-        private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IStore<MissedLecturesDto> _missedClasses;
         private readonly IStore<PersonDto> _persons;
-        private readonly IStore<SubjectDto> _subjects;
         private readonly IStore<ClassDto> _classes;
         private readonly IMapper _mapper;
 
-        public MissedClassService(IStore<MissedLecturesDto> lectures,
+        public MissedClassService(IStore<MissedLecturesDto> missedClasses,
             IStore<PersonDto> persons,
             IStore<SubjectDto> subjects,
             IStore<ClassDto> classes,
             IMapper mapper)
         {
-            _lectures = lectures;
+            _missedClasses = missedClasses;
             _persons = persons;
-            _subjects = subjects;
             _classes = classes;
             _mapper = mapper;
         }
 
-        public async Task<int> AddAsync(MissedClass lecture)
+        public async Task<int> AddAsync(MissedClass missedClass)
         {
-            if (lecture == null)
+            if (missedClass == null)
             {
-                throw new ArgumentNullException(nameof(lecture));
+                throw new ArgumentNullException(nameof(missedClass));
             }
 
-            var subject = await _subjects.GetByIdAsync(lecture.SubjectId);
-
-            if (subject == null)
-            {
-                throw new ArgumentException("Subject not found");
-            }
-
-            var student = await _persons.GetByIdAsync(lecture.StudentId);
+            var student = await _persons.GetByIdAsync(missedClass.StudentId);
 
             if (student == null)
             {
                 throw new ArgumentException("Student not found");
             }
 
-            if (!student.IsStudent)
+            if (student.Status != Status.Student)
             {
                 throw new ArgumentException("Given id do not belong to student");
             }
 
-            var lesson = await _classes.GetByIdAsync(lecture.ClassId);
+            var lesson = await _classes.GetByIdAsync(missedClass.ClassId);
 
             if (lesson == null)
             {
                 throw new ArgumentException("Class not found");
             }
 
-            var dto = _mapper.Map<MissedLecturesDto>(lecture);
-            await _lectures.AddAsync(dto);
+            var dto = _mapper.Map<MissedLecturesDto>(missedClass);
+            await _missedClasses.AddAsync(dto);
 
             return dto.Id;
         }
@@ -75,71 +66,64 @@ namespace BLL.Services
         {
             var lecture = await GetByIdAsync(id);
 
-            await _lectures.DeleteAsync(id);
+            await _missedClasses.DeleteAsync(id);
         }
 
-        public async Task UpdateAsync(MissedClass lecture)
+        public async Task UpdateAsync(MissedClass missedClass)
         {
-            var lectureToUpdate = await GetByIdAsync(lecture.Id);
+            var lectureToUpdate = await GetByIdAsync(missedClass.Id);
 
-            if (lecture == null)
+            if (missedClass == null)
             {
-                throw new ArgumentNullException(nameof(lecture));
+                throw new ArgumentNullException(nameof(missedClass));
             }
 
-            var subject = await _subjects.GetByIdAsync(lecture.SubjectId);
-
-            if (subject == null)
-            {
-                throw new ArgumentException("Subject not found");
-            }
-
-            var student = await _persons.GetByIdAsync(lecture.StudentId);
+            var student = await _persons.GetByIdAsync(missedClass.StudentId);
 
             if (student == null)
             {
                 throw new ArgumentException("Student not found");
             }
 
-            if (!student.IsStudent)
+            if (student.Status != Status.Student)
             {
                 throw new ArgumentException("Given id do not belong to student");
             }
 
-            var lesson = await _classes.GetByIdAsync(lecture.ClassId);
+            var lesson = await _classes.GetByIdAsync(missedClass.ClassId);
 
             if (lesson == null)
             {
                 throw new ArgumentException("Class not found");
             }
 
-            var dto = _mapper.Map<MissedLecturesDto>(lecture);
-            await _lectures.UpdateAsync(dto);
+            var dto = _mapper.Map<MissedLecturesDto>(missedClass);
+            await _missedClasses.UpdateAsync(dto);
         }
 
         public async Task<MissedClass> GetByIdAsync(int id)
         {
-            var lecture = await _lectures.GetByIdAsync(id);
+            var missedClass = await _missedClasses.GetByIdAsync(id);
 
-            if (lecture == null)
+            if (missedClass == null)
             {
                 throw new ArgumentException("Lecture not found");
             }
 
-            var model = _mapper.Map<MissedClass>(lecture);
+            var model = _mapper.Map<MissedClass>(missedClass);
 
             return model;
         }
 
-        public IAsyncEnumerable<MissedClass> GetAll()
+        public IEnumerable<MissedClass> GetAll()
         {
-            var dtos = _lectures.GetAll().AsAsyncEnumerable();
-            var models = _mapper.Map<IAsyncEnumerable<MissedClass>>(dtos);
+            var dtos = _missedClasses.GetAll().AsAsyncEnumerable();
+            var models = _mapper.Map<IEnumerable<MissedClass>>(dtos);
 
             return models; 
         }
 
-        public async Task<IAsyncEnumerable<MissedClass>> GetMissedLecturesByStudentAsync(int studentId)
+        public async Task<IEnumerable<MissedClass>> GetMissedLecturesByStudentAsync(int studentId)
         {
             var student = await _persons.GetByIdAsync(studentId);
 
@@ -148,39 +132,39 @@ namespace BLL.Services
                 throw new ArgumentException("Student not found");
             }
 
-            if (!student.IsStudent)
+            if (student.Status != Status.Student)
             {
                 throw new ArgumentException("Given id do not belong to student");
             }
 
-            var missedLectures = _lectures
+            var missedClasses = _missedClasses
                 .GetAll()
                 .Where(lecture => lecture.StudentId == studentId)
                 .AsAsyncEnumerable();
 
-            var models = _mapper.Map<IAsyncEnumerable<MissedClass>>(missedLectures);
+            var models = _mapper.Map<IEnumerable<MissedClass>>(missedClasses);
 
             return models;
         }
 
-        public async Task<IAsyncEnumerable<Person>> GetSlackersAsync(Class classModel)
+        public async Task<IEnumerable<Person>> GetSlackersAsync(Class classModel)
         {
-            var slackerIds = await _lectures
+            var slackerIds = await _missedClasses
                 .GetAll()
                 .Where(lecture => lecture.ClassId == classModel.Id)
                 .Select(lecture => lecture.StudentId)
                 .ToListAsync();
 
             var slackers = from person in _persons.GetAll()
-                           where person.IsStudent
+                           where person.Status == Status.Student
                            join slacker in slackerIds on person.Id equals slacker
                            select person;
-            var models = _mapper.Map<IAsyncEnumerable<Person>>(slackers.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<Person>>(slackers.AsAsyncEnumerable());
 
             return models;
         }
 
-        public async Task<IAsyncEnumerable<MissedClass>> GetMissedLecturesByLecturerAsync(int id)
+        public async Task<IEnumerable<MissedClass>> GetMissedLecturesByLecturerAsync(int id)
         {
             var lecturer = await _persons.GetByIdAsync(id);
 
@@ -189,17 +173,17 @@ namespace BLL.Services
                 throw new ArgumentException("Lecturer not found");
             }
 
-            if (lecturer.IsStudent)
+            if (lecturer.Status != Status.Lecturer)
             {
-                throw new ArgumentException("Given id do not belong to student");
+                throw new ArgumentException("Given id do not belong to lecturer");
             }
 
-            var lectures = from lecture in _lectures.GetAll()
+            var lectures = from lecture in _missedClasses.GetAll()
                            join classModel in _classes.GetAll() on lecture.ClassId equals classModel.Id
                            where classModel.LecturerId == id
                            select lecture;
 
-            var models = _mapper.Map<IAsyncEnumerable<MissedClass>>(lectures.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<MissedClass>>(lectures.AsAsyncEnumerable());
 
             return models;
         }

@@ -13,6 +13,6 @@ namespace BLL.Interfaces
 
         Task<T> GetByIdAsync(int id);
 
-        IAsyncEnumerable<T> GetAll();
+        IEnumerable<T> GetAll();
     }
 }

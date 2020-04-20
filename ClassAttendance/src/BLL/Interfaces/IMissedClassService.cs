@@ -6,10 +6,10 @@ namespace BLL.Interfaces
 {
     public interface IMissedClassService : IService<MissedClass>
     {
-        Task<IAsyncEnumerable<MissedClass>> GetMissedLecturesByLecturerAsync(int lecturerId);
+        Task<IEnumerable<MissedClass>> GetMissedLecturesByLecturerAsync(int lecturerId);
 
-        Task<IAsyncEnumerable<MissedClass>> GetMissedLecturesByStudentAsync(int studentId);
+        Task<IEnumerable<MissedClass>> GetMissedLecturesByStudentAsync(int studentId);
 
-        Task<IAsyncEnumerable<Person>> GetSlackersAsync(Class classModel);
+        Task<IEnumerable<Person>> GetSlackersAsync(Class classModel);
     }
 }

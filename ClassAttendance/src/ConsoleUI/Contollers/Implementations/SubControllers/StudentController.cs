@@ -1,6 +1,8 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.Models;
 using ConsoleUI.Contollers.Interfaces;
-using ConsoleUI.Models.Student;
+using ConsoleUI.ViewModels.Student;
 using ConsoleUI.Views.Implementations.SubMenus;
 using System;
 using System.Collections.Generic;
@@ -10,16 +12,19 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
     public class StudentController : ISubController
     {
-        private readonly IStudentService _studentService;
+        private readonly IService<Person> _studentService;
         private readonly IGroupService _groupService;
         private readonly StudentMenuView _studentMenu;
+        private readonly IMapper _mapper;
 
         private bool exitFlag;
 
-        public StudentController(IStudentService studentService, StudentMenuView menuView)
+        public StudentController(IService<Person> studentService, IGroupService groupService, StudentMenuView studentMenu, IMapper mapper)
         {
             _studentService = studentService;
-            _studentMenu = menuView;
+            _groupService = groupService;
+            _studentMenu = studentMenu;
+            _mapper = mapper;
         }
 
         public async Task HandleInput()
@@ -89,14 +94,13 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             var students = _studentService.GetAll();
             var viewModels = new List<StudentViewModel>();
 
-            await foreach (var student in students)
+            foreach (var student in students)
             {
                 var group = await _groupService.GetGroupByStudentIdAsync(student.Id);
-                viewModels.Add(new StudentViewModel
-                {
-                    Student = student,
-                    GroupName = group.Name,
-                });
+                var viewModel = _mapper.Map<StudentViewModel>(student);
+                viewModel.GroupName = group.Name;
+
+                viewModels.Add(viewModel);
             }
 
             _studentMenu.PrintStudents(viewModels);
@@ -104,8 +108,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
         private async Task PrintStudent()
         {
-            var input = Console.ReadLine();
-            var id = int.Parse(input);
+            var id = _studentMenu.GetIdFromInput();
 
             var student = await _studentService.GetByIdAsync(id);
 

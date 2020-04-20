@@ -8,6 +8,6 @@ namespace BLL.Interfaces
     {
         Task<Group> GetGroupByStudentIdAsync(int studentId);
 
-        Task<IAsyncEnumerable<Group>> GetGroupsByLecturerIdAsync(int lecturerId);
+        Task<IEnumerable<Group>> GetGroupsByLecturerIdAsync(int lecturerId);
     }
 }

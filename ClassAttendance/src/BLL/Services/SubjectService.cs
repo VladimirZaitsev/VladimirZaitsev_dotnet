@@ -14,15 +14,16 @@ namespace BLL.Services
     public class SubjectService : ISubjectService
     {
         private readonly IStore<SubjectDto> _subjects;
-        private readonly IStore<MissedLecturesDto> _lectures;
         private readonly IStore<ClassDto> _classes;
         private readonly IStore<PersonDto> _persons;
         private readonly IMapper _mapper;
 
-        public SubjectService(IStore<SubjectDto> subjects, IStore<MissedLecturesDto> lectures, IStore<ClassDto> classes, IStore<PersonDto> persons, IMapper mapper)
+        public SubjectService(IStore<SubjectDto> subjects,
+            IStore<ClassDto> classes,
+            IStore<PersonDto> persons,
+            IMapper mapper)
         {
             _subjects = subjects;
-            _lectures = lectures;
             _classes = classes;
             _persons = persons;
             _mapper = mapper;
@@ -47,7 +48,7 @@ namespace BLL.Services
 
         public async Task DeleteAsync(int subjectId)
         {
-            var hasRecords =  _lectures
+            var hasRecords =  _classes
                .GetAll()
                .Any(lecture => lecture.SubjectId == subjectId);
 
@@ -73,10 +74,10 @@ namespace BLL.Services
             return model;
         }
 
-        public IAsyncEnumerable<Subject> GetAll()
+        public IEnumerable<Subject> GetAll()
         {
             var dtos = _subjects.GetAll().AsAsyncEnumerable();
-            var models = _mapper.Map<IAsyncEnumerable<Subject>>(dtos);
+            var models = _mapper.Map<IEnumerable<Subject>>(dtos);
 
             return models;
         }
@@ -92,7 +93,7 @@ namespace BLL.Services
             await _subjects.UpdateAsync(dto);
         }
 
-        public IAsyncEnumerable<Person> GetLecturersAsync(int subjectId)
+        public IEnumerable<Person> GetLecturersAsync(int subjectId)
         {
             var lecturerIds = _classes
                 .GetAll()
@@ -100,16 +101,16 @@ namespace BLL.Services
                 .Select(classModel => classModel.LecturerId);
 
             var lecturers = from lecturer in _persons.GetAll()
-                            where !lecturer.IsStudent
+                            where lecturer.Status == Status.Lecturer
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            var models = _mapper.Map<IAsyncEnumerable<Person>>(lecturers.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsAsyncEnumerable());
 
             return models;
         }
 
-        public IAsyncEnumerable<Person> GetStudentsAsync(int subjectId)
+        public IEnumerable<Person> GetStudentsAsync(int subjectId)
         {
             var lecturerIds = _classes
                 .GetAll()
@@ -117,11 +118,11 @@ namespace BLL.Services
                 .Select(classModel => classModel.LecturerId);
 
             var lecturers = from lecturer in _persons.GetAll()
-                            where lecturer.IsStudent
+                            where lecturer.Status == Status.Lecturer
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            var models = _mapper.Map<IAsyncEnumerable<Person>>(lecturers.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsAsyncEnumerable());
 
             return models;
         }

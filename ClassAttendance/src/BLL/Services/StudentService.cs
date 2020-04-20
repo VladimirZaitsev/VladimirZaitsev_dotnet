@@ -41,7 +41,7 @@ namespace BLL.Services
                 throw new ArgumentException(nameof(student.LastName));
             }
 
-            if (!student.IsStudent)
+            if (student.Status != Status.Student)
             {
                 throw new ArgumentNullException("Student can't be a lecturer");
             }
@@ -84,10 +84,10 @@ namespace BLL.Services
             return dto;
         }
 
-        public IAsyncEnumerable<Person> GetAll()
+        public IEnumerable<Person> GetAll()
         {
             var dtos = _persons.GetAll().Where(person => person.Status == Status.Student).AsAsyncEnumerable();
-            var models = _mapper.Map<IAsyncEnumerable<Person>>(dtos);
+            var models = _mapper.Map<IEnumerable<Person>>(dtos);
 
             return models;
         }

@@ -14,6 +14,12 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
         private bool exitFlag;
 
+        public LecturesController(LecturesMenuView lecturesMenu, IMissedClassService lecturesService)
+        {
+            _lecturesMenu = lecturesMenu;
+            _lecturesService = lecturesService;
+        }
+
         public void PrintOperations()
         {
             _lecturesMenu.PrintMenu();
@@ -28,7 +34,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
                 switch (input)
                 {
                     case ConsoleKey.D1:
-                        await PrintLecturesAsync();
+                        PrintLecturesAsync();
                         break;
                     case ConsoleKey.D2:
                         await PrintLectureAsync();
@@ -51,9 +57,9 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             }
         }
 
-        private async Task PrintLecturesAsync()
+        private void PrintLecturesAsync()
         {
-            var lectures = await _lecturesService.GetAll().ToListAsync();
+            var lectures = _lecturesService.GetAll();
 
             _lecturesMenu.PrintLectures(lectures);
         }

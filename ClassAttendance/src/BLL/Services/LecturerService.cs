@@ -13,23 +13,23 @@ namespace BLL.Services
 {
     public class LecturerService : IService<Person>
     {
-        private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IStore<MissedLecturesDto> _missedClasses;
         private readonly IStore<PersonDto> _persons;
         private readonly IStore<ClassDto> _classes;
         private readonly IMapper _mapper;
 
-        public LecturerService(IStore<MissedLecturesDto> lectures, IStore<PersonDto> persons, IStore<ClassDto> classes, IMapper mapper)
+        public LecturerService(IStore<MissedLecturesDto> missedClasses, IStore<PersonDto> persons, IStore<ClassDto> classes, IMapper mapper)
         {
-            _lectures = lectures;
+            _missedClasses = missedClasses;
             _persons = persons;
             _classes = classes;
             _mapper = mapper;
         }
 
-        public IAsyncEnumerable<Person> GetAll()
+        public IEnumerable<Person> GetAll()
         {
             var dtos = _persons.GetAll().Where(person => person.Status == Status.Lecturer).AsAsyncEnumerable();
-            var models = _mapper.Map<IAsyncEnumerable<Person>>(dtos);
+            var models = _mapper.Map<IEnumerable<Person>>(dtos);
 
             return models;
         }
@@ -51,7 +51,7 @@ namespace BLL.Services
                 throw new ArgumentException(nameof(lecturer.LastName));
             }
 
-            if (lecturer.IsStudent)
+            if (lecturer.Status == Status.Student)
             {
                 throw new ArgumentNullException("Lecturer can't be a student");
             }
@@ -64,7 +64,7 @@ namespace BLL.Services
         public async Task DeleteAsync(int id)
         {
             var classes = from classModel in _classes.GetAll()
-                          join lecture in _lectures.GetAll() on classModel.Id equals lecture.ClassId
+                          join lecture in _missedClasses.GetAll() on classModel.Id equals lecture.ClassId
                           select classModel;
 
             var hasRecords = await classes.AnyAsync(classModel => classModel.LecturerId == id);
@@ -112,7 +112,7 @@ namespace BLL.Services
                 throw new ArgumentException(nameof(lecturer.LastName));
             }
 
-            if (lecturer.IsStudent)
+            if (lecturer.Status == Status.Student)
             {
                 throw new ArgumentNullException("Lecturer can't be a student");
             }

@@ -1,9 +1,8 @@
 ﻿using BLL.Models;
-using ConsoleUI.Models.Student;
+using ConsoleUI.ViewModels.Student;
 using ConsoleUI.Views.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ConsoleUI.Views.Implementations.SubMenus
 {

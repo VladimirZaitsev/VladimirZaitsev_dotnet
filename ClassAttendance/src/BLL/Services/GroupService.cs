@@ -16,6 +16,12 @@ namespace BLL.Services
         private readonly IStore<GroupDto> _groups;
         private readonly IMapper _mapper;
 
+        public GroupService(IStore<GroupDto> groups, IMapper mapper)
+        {
+            _groups = groups;
+            _mapper = mapper;
+        }
+
         public async Task<int> AddAsync(Group item)
         {
             if (item == null)
@@ -38,10 +44,10 @@ namespace BLL.Services
             await _groups.DeleteAsync(id);
         }
 
-        public IAsyncEnumerable<Group> GetAll()
+        public IEnumerable<Group> GetAll()
         {
             var dtos = _groups.GetAll().AsAsyncEnumerable();
-            var models = _mapper.Map<IAsyncEnumerable<Group>>(dtos);
+            var models = _mapper.Map<IEnumerable<Group>>(dtos);
 
             return models;
         }
@@ -59,7 +65,7 @@ namespace BLL.Services
             return model;
         }
 
-        public async Task<IAsyncEnumerable<Group>> GetGroupsByLecturerIdAsync(int lecturerId)
+        public async Task<IEnumerable<Group>> GetGroupsByLecturerIdAsync(int lecturerId)
         {
             var groups = await _groups.GetAll()
                 .Where(group => group.LecturerId == lecturerId)
@@ -72,7 +78,7 @@ namespace BLL.Services
                 throw new ArgumentException("Groups are not found");
             }
 
-            var models = _mapper.Map<IAsyncEnumerable<Group>>(groups);
+            var models = _mapper.Map<IEnumerable<Group>>(groups);
 
             return models;
         }

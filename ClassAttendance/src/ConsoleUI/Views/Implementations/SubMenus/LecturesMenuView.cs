@@ -18,7 +18,7 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             Console.WriteLine("0. Exit");
         }
 
-        public void PrintLectures(IEnumerable<MissedLecture> lectures)
+        public void PrintLectures(IEnumerable<MissedClass> lectures)
         {
             foreach (var lecture in lectures)
             {
@@ -26,12 +26,12 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             }
         }
 
-        public void PrintLecture(MissedLecture lecture)
+        public void PrintLecture(MissedClass lecture)
         {
             Console.WriteLine(lecture);
         }
 
-        public MissedLecture GetLectureFromInput()
+        public MissedClass GetLectureFromInput()
         {
             Console.WriteLine("Input first name");
             var classInput = Console.ReadLine();
@@ -45,7 +45,7 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             var subjectInput = Console.ReadLine();
             var subjectId = int.Parse(subjectInput);
 
-            var lecture = new MissedLecture
+            var lecture = new MissedClass
             {
                 ClassId = classId,
                 StudentId = studentId,
@@ -63,14 +63,14 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             return id;
         }
 
-        public MissedLecture UpdateLecture(MissedLectureViewModel lecture)
+        public MissedClass UpdateLecture(MissedLectureViewModel lecture)
         {
             Console.WriteLine("Keep input empty if you don't want to update");
             Console.WriteLine($"Current classId - {lecture.StudentName}");
             Console.WriteLine($"Current lecturer - {lecture.LecturerName}");
             Console.WriteLine($"Current subject - {lecture.SubjectName}");
 
-            return new MissedLecture();
+            return new MissedClass();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using BLL.Interfaces;
-using DAL.DTO;
+using DAL.Dtos;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using AutoMapper;
 
 namespace BLL.Services
 {
-    public class ClassService : IClassService
+    public class ClassService : IService<Class>
     {
         private readonly IStore<ClassDto> _classes;
         private readonly IStore<MissedLecturesDto> _lectures;
@@ -32,7 +32,7 @@ namespace BLL.Services
             }
 
             var sameTimeClasses = await _classes.GetAll()
-                .Where(lesson => lesson.Beginning < item.Ending || item.Beginning < lesson.Ending)
+                .Where(lesson => lesson.BeginDate < item.EndDate || item.StartDate < lesson.EndDate)
                 .ToListAsync();
 
             var isCabinetTaken = sameTimeClasses

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DAL.DTO
+namespace DAL.Dtos
 {
     public class ClassDto : IEntity
     {
@@ -12,9 +12,9 @@ namespace DAL.DTO
 
         public int SubjectId { get; set; }
 
-        public DateTime Beginning { get; set; }
+        public DateTime BeginDate { get; set; }
 
-        public DateTime Ending { get; set; }
+        public DateTime EndDate { get; set; }
 
         public List<int> GroupIds { get; set; }
 

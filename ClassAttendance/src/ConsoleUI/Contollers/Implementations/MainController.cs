@@ -21,7 +21,7 @@ namespace ConsoleUI.Contollers.Implementations
         private bool exitFlag;
 
 
-        public async Task MainLoop()
+        public async Task InitializeInteractiveLoop()
         {
             while(!exitFlag)
             { 

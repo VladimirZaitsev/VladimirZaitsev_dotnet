@@ -1,4 +1,4 @@
-﻿using DAL.DTO;
+﻿using DAL.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Core

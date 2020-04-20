@@ -31,14 +31,14 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             Console.WriteLine(lecture);
         }
 
-        public MissedLecture GetLectureFromInput()
+        public MissedClass GetLectureFromInput()
         {
             Console.WriteLine("Input first name");
             var firstName = Console.ReadLine();
             Console.WriteLine("Input last name");
             var lastName = Console.ReadLine();
 
-            var lecture = new MissedLecture
+            var lecture = new MissedClass
             {
                 ClassId = classId,
                 StudentId = studentId,
@@ -56,7 +56,7 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             return id;
         }
 
-        public MissedLecture UpdateLecturer(LecturerViewModel student)
+        public MissedClass UpdateLecturer(LecturerViewModel student)
         {
             Console.WriteLine("Keep input empty if you don't want to update");
             Console.WriteLine($"Current first name - {student.FirstName}");

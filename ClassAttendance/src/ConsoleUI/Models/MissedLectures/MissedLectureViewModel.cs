@@ -4,7 +4,7 @@ namespace ConsoleUI.Models.MissedLectures
 {
     public class MissedLectureViewModel
     {
-        public MissedLecture Lecture { get; set; }
+        public MissedClass Lecture { get; set; }
 
         public string StudentName { get; set; }
 

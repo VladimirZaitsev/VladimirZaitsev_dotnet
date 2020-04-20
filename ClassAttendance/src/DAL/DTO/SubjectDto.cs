@@ -1,6 +1,6 @@
 ﻿using DAL.Interfaces;
 
-namespace DAL.DTO
+namespace DAL.Dtos
 {
     public class SubjectDto : IEntity
     {

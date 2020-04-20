@@ -1,5 +1,5 @@
 ﻿using DAL.Interfaces;
-using DAL.DTO;
+using DAL.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using AutoMapper;
 
 namespace BLL.Services
 {
-    internal class StudentService : IStudentService
+    internal class StudentService : IService<Person>
     {
         private readonly IStore<PersonDto> _persons;
         private readonly IStore<MissedLecturesDto> _lectures;
@@ -74,7 +74,7 @@ namespace BLL.Services
                 throw new ArgumentException("Student not found");
             }
 
-            if (!student.IsStudent)
+            if (student.Status == Status.Student)
             {
                 throw new ArgumentException("Invalid id");
             }
@@ -86,7 +86,7 @@ namespace BLL.Services
 
         public IAsyncEnumerable<Person> GetAll()
         {
-            var dtos = _persons.GetAll().Where(person => person.IsStudent).AsAsyncEnumerable();
+            var dtos = _persons.GetAll().Where(person => person.Status == Status.Student).AsAsyncEnumerable();
             var models = _mapper.Map<IAsyncEnumerable<Person>>(dtos);
 
             return models;

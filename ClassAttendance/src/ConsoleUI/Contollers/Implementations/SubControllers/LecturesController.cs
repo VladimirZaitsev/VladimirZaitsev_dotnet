@@ -10,7 +10,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
     public class LecturesController : ISubController
     {
         private readonly LecturesMenuView _lecturesMenu;
-        private readonly IMissedLecturesService _lecturesService;
+        private readonly IMissedClassService _lecturesService;
 
         private bool exitFlag;
 

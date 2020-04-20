@@ -1,6 +1,6 @@
 ﻿using DAL.Interfaces;
 
-namespace DAL.DTO
+namespace DAL.Dtos
 {
     public class PersonDto : IEntity
     {
@@ -18,6 +18,6 @@ namespace DAL.DTO
 
         public string Phone { get; set; }
 
-        public bool IsStudent { get; set; }
+        public Status Status { get; set; }
     }
 }

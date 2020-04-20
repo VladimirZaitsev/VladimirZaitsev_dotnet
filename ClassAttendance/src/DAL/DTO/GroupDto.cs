@@ -1,7 +1,7 @@
 ﻿using DAL.Interfaces;
 using System.Collections.Generic;
 
-namespace DAL.DTO
+namespace DAL.Dtos
 {
     public class GroupDto : IEntity
     {

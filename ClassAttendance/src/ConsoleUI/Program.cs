@@ -8,7 +8,7 @@ namespace ConsoleUI
         static async Task Main(string[] args)
         {
             var mainMenu = new MainController();
-            await mainMenu.MainLoop();
+            await mainMenu.InitializeInteractiveLoop();
         }
     }
 }

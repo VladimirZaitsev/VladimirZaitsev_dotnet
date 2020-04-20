@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Models;
-using DAL.DTO;
+using DAL.Dtos;
 
 namespace BLL.Automapper
 {
@@ -10,7 +10,7 @@ namespace BLL.Automapper
         {
             CreateMap<Class, ClassDto>().ReverseMap();
             CreateMap<Group, GroupDto>().ReverseMap();
-            CreateMap<MissedLecture, MissedLecturesDto>().ReverseMap();
+            CreateMap<MissedClass, MissedLecturesDto>().ReverseMap();
             CreateMap<Person, PersonDto>().ReverseMap();
             CreateMap<Subject, SubjectDto>().ReverseMap();
         }

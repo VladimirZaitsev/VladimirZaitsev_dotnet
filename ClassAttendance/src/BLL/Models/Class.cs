@@ -11,9 +11,9 @@ namespace BLL.Models
 
         public int SubjectId { get; set; }
 
-        public DateTime Beginning { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime Ending { get; set; }
+        public DateTime EndDate { get; set; }
 
         public List<int> GroupIds { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using DAL.Interfaces;
 
-namespace DAL.DTO
+namespace DAL.Dtos
 {
     public class MissedLecturesDto : IEntity
     {
@@ -9,7 +9,5 @@ namespace DAL.DTO
         public int StudentId { get; set; }
 
         public int ClassId { get; set; }
-
-        public int SubjectId { get; set; }
     }
 }

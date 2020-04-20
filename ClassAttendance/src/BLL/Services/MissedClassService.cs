@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using DAL.DTO;
+using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class MissedLecturesService : IMissedLecturesService
+    public class MissedClassService : IMissedClassService
     {
         private readonly IStore<MissedLecturesDto> _lectures;
         private readonly IStore<PersonDto> _persons;
@@ -19,7 +19,7 @@ namespace BLL.Services
         private readonly IStore<ClassDto> _classes;
         private readonly IMapper _mapper;
 
-        public MissedLecturesService(IStore<MissedLecturesDto> lectures,
+        public MissedClassService(IStore<MissedLecturesDto> lectures,
             IStore<PersonDto> persons,
             IStore<SubjectDto> subjects,
             IStore<ClassDto> classes,
@@ -32,7 +32,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<int> AddAsync(MissedLecture lecture)
+        public async Task<int> AddAsync(MissedClass lecture)
         {
             if (lecture == null)
             {
@@ -78,7 +78,7 @@ namespace BLL.Services
             await _lectures.DeleteAsync(id);
         }
 
-        public async Task UpdateAsync(MissedLecture lecture)
+        public async Task UpdateAsync(MissedClass lecture)
         {
             var lectureToUpdate = await GetByIdAsync(lecture.Id);
 
@@ -117,7 +117,7 @@ namespace BLL.Services
             await _lectures.UpdateAsync(dto);
         }
 
-        public async Task<MissedLecture> GetByIdAsync(int id)
+        public async Task<MissedClass> GetByIdAsync(int id)
         {
             var lecture = await _lectures.GetByIdAsync(id);
 
@@ -126,20 +126,20 @@ namespace BLL.Services
                 throw new ArgumentException("Lecture not found");
             }
 
-            var model = _mapper.Map<MissedLecture>(lecture);
+            var model = _mapper.Map<MissedClass>(lecture);
 
             return model;
         }
 
-        public IAsyncEnumerable<MissedLecture> GetAll()
+        public IAsyncEnumerable<MissedClass> GetAll()
         {
             var dtos = _lectures.GetAll().AsAsyncEnumerable();
-            var models = _mapper.Map<IAsyncEnumerable<MissedLecture>>(dtos);
+            var models = _mapper.Map<IAsyncEnumerable<MissedClass>>(dtos);
 
             return models; 
         }
 
-        public async Task<IAsyncEnumerable<MissedLecture>> GetMissedLecturesByStudentAsync(int studentId)
+        public async Task<IAsyncEnumerable<MissedClass>> GetMissedLecturesByStudentAsync(int studentId)
         {
             var student = await _persons.GetByIdAsync(studentId);
 
@@ -158,7 +158,7 @@ namespace BLL.Services
                 .Where(lecture => lecture.StudentId == studentId)
                 .AsAsyncEnumerable();
 
-            var models = _mapper.Map<IAsyncEnumerable<MissedLecture>>(missedLectures);
+            var models = _mapper.Map<IAsyncEnumerable<MissedClass>>(missedLectures);
 
             return models;
         }
@@ -180,7 +180,7 @@ namespace BLL.Services
             return models;
         }
 
-        public async Task<IAsyncEnumerable<MissedLecture>> GetMissedLecturesByLecturerAsync(int id)
+        public async Task<IAsyncEnumerable<MissedClass>> GetMissedLecturesByLecturerAsync(int id)
         {
             var lecturer = await _persons.GetByIdAsync(id);
 
@@ -199,7 +199,7 @@ namespace BLL.Services
                            where classModel.LecturerId == id
                            select lecture;
 
-            var models = _mapper.Map<IAsyncEnumerable<MissedLecture>>(lectures.AsAsyncEnumerable());
+            var models = _mapper.Map<IAsyncEnumerable<MissedClass>>(lectures.AsAsyncEnumerable());
 
             return models;
         }

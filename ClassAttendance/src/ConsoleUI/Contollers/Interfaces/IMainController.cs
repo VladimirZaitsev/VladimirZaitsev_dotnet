@@ -4,6 +4,6 @@ namespace ConsoleUI.Contollers.Interfaces
 {
     public interface IMainController
     {
-        Task MainLoop();
+        Task InitializeInteractiveLoop();
     }
 }

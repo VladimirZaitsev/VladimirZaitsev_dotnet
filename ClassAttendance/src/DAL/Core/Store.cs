@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace DAL.Core
 {
-    internal class Store<T> : IStore<T>
+    public class Store<T> : IStore<T>
          where T : class, IEntity
     {
-        private readonly DbContext _context;
+        private readonly ApplicationContext _context;
 
-        public Store(DbContext context)
+        public Store(ApplicationContext context)
         {
             _context = context;
         }

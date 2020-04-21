@@ -3,9 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Core
 {
-    internal class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext
     {
-        public ApplicationContext() { }
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+            : base(options)
+        {
+        }
 
         public DbSet<ClassDto> Classes { get; set; }
 

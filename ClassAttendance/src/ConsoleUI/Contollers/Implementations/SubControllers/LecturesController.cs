@@ -1,23 +1,28 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.Models;
 using ConsoleUI.Contollers.Interfaces;
-using ConsoleUI.Views.Implementations.SubMenus;
+using ConsoleUI.ViewModels.MissedLectures;
+using ConsoleUI.Views.Interfaces;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
-    public class LecturesController : ISubController
+    public class LecturesController : ISubController<MissedClass>
     {
-        private readonly LecturesMenuView _lecturesMenu;
+        private readonly ILecturesMenuView<MissedClass, MissedClassViewModel> _lecturesMenu;
         private readonly IMissedClassService _lecturesService;
+        private readonly IMapper _mapper;
 
         private bool exitFlag;
 
-        public LecturesController(LecturesMenuView lecturesMenu, IMissedClassService lecturesService)
+        public LecturesController(ILecturesMenuView<MissedClass, MissedClassViewModel> lecturesMenu, IMissedClassService lecturesService, IMapper mapper)
         {
             _lecturesMenu = lecturesMenu;
             _lecturesService = lecturesService;
+            _mapper = mapper;
         }
 
         public void PrintOperations()
@@ -29,26 +34,28 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         {
             while (!exitFlag)
             {
+                Console.WriteLine();
                 var input = Console.ReadKey().Key;
+                PrintOperations();
 
                 switch (input)
                 {
-                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
                         PrintLecturesAsync();
                         break;
-                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         await PrintLectureAsync();
                         break;
-                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
                         await AddLecture();
                         break;
-                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
                         await DeleteLecture();
                         break;
-                    case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
                         await UpdateLecture();
                         break;
-                    case ConsoleKey.D0:
+                    case ConsoleKey.NumPad0:
                         exitFlag = true;
                         break;
                     default:
@@ -60,13 +67,14 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         private void PrintLecturesAsync()
         {
             var lectures = _lecturesService.GetAll();
+            var viewModels = _mapper.Map<IEnumerable<MissedClassViewModel>>(lectures);
 
-            _lecturesMenu.PrintLectures(lectures);
+            _lecturesMenu.PrintAll(viewModels);
         }
 
         private async Task AddLecture()
         {
-            var lecture = _lecturesMenu.GetLectureFromInput();
+            var lecture = _lecturesMenu.GetFromInput();
             await _lecturesService.AddAsync(lecture);
         }
 
@@ -74,8 +82,9 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         {
             var id = _lecturesMenu.GetIdFromInput();
             var lecture = await _lecturesService.GetByIdAsync(id);
+            var viewModel = _mapper.Map<MissedClassViewModel>(lecture);
 
-            _lecturesMenu.PrintLecture(lecture);
+            _lecturesMenu.Print(viewModel);
         }
 
         private async Task DeleteLecture()

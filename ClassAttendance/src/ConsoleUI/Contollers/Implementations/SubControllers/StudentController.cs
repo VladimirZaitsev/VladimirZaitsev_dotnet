@@ -3,23 +3,26 @@ using BLL.Interfaces;
 using BLL.Models;
 using ConsoleUI.Contollers.Interfaces;
 using ConsoleUI.ViewModels.Student;
-using ConsoleUI.Views.Implementations.SubMenus;
+using ConsoleUI.Views.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
-    public class StudentController : ISubController
+    public class StudentController : IStudentController
     {
         private readonly IService<Person> _studentService;
         private readonly IGroupService _groupService;
-        private readonly StudentMenuView _studentMenu;
+        private readonly IMenuView<Person, StudentViewModel> _studentMenu;
         private readonly IMapper _mapper;
 
         private bool exitFlag;
 
-        public StudentController(IService<Person> studentService, IGroupService groupService, StudentMenuView studentMenu, IMapper mapper)
+        public StudentController(IService<Person> studentService,
+            IGroupService groupService,
+            IMenuView<Person, StudentViewModel> studentMenu,
+            IMapper mapper)
         {
             _studentService = studentService;
             _groupService = groupService;
@@ -36,22 +39,22 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
                 switch (input)
                 {
-                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
                         await PrintStudents();
                         break;
-                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         await PrintStudent();
                         break;
-                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
                         await AddStudent();
                         break;
-                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
                         await DeleteStudent();
                         break;
-                    case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
                         await UpdateStudent();
                         break;
-                    case ConsoleKey.D0:
+                    case ConsoleKey.NumPad0:
                         exitFlag = true;
                         break;
                     default:
@@ -60,7 +63,6 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             }
         }
 
-
         public void PrintOperations()
         {
             _studentMenu.PrintMenu();
@@ -68,7 +70,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
         private async Task AddStudent()
         {
-            var student = _studentMenu.GetPersonFromInput();
+            var student = _studentMenu.GetFromInput();
 
             await _studentService.AddAsync(student);
         }
@@ -84,7 +86,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         {
             var id = _studentMenu.GetIdFromInput();
             var student = await _studentService.GetByIdAsync(id);
-            var updatedUser = _studentMenu.UpdateStudent(student);
+            var updatedUser = _studentMenu.Update(student);
 
             await _studentService.UpdateAsync(updatedUser);
         }
@@ -103,7 +105,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
                 viewModels.Add(viewModel);
             }
 
-            _studentMenu.PrintStudents(viewModels);
+            _studentMenu.PrintAll(viewModels);
         }
 
         private async Task PrintStudent()
@@ -111,8 +113,9 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             var id = _studentMenu.GetIdFromInput();
 
             var student = await _studentService.GetByIdAsync(id);
+            var viewModel = _mapper.Map<StudentViewModel>(student);
 
-            _studentMenu.PrintStudent(student);
+            _studentMenu.Print(viewModel);
         }
     }
 }

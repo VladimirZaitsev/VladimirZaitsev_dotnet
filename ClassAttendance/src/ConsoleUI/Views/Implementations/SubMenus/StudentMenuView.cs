@@ -6,19 +6,21 @@ using System.Collections.Generic;
 
 namespace ConsoleUI.Views.Implementations.SubMenus
 {
-    public class StudentMenuView : IMenuView
+    public class StudentMenuView : IMenuView<Person, StudentViewModel>
     {
         public void PrintMenu()
         {
+            Console.WriteLine("////////////////////////");
             Console.WriteLine("1. Get students list");
             Console.WriteLine("2. Get student by id");
             Console.WriteLine("3. Add new student");
             Console.WriteLine("4. Delete user");
             Console.WriteLine("5. Update user");
             Console.WriteLine("0. Exit");
+            Console.WriteLine("////////////////////////");
         }
 
-        public void PrintStudents(IEnumerable<StudentViewModel> students)
+        public void PrintAll(IEnumerable<StudentViewModel> students)
         {
             foreach (var student in students)
             {
@@ -26,12 +28,12 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             }
         }
 
-        public void PrintStudent(Person student)
+        public void Print(StudentViewModel student)
         {
             Console.WriteLine(student);
         }
 
-        public Person GetPersonFromInput()
+        public Person GetFromInput()
         {
             Console.WriteLine("Input first name");
             var firstName = Console.ReadLine();
@@ -55,7 +57,7 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             return id;
         }
 
-        public Person UpdateStudent(Person student)
+        public Person Update(Person student)
         {
             Console.WriteLine("Keep input empty if you don't want to update");
             Console.WriteLine($"Current first name - {student.FirstName}");

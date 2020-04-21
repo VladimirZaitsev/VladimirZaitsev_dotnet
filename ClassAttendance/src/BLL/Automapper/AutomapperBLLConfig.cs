@@ -4,9 +4,9 @@ using DAL.Dtos;
 
 namespace BLL.Automapper
 {
-    public class AutomapperConfig : Profile
+    public class AutomapperBLLConfig : Profile
     {
-        public AutomapperConfig()
+        public AutomapperBLLConfig()
         {
             CreateMap<Class, ClassDto>().ReverseMap();
             CreateMap<Group, GroupDto>().ReverseMap();

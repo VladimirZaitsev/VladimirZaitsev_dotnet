@@ -4,6 +4,8 @@ namespace ConsoleUI.ViewModels.Student
 {
     public class StudentViewModel
     {
+        public int Id { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -15,6 +17,13 @@ namespace ConsoleUI.ViewModels.Student
         public override string ToString()
         {
             var result = $"Name - {FirstName} {LastName}\nAddress - {Address}\nGroup - {GroupName}";
+
+            return result;
+        }
+
+        public string ToStringWithId()
+        {
+            var result = $"Id - {Id} " + ToString();
 
             return result;
         }

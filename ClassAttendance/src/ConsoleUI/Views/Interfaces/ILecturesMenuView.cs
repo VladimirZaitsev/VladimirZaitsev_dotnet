@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ConsoleUI.Views.Interfaces
 {
-    public interface IMenuView<T, V>
+    public interface ILecturesMenuView<T, V>
     {
         void PrintMenu();
 
@@ -13,7 +13,7 @@ namespace ConsoleUI.Views.Interfaces
 
         T GetFromInput();
 
-        T Update(T item);
+        T Update(V item);
 
         int GetIdFromInput()
         {

@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
 using BLL.Models;
+using ConsoleUI.ViewModels.Group;
 using ConsoleUI.ViewModels.Lecturer;
 using ConsoleUI.ViewModels.Student;
 
 namespace ConsoleUI.Automapper
 {
-    public class AutomapperConfig : Profile
+    public class AutomapperConsoleConfig : Profile
     {
-        public AutomapperConfig()
+        public AutomapperConsoleConfig()
         {
             CreateMap<Person, LecturerViewModel>().ReverseMap();
             CreateMap<Person, StudentViewModel>().ReverseMap();
+            CreateMap<Group, GroupViewModel>().ReverseMap();
         }
     }
 }

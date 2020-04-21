@@ -6,19 +6,21 @@ using System.Collections.Generic;
 
 namespace ConsoleUI.Views.Implementations.SubMenus
 {
-    public class LecturesMenuView : IMenuView
+    public class LecturesMenuView : ILecturesMenuView<MissedClass, MissedClassViewModel>
     {
         public void PrintMenu()
         {
-            Console.WriteLine("1. Get students list");
-            Console.WriteLine("2. Get student by id");
-            Console.WriteLine("3. Add new student");
-            Console.WriteLine("4. Delete user");
-            Console.WriteLine("5. Update user");
+            Console.WriteLine("////////////////////////");
+            Console.WriteLine("1. Get missed classes list");
+            Console.WriteLine("2. Get missed class by id");
+            Console.WriteLine("3. Add new missed class");
+            Console.WriteLine("4. Delete missed class");
+            Console.WriteLine("5. Update missed class");
             Console.WriteLine("0. Exit");
+            Console.WriteLine("////////////////////////");
         }
 
-        public void PrintLectures(IEnumerable<MissedClass> lectures)
+        public void PrintAll(IEnumerable<MissedClassViewModel> lectures)
         {
             foreach (var lecture in lectures)
             {
@@ -26,12 +28,12 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             }
         }
 
-        public void PrintLecture(MissedClass lecture)
+        public void Print(MissedClassViewModel lecture)
         {
             Console.WriteLine(lecture);
         }
 
-        public MissedClass GetLectureFromInput()
+        public MissedClass GetFromInput()
         {
             Console.WriteLine("Input first name");
             var classInput = Console.ReadLine();
@@ -62,7 +64,7 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             return id;
         }
 
-        public MissedClass UpdateLecture(MissedClassViewModel lecture)
+        public MissedClass Update(MissedClassViewModel lecture)
         {
             Console.WriteLine("Keep input empty if you don't want to update");
             Console.WriteLine($"Current classId - {lecture.StudentName}");

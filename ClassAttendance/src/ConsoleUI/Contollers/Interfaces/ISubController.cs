@@ -2,7 +2,7 @@
 
 namespace ConsoleUI.Contollers.Interfaces
 {
-    public interface ISubController
+    public interface ISubController<T>
     {
         void PrintOperations();
 

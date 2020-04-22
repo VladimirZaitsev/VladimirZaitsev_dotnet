@@ -46,7 +46,7 @@ namespace BLL.Services
 
         public IEnumerable<Group> GetAll()
         {
-            var dtos = _groups.GetAll().AsAsyncEnumerable();
+            var dtos = _groups.GetAll().AsEnumerable();
             var models = _mapper.Map<IEnumerable<Group>>(dtos);
 
             return models;

@@ -86,7 +86,7 @@ namespace BLL.Services
 
         public IEnumerable<Person> GetAll()
         {
-            var dtos = _persons.GetAll().Where(person => person.Status == Status.Student).AsAsyncEnumerable();
+            var dtos = _persons.GetAll().Where(person => person.Status == Status.Student).AsEnumerable();
             var models = _mapper.Map<IEnumerable<Person>>(dtos);
 
             return models;

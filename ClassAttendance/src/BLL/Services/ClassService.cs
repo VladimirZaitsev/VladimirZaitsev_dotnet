@@ -84,7 +84,7 @@ namespace BLL.Services
 
         public IEnumerable<Class> GetAll()
         {
-            var dtos = _classes.GetAll().AsAsyncEnumerable();
+            var dtos = _classes.GetAll().AsEnumerable();
             var models = _mapper.Map<IEnumerable<Class>>(dtos);
 
             return models;

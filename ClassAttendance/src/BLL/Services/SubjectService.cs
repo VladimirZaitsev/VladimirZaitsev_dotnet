@@ -3,7 +3,6 @@ using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +75,7 @@ namespace BLL.Services
 
         public IEnumerable<Subject> GetAll()
         {
-            var dtos = _subjects.GetAll().AsAsyncEnumerable();
+            var dtos = _subjects.GetAll().AsEnumerable();
             var models = _mapper.Map<IEnumerable<Subject>>(dtos);
 
             return models;
@@ -105,7 +104,7 @@ namespace BLL.Services
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsEnumerable());
 
             return models;
         }
@@ -122,7 +121,7 @@ namespace BLL.Services
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsEnumerable());
 
             return models;
         }

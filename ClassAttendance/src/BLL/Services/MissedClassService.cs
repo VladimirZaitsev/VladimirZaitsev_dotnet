@@ -117,7 +117,7 @@ namespace BLL.Services
 
         public IEnumerable<MissedClass> GetAll()
         {
-            var dtos = _missedClasses.GetAll().AsAsyncEnumerable();
+            var dtos = _missedClasses.GetAll().AsEnumerable();
             var models = _mapper.Map<IEnumerable<MissedClass>>(dtos);
 
             return models; 
@@ -140,7 +140,7 @@ namespace BLL.Services
             var missedClasses = _missedClasses
                 .GetAll()
                 .Where(lecture => lecture.StudentId == studentId)
-                .AsAsyncEnumerable();
+                .AsEnumerable();
 
             var models = _mapper.Map<IEnumerable<MissedClass>>(missedClasses);
 
@@ -159,7 +159,7 @@ namespace BLL.Services
                            where person.Status == Status.Student
                            join slacker in slackerIds on person.Id equals slacker
                            select person;
-            var models = _mapper.Map<IEnumerable<Person>>(slackers.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<Person>>(slackers.AsEnumerable());
 
             return models;
         }
@@ -183,7 +183,7 @@ namespace BLL.Services
                            where classModel.LecturerId == id
                            select lecture;
 
-            var models = _mapper.Map<IEnumerable<MissedClass>>(lectures.AsAsyncEnumerable());
+            var models = _mapper.Map<IEnumerable<MissedClass>>(lectures.AsEnumerable());
 
             return models;
         }

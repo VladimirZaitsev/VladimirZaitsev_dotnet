@@ -7,6 +7,7 @@ using ConsoleUI.Views.Interfaces;
 using DAL.Core;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 
@@ -14,10 +15,11 @@ namespace ConsoleUI.DI
 {
     public static class Startup
     {
-        public static void ConfigureServices(ServiceCollection services)
+        public static void ConfigureServices(ServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetConnectionString("local");
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(ConfigurationManager.ConnectionStrings["local"].ConnectionString));
+                options.UseSqlServer(connectionString));
 
             services.AddAutoMapper(typeof(AutomapperConsoleConfig), typeof(AutomapperBLLConfig));
 

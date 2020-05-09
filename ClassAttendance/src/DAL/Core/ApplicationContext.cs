@@ -1,4 +1,5 @@
 ﻿using DAL.Dtos;
+using DAL.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Core
@@ -19,5 +20,20 @@ namespace DAL.Core
         public DbSet<SubjectDto> Subjects { get; set; }
 
         public DbSet<MissedLecturesDto> Lectures { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GroupDto>()
+                .Property(group => group.StudentIds)
+                .HasConversion(
+                    id => string.Join(',', id),
+                    id => id.Split(',', System.StringSplitOptions.RemoveEmptyEntries).ToInts());
+            modelBuilder.Entity<ClassDto>()
+                .Property(cls => cls.GroupIds)
+                .HasConversion(
+                    id => string.Join(',', id),
+                    id => id.Split(',', System.StringSplitOptions.RemoveEmptyEntries).ToInts());
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

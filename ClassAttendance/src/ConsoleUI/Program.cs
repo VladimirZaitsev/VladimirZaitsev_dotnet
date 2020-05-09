@@ -12,13 +12,13 @@ namespace ConsoleUI
         static async Task Main(string[] args)
         {
             var serviceCollection = new ServiceCollection();
-            Startup.ConfigureServices(serviceCollection);
-            var services = serviceCollection.BuildServiceProvider();
-
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false);
             var config = configBuilder.Build();
+
+            Startup.ConfigureServices(serviceCollection, config);
+            var services = serviceCollection.BuildServiceProvider();
 
             var mainMenu = services.GetService<IMainController>();
 

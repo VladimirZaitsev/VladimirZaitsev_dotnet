@@ -8,6 +8,7 @@ using ConsoleUI.ViewModels.Student;
 using ConsoleUI.Views.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ConsoleUI.Contollers.Implementations.SubControllers
@@ -102,7 +103,12 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         private void PrintAll()
         {
             var groups = _groupService.GetAll();
-            var viewModels = _mapper.Map<IEnumerable<GroupViewModel>>(groups);
+            var students = _studentService.GetAll();
+            var viewModels = groups.Select(group => new GroupViewModel
+            {
+                Name = group.Name,
+                Students = _mapper.Map<IEnumerable<StudentViewModel>>(GetStudents(students, group.StudentIds)),
+            });
 
             _groupMenu.PrintAll(viewModels);
         }
@@ -126,6 +132,13 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             };
 
             return viewModel;
+        }
+
+        private static IEnumerable<Student> GetStudents(IEnumerable<Student> students, IEnumerable<int> ids)
+        {
+            return from student in students
+                   join id in ids on student.Id equals id
+                   select student;
         }
     }
 }

@@ -35,22 +35,22 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
                 switch (input)
                 {
-                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
                         PrintLecturers();
                         break;
-                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         await PrintLecturer();
                         break;
-                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
                         await AddLecturer();
                         break;
-                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
                         await DeleteLecturer();
                         break;
-                    case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
                         await UpdateLecturer();
                         break;
-                    case ConsoleKey.D0:
+                    case ConsoleKey.NumPad0:
                         exitFlag = true;
                         break;
                     default:
@@ -66,9 +66,9 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
         private async Task AddLecturer()
         {
-            var student = _lecturerMenu.GetFromInput();
+            var lecturer = _lecturerMenu.GetFromInput();
 
-            await _lecturerService.AddAsync(student);
+            await _lecturerService.AddAsync(lecturer);
         }
 
         private async Task DeleteLecturer()

@@ -12,11 +12,11 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
     public class LecturerController : ILecturerController
     {
-        private readonly IService<Person> _lecturerService;
-        private readonly IMenuView<Person, LecturerViewModel> _lecturerMenu;
+        private readonly IService<Lecturer> _lecturerService;
+        private readonly IMenuView<Lecturer, LecturerViewModel> _lecturerMenu;
         private readonly IMapper _mapper;
 
-        public LecturerController(IService<Person> lecturerService, IMenuView<Person, LecturerViewModel> lecturerMenu, IMapper mapper)
+        public LecturerController(IService<Lecturer> lecturerService, IMenuView<Lecturer, LecturerViewModel> lecturerMenu, IMapper mapper)
         {
             _lecturerService = lecturerService;
             _lecturerMenu = lecturerMenu;
@@ -30,8 +30,8 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             while (!exitFlag)
             {
                 Console.WriteLine();
-                var input = Console.ReadKey().Key;
                 PrintOperations();
+                var input = Console.ReadKey().Key;
 
                 switch (input)
                 {

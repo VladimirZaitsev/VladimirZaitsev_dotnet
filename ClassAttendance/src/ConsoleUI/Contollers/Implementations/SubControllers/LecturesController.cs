@@ -35,8 +35,8 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             while (!exitFlag)
             {
                 Console.WriteLine();
-                var input = Console.ReadKey().Key;
                 PrintOperations();
+                var input = Console.ReadKey().Key;
 
                 switch (input)
                 {

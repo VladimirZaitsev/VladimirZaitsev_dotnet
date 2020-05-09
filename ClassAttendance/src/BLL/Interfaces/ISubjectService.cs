@@ -5,8 +5,8 @@ namespace BLL.Interfaces
 {
     public interface ISubjectService : IService<Subject>
     {
-        IEnumerable<Person> GetLecturersAsync(int subjectId);
+        IEnumerable<Lecturer> GetLecturersAsync(int subjectId);
 
-        IEnumerable<Person> GetStudentsAsync(int subjectId);
+        IEnumerable<Student> GetStudentsAsync(int subjectId);
     }
 }

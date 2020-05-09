@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class LecturerService : ILecturerService
+    public class LecturerService : IService<Lecturer>
     {
         private readonly IStore<MissedLecturesDto> _missedClasses;
-        private readonly IStore<PersonDto> _persons;
+        private readonly IStore<LecturerDto> _persons;
         private readonly IStore<ClassDto> _classes;
         private readonly IMapper _mapper;
 
-        public LecturerService(IStore<MissedLecturesDto> missedClasses, IStore<PersonDto> persons, IStore<ClassDto> classes, IMapper mapper)
+        public LecturerService(IStore<MissedLecturesDto> missedClasses, IStore<LecturerDto> persons, IStore<ClassDto> classes, IMapper mapper)
         {
             _missedClasses = missedClasses;
             _persons = persons;
@@ -26,15 +26,15 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<Person> GetAll()
+        public IEnumerable<Lecturer> GetAll()
         {
-            var dtos = _persons.GetAll().Where(person => person.Status == Status.Lecturer).AsEnumerable();
-            var models = _mapper.Map<IEnumerable<Person>>(dtos);
+            var dtos = _persons.GetAll().AsEnumerable();
+            var models = _mapper.Map<IEnumerable<Lecturer>>(dtos);
 
             return models;
         }
 
-        public async Task<int> AddAsync(Person lecturer)
+        public async Task<int> AddAsync(Lecturer lecturer)
         {
             if (lecturer == null)
             {
@@ -51,12 +51,7 @@ namespace BLL.Services
                 throw new ArgumentException(nameof(lecturer.LastName));
             }
 
-            if (lecturer.Status == Status.Student)
-            {
-                throw new ArgumentNullException("Lecturer can't be a student");
-            }
-
-            var dto = _mapper.Map<PersonDto>(lecturer);
+            var dto = _mapper.Map<LecturerDto>(lecturer);
             await _persons.AddAsync(dto);
             return dto.Id;
         }
@@ -77,7 +72,7 @@ namespace BLL.Services
             await _persons.DeleteAsync(id);
         }
 
-        public async Task<Person> GetByIdAsync(int id)
+        public async Task<Lecturer> GetByIdAsync(int id)
         {
             var lecturer = await _persons.GetByIdAsync(id);
 
@@ -86,16 +81,11 @@ namespace BLL.Services
                 throw new ArgumentException("Student not found");
             }
 
-            if (lecturer.Status == Status.Student)
-            {
-                throw new ArgumentException("Invalid id");
-            }
-
-            var model = _mapper.Map<Person>(lecturer);
+            var model = _mapper.Map<Lecturer>(lecturer);
             return model;
         }
 
-        public async Task UpdateAsync(Person lecturer)
+        public async Task UpdateAsync(Lecturer lecturer)
         {
             if (lecturer == null)
             {
@@ -112,12 +102,7 @@ namespace BLL.Services
                 throw new ArgumentException(nameof(lecturer.LastName));
             }
 
-            if (lecturer.Status == Status.Student)
-            {
-                throw new ArgumentNullException("Lecturer can't be a student");
-            }
-
-            var dto = _mapper.Map<PersonDto>(lecturer);
+            var dto = _mapper.Map<LecturerDto>(lecturer);
             await _persons.UpdateAsync(dto);
         }
     }

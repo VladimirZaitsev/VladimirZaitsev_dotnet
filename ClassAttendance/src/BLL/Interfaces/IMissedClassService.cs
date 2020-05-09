@@ -10,6 +10,6 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<MissedClass>> GetMissedLecturesByStudentAsync(int studentId);
 
-        Task<IEnumerable<Person>> GetSlackersAsync(Class classModel);
+        Task<IEnumerable<Student>> GetSlackersAsync(Class classModel);
     }
 }

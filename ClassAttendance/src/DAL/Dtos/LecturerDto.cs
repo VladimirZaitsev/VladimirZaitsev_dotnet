@@ -2,7 +2,7 @@
 
 namespace DAL.Dtos
 {
-    public class PersonDto : IEntity
+    public class LecturerDto : IEntity
     {
         public int Id { get; set; }
 
@@ -10,8 +10,6 @@ namespace DAL.Dtos
 
         public string LastName { get; set; }
 
-        public string Address { get; set; }
-
-        public Status Status { get; set; }
+        public string Position { get; set; }
     }
 }

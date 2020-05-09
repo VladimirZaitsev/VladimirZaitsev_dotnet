@@ -1,8 +1,6 @@
-﻿using DAL.Dtos;
-
-namespace BLL.Models
+﻿namespace BLL.Models
 {
-    public class Person
+    public class Student
     {
         public int Id { get; set; }
 
@@ -11,7 +9,5 @@ namespace BLL.Models
         public string LastName { get; set; }
 
         public string Address { get; set; }
-
-        public Status Status { get; set; }
     }
 }

@@ -9,13 +9,16 @@ namespace DAL.Core
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<ClassDto> Classes { get; set; }
 
         public DbSet<GroupDto> Groups { get; set; }
 
-        public DbSet<PersonDto> Persons { get; set; }
+        public DbSet<StudentDto> Students { get; set; }
+
+        public DbSet<LecturerDto> Lecturers { get; set; }
 
         public DbSet<SubjectDto> Subjects { get; set; }
 

@@ -12,16 +12,16 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
     public class StudentController : IStudentController
     {
-        private readonly IService<Person> _studentService;
+        private readonly IService<Student> _studentService;
         private readonly IGroupService _groupService;
-        private readonly IMenuView<Person, StudentViewModel> _studentMenu;
+        private readonly IMenuView<Student, StudentViewModel> _studentMenu;
         private readonly IMapper _mapper;
 
         private bool exitFlag;
 
-        public StudentController(IService<Person> studentService,
+        public StudentController(IService<Student> studentService,
             IGroupService groupService,
-            IMenuView<Person, StudentViewModel> studentMenu,
+            IMenuView<Student, StudentViewModel> studentMenu,
             IMapper mapper)
         {
             _studentService = studentService;
@@ -34,6 +34,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         {
             while (!exitFlag)
             {
+                Console.WriteLine();
                 var input = Console.ReadKey().Key;
                 PrintOperations();
 
@@ -72,6 +73,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         {
             var student = _studentMenu.GetFromInput();
 
+            
             await _studentService.AddAsync(student);
         }
 

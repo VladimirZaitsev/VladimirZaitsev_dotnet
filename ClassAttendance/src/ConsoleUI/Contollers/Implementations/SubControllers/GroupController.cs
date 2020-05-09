@@ -14,14 +14,14 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
     public class GroupController : ISubController<Group>
     {
-        private readonly IStudentService _studentService;
-        private readonly ILecturerService _lecturerService;
+        private readonly IService<Student> _studentService;
+        private readonly IService<Lecturer> _lecturerService;
         private readonly IGroupService _groupService;
         private readonly IGroupMenuView<Group, GroupViewModel> _groupMenu;
         private readonly IMapper _mapper;
 
-        public GroupController(IStudentService studentService,
-            ILecturerService lecturerService,
+        public GroupController(IService<Student> studentService,
+            IService<Lecturer> lecturerService,
             IGroupService groupService,
             IGroupMenuView<Group, GroupViewModel> groupMenu,
             IMapper mapper)
@@ -40,8 +40,8 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             while (!exitFlag)
             {
                 Console.WriteLine();
-                var input = Console.ReadKey().Key;
                 PrintOperations();
+                var input = Console.ReadKey().Key;
 
                 switch (input)
                 {

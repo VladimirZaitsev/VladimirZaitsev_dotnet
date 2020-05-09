@@ -8,11 +8,11 @@
 
         public string LastName { get; set; }
 
-        public string Address { get; set; }
+        public string Position { get; set; }
 
         public override string ToString()
         {
-            var result = $"Name - {FirstName} {LastName}\nAddress - {Address}";
+            var result = $"Name - {FirstName} {LastName}\nAddress - {Position}";
 
             return result;
         }

@@ -14,12 +14,12 @@ namespace BLL.Services
     {
         private readonly IStore<SubjectDto> _subjects;
         private readonly IStore<ClassDto> _classes;
-        private readonly IStore<PersonDto> _persons;
+        private readonly IStore<StudentDto> _persons;
         private readonly IMapper _mapper;
 
         public SubjectService(IStore<SubjectDto> subjects,
             IStore<ClassDto> classes,
-            IStore<PersonDto> persons,
+            IStore<StudentDto> persons,
             IMapper mapper)
         {
             _subjects = subjects;
@@ -92,7 +92,7 @@ namespace BLL.Services
             await _subjects.UpdateAsync(dto);
         }
 
-        public IEnumerable<Person> GetLecturersAsync(int subjectId)
+        public IEnumerable<Lecturer> GetLecturersAsync(int subjectId)
         {
             var lecturerIds = _classes
                 .GetAll()
@@ -100,16 +100,15 @@ namespace BLL.Services
                 .Select(classModel => classModel.LecturerId);
 
             var lecturers = from lecturer in _persons.GetAll()
-                            where lecturer.Status == Status.Lecturer
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsEnumerable());
+            var models = _mapper.Map<IEnumerable<Lecturer>>(lecturers.AsEnumerable());
 
             return models;
         }
 
-        public IEnumerable<Person> GetStudentsAsync(int subjectId)
+        public IEnumerable<Student> GetStudentsAsync(int subjectId)
         {
             var lecturerIds = _classes
                 .GetAll()
@@ -117,11 +116,10 @@ namespace BLL.Services
                 .Select(classModel => classModel.LecturerId);
 
             var lecturers = from lecturer in _persons.GetAll()
-                            where lecturer.Status == Status.Lecturer
                             join id in lecturerIds on lecturer.Id equals id
                             select lecturer;
 
-            var models = _mapper.Map<IEnumerable<Person>>(lecturers.AsEnumerable());
+            var models = _mapper.Map<IEnumerable<Student>>(lecturers.AsEnumerable());
 
             return models;
         }

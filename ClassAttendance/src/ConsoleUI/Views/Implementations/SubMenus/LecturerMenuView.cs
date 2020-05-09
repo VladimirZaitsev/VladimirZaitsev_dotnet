@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ConsoleUI.Views.Implementations.SubMenus
 {
-    public class LecturerMenuView : IMenuView<Person, LecturerViewModel>
+    public class LecturerMenuView : IMenuView<Lecturer, LecturerViewModel>
     {
         public void PrintMenu()
         {
@@ -34,24 +34,26 @@ namespace ConsoleUI.Views.Implementations.SubMenus
             Console.WriteLine(lecturer);
         }
 
-        public Person GetFromInput()
+        public Lecturer GetFromInput()
         {
             Console.WriteLine("Input first name");
             var firstName = Console.ReadLine();
             Console.WriteLine("Input last name");
             var lastName = Console.ReadLine();
+            Console.WriteLine("Input position");
+            var position = Console.ReadLine();
 
-            var lecturer = new Person
+            var lecturer = new Lecturer
             {
                 FirstName = firstName,
                 LastName = lastName,
-                Status = Status.Lecturer,
+                Position = position,
             };
 
             return lecturer;
         }
 
-        public Person Update(Person lecturer)
+        public Lecturer Update(Lecturer lecturer)
         {
             Console.WriteLine("Keep input empty if you don't want to update");
             Console.WriteLine($"Current first name - {lecturer.FirstName}");

@@ -2,7 +2,7 @@
 
 namespace ConsoleUI.Contollers.Interfaces
 {
-    public interface ILecturerController : ISubController<Person>
+    public interface ILecturerController : ISubController<Lecturer>
     {
     }
 }

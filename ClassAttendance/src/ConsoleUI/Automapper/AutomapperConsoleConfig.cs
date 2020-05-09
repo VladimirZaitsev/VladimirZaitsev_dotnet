@@ -10,8 +10,8 @@ namespace ConsoleUI.Automapper
     {
         public AutomapperConsoleConfig()
         {
-            CreateMap<Person, LecturerViewModel>().ReverseMap();
-            CreateMap<Person, StudentViewModel>().ReverseMap();
+            CreateMap<Lecturer, LecturerViewModel>().ReverseMap();
+            CreateMap<Student, StudentViewModel>().ReverseMap();
             CreateMap<Group, GroupViewModel>().ReverseMap();
         }
     }

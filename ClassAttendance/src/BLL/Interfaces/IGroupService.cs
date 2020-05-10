@@ -1,9 +1,10 @@
 ﻿using BLL.Models;
+using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
     public interface IGroupService : IService<Group>
     {
-        Group GetGroupByStudentId(int studentId);
+        Task<Group> GetGroupByStudentIdAsync(int studentId);
     }
 }

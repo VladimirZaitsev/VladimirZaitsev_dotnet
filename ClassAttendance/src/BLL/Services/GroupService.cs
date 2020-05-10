@@ -3,7 +3,6 @@ using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +64,7 @@ namespace BLL.Services
             return model;
         }
 
-        public async Task<Group> GetGroupByStudentIdAsync(int studentId)
+        public Group GetGroupByStudentId(int studentId)
         {
             var groupQuery = from grp in _groups.GetAll().ToList()
                              where grp.StudentIds.Contains(studentId)

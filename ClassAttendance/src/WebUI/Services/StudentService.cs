@@ -9,13 +9,11 @@ namespace WebUI.Services
 {
     public class StudentService
     {
-        private readonly IService<Student> _studentService;
-        private readonly IGroupService _groupService;
+        private readonly IStudentService _studentService;
 
-        public StudentService(IService<Student> studentService, IGroupService groupService)
+        public StudentService(IStudentService studentService)
         {
             _studentService = studentService;
-            _groupService = groupService;
         }
 
         public async Task<IEnumerable<StudentViewModel>> GetStudentListAsync()
@@ -36,7 +34,7 @@ namespace WebUI.Services
 
         private async Task<string> GetGroupNameAsync(int studentId)
         {
-            var group = await _groupService.GetGroupByStudentIdAsync(studentId);
+            var group = await _studentService.GetStudentGroupAsync(studentId);
 
             return group.Name;
         }

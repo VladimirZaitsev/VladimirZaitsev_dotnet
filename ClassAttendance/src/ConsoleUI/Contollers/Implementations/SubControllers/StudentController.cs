@@ -13,14 +13,14 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
     public class StudentController : IStudentController
     {
         private readonly IService<Student> _studentService;
-        private readonly IGroupService _groupService;
+        private readonly IService<Group> _groupService;
         private readonly IMenuView<Student, StudentViewModel> _studentMenu;
         private readonly IMapper _mapper;
 
         private bool exitFlag;
 
         public StudentController(IService<Student> studentService,
-            IGroupService groupService,
+            IService<Group> groupService,
             IMenuView<Student, StudentViewModel> studentMenu,
             IMapper mapper)
         {

@@ -3,7 +3,6 @@ using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class GroupService : IGroupService
+    public class GroupService : IService<Group>
     {
         private readonly IStore<GroupDto> _groups;
         private readonly IMapper _mapper;
@@ -62,24 +61,6 @@ namespace BLL.Services
             }
 
             var model = _mapper.Map<Group>(group);
-            return model;
-        }
-
-        public async Task<Group> GetGroupByStudentIdAsync(int studentId)
-        {
-            var groupQuery = from grp in _groups.GetAll()
-                             where grp.StudentIds.Contains(studentId)
-                             select grp;
-
-            var group = groupQuery.SingleOrDefault();
-
-            if (group == null)
-            {
-                throw new ArgumentException("Group not found");
-            }
-
-            var model = _mapper.Map<Group>(group);
-
             return model;
         }
 

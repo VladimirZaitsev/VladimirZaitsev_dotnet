@@ -17,13 +17,13 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
     {
         private readonly IService<Student> _studentService;
         private readonly IService<Lecturer> _lecturerService;
-        private readonly IGroupService _groupService;
+        private readonly IService<Group> _groupService;
         private readonly IGroupMenuView<Group, GroupViewModel> _groupMenu;
         private readonly IMapper _mapper;
 
         public GroupController(IService<Student> studentService,
             IService<Lecturer> lecturerService,
-            IGroupService groupService,
+            IService<Group> groupService,
             IGroupMenuView<Group, GroupViewModel> groupMenu,
             IMapper mapper)
         {
@@ -103,11 +103,10 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
         private void PrintAll()
         {
             var groups = _groupService.GetAll();
-            var students = _studentService.GetAll();
             var viewModels = groups.Select(group => new GroupViewModel
             {
                 Name = group.Name,
-                Students = _mapper.Map<IEnumerable<StudentViewModel>>(GetStudents(students, group.StudentIds)),
+                Students = _mapper.Map<IEnumerable<StudentViewModel>>(GetStudents(group.Id)),
             });
 
             _groupMenu.PrintAll(viewModels);
@@ -134,11 +133,13 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
             return viewModel;
         }
 
-        private static IEnumerable<Student> GetStudents(IEnumerable<Student> students, IEnumerable<int> ids)
+        private IEnumerable<Student> GetStudents(int groupId)
         {
-            return from student in students
-                   join id in ids on student.Id equals id
-                   select student;
+            var result = from student in _studentService.GetAll()
+                         where student.GroupId == groupId
+                         select student;
+
+            return result;
         }
     }
 }

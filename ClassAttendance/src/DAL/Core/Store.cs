@@ -44,9 +44,9 @@ namespace DAL.Core
             await _context.SaveChangesAsync();
         }
 
-        public Task<T> GetByIdAsync(int itemId)
+        public async Task<T> GetByIdAsync(int itemId)
         {
-            var result = _context.Set<T>()
+            var result = await _context.Set<T>()
                   .FirstOrDefaultAsync(item => item.Id == itemId);
 
             _context.Entry(result).State = EntityState.Detached;

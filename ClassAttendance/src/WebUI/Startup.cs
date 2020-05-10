@@ -29,24 +29,21 @@ namespace WebUI
 
             var connectionString = Configuration.GetConnectionString("local");
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString), ServiceLifetime.Transient);
 
             services.AddAutoMapper(typeof(AutomapperBLLConfig));
 
             services.Scan(scan => scan
                 .FromAssembliesOf(typeof(IStore<>))
                     .AddClasses(classes => classes.AssignableTo(typeof(IStore<>)))
-                    .AsImplementedInterfaces());
-
-            services.Scan(scan => scan
-                .FromAssembliesOf(typeof(IStore<>))
-                    .AddClasses(classes => classes.AssignableTo(typeof(IStore<>)))
-                    .AsImplementedInterfaces());
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime());
 
             services.Scan(scan => scan
                 .FromAssembliesOf(typeof(IService<>))
                     .AddClasses(classes => classes.AssignableTo(typeof(IService<>)))
-                    .AsImplementedInterfaces());
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime());
 
             services.AddTransient<StudentService>();
         }

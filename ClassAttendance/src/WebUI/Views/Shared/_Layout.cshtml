@@ -24,8 +24,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="List">Students</a>
+                        <li class="nav-item my-auto">
+                            <div class="dropdown">
+                                <button type="button" class="dropdown-toggle" style="background: none; border:none" data-toggle="dropdown">
+                                    Students
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="List">View students</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Add">Add new student</a>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>

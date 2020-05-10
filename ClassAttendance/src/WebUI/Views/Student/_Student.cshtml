@@ -1,11 +1,24 @@
-﻿@using WebUI.Models.ViewModels
+﻿@using WebUI.Models.ViewModels.Students
 @model StudentViewModel
 @{ 
     var name = Model.FirstName + " " + Model.LastName;
 }
 
-<div>
-    <p>@name</p>
-    <p>@Model.Address</p>
-    <p>@Model.GroupName</p>
+<div class="card card-body bg-dark my-auto text-light" style="width: 60%">
+    <h4>@name</h4>
+    <h3>@Model.Address</h3>
+    <h3>@Model.GroupName</h3>
+
+    <form asp-action="Update" asp-controller="Student" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-success">
+            Update user
+        </button>
+    </form>
+
+    <form asp-action="Delete" asp-controller="Student" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-danger">
+            Delete user
+        </button>
+    </form>
+
 </div>

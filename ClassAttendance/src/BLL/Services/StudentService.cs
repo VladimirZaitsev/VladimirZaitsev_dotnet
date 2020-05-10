@@ -95,7 +95,7 @@ namespace BLL.Services
 
             if (result == null)
             {
-                throw new ArgumentException("Class not found");
+                throw new ArgumentException("Student not found");
             }
 
             var dto = _mapper.Map<StudentDto>(student);

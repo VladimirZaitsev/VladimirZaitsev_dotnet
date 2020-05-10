@@ -9,8 +9,6 @@ namespace DAL.Dtos
 
         public string Name { get; set; }
 
-        public int LecturerId { get; set; }
-
         public List<int> StudentIds { get; set; }
     }
 }

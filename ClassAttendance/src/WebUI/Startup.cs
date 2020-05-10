@@ -1,13 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using BLL.Automapper;
+using BLL.Interfaces;
+using DAL.Core;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebUI.Services;
 
 namespace WebUI
 {
@@ -24,6 +26,29 @@ namespace WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            var connectionString = Configuration.GetConnectionString("local");
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            services.AddAutoMapper(typeof(AutomapperBLLConfig));
+
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(IStore<>))
+                    .AddClasses(classes => classes.AssignableTo(typeof(IStore<>)))
+                    .AsImplementedInterfaces());
+
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(IStore<>))
+                    .AddClasses(classes => classes.AssignableTo(typeof(IStore<>)))
+                    .AsImplementedInterfaces());
+
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(IService<>))
+                    .AddClasses(classes => classes.AssignableTo(typeof(IService<>)))
+                    .AsImplementedInterfaces());
+
+            services.AddTransient<StudentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

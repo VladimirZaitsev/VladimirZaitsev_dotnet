@@ -1,0 +1,7 @@
+﻿@using WebUI.Models.ViewModels
+@model IEnumerable<StudentViewModel>
+
+@foreach (var model in Model)
+{
+    @await Html.PartialAsync("_Student", model)
+}

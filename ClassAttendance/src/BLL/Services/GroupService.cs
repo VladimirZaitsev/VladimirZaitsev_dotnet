@@ -65,31 +65,13 @@ namespace BLL.Services
             return model;
         }
 
-        public async Task<IEnumerable<Group>> GetGroupsByLecturerIdAsync(int lecturerId)
-        {
-            var groups = await _groups.GetAll()
-                .Where(group => group.LecturerId == lecturerId)
-                .ToListAsync();
-
-            var hasRecords = groups.Any();
-
-            if (!hasRecords)
-            {
-                throw new ArgumentException("Groups are not found");
-            }
-
-            var models = _mapper.Map<IEnumerable<Group>>(groups);
-
-            return models;
-        }
-
         public async Task<Group> GetGroupByStudentIdAsync(int studentId)
         {
-            var groupQuery = from grp in _groups.GetAll()
+            var groupQuery = from grp in _groups.GetAll().ToList()
                              where grp.StudentIds.Contains(studentId)
                              select grp;
 
-            var group = await groupQuery.SingleOrDefaultAsync();
+            var group = groupQuery.SingleOrDefault();
 
             if (group == null)
             {

@@ -1,0 +1,11 @@
+﻿@using WebUI.Models.ViewModels
+@model StudentViewModel
+@{ 
+    var name = Model.FirstName + " " + Model.LastName;
+}
+
+<div>
+    <p>@name</p>
+    <p>@Model.Address</p>
+    <p>@Model.GroupName</p>
+</div>

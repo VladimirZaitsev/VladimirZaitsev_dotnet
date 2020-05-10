@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ConsoleUI.Automapper.AutomapperConsoleConfig" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Automapper\AutomapperConsoleConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleUI.Contollers.Implementations.SubControllers.GroupController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYCEACAEAAAACAABIABAgEAAAEAAAAAAgAAAAAEAAA=</HashCode>
+      <FileName>Contollers\Implementations\SubControllers\GroupController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Contollers.Implementations.SubControllers.LecturerController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAgAAAAAIABAAAAAAAQIAADAgAAAAAAAEA=</HashCode>
+      <FileName>Contollers\Implementations\SubControllers\LecturerController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Contollers.Implementations.SubControllers.LecturesController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACACAAAQAAAAIAFAAAAAAAQAASAAgAAAAAAAAA=</HashCode>
+      <FileName>Contollers\Implementations\SubControllers\LecturesController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Contollers.Implementations.SubControllers.StudentController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACEACAAkAEAAAAAAABAAEAAAAAAAAAAwIAAAAAEAA=</HashCode>
+      <FileName>Contollers\Implementations\SubControllers\StudentController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Contollers.Implementations.SubControllers.SubjectController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYCAACAAAAAAAAABAARAAAAAAEAAAAAEgAAAAAEAAA=</HashCode>
+      <FileName>Contollers\Implementations\SubControllers\SubjectController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Contollers.Implementations.MainController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAACAAAAAAAAEAAAAAAAAAAQAAAAAAgAAQAAAAAA=</HashCode>
+      <FileName>Contollers\Implementations\MainController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.DI.Startup" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>DI\Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleUI.ViewModels.Group.GroupViewModel" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAACAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Group\GroupViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleUI.ViewModels.Lecturer.LecturerViewModel" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAEAAg=</HashCode>
+      <FileName>ViewModels\Lecturer\LecturerViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleUI.ViewModels.MissedLectures.MissedClassViewModel" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgBAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACIAAAA=</HashCode>
+      <FileName>ViewModels\MissedClass\MissedClassViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleUI.ViewModels.Student.StudentViewModel" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAAEAAAAAAAAAAAAAAACAAAAAAAEAAk=</HashCode>
+      <FileName>ViewModels\Student\StudentViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleUI.ViewModels.Subject.SubjectViewModel" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Subject\SubjectViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleUI.Views.Implementations.SubMenus.GroupMenuView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Implementations\SubMenus\GroupMenuView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Views.Implementations.SubMenus.LecturerMenuView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Implementations\SubMenus\LecturerMenuView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Views.Implementations.SubMenus.LecturesMenuView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIQAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Implementations\SubMenus\LecturesMenuView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Views.Implementations.SubMenus.StudentMenuView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIQAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Implementations\SubMenus\StudentMenuView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Views.Implementations.SubMenus.SubjectMenuView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Implementations\SubMenus\SubjectMenuView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Views.Implementations.MainMenuView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Implementations\MainMenuView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ConsoleUI.Program" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ConsoleUI.Contollers.Interfaces.ILecturerController" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Contollers\Interfaces\ILecturerController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ConsoleUI.Contollers.Interfaces.IMainController" Collapsed="true">
+    <Position X="6.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Contollers\Interfaces\IMainController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ConsoleUI.Contollers.Interfaces.IStudentController" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Contollers\Interfaces\IStudentController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ConsoleUI.Contollers.Interfaces.ISubController&lt;T&gt;" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Contollers\Interfaces\ISubController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ConsoleUI.Views.Interfaces.IGroupMenuView&lt;T, V&gt;" Collapsed="true">
+    <Position X="4.25" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIQAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Interfaces\IGroupMenuView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ConsoleUI.Views.Interfaces.ILecturesMenuView&lt;T, V&gt;" Collapsed="true">
+    <Position X="4.25" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIQAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Interfaces\ILecturesMenuView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ConsoleUI.Views.Interfaces.IMenuView&lt;T, V&gt;" Collapsed="true">
+    <Position X="6.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAAAAAABAAAAAAAAIQAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Views\Interfaces\IMenuView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ConsoleUI.Views.Interfaces.IPrintMenuView" Collapsed="true">
+    <Position X="8.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Interfaces\IPrintMenuView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

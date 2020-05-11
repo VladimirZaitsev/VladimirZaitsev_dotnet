@@ -45,10 +45,11 @@ namespace WebUI
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
 
-            services.AddTransient<StudentService>();
-            services.AddTransient<LecturerService>();
-            services.AddTransient<SubjectService>();
-            services.AddTransient<GroupService>();
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(Startup))
+                    .AddClasses(classes => classes.Where(cls => cls.Name.EndsWith("Service")))
+                    .AsSelf()
+                    .WithTransientLifetime());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

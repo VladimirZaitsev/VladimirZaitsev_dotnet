@@ -85,5 +85,21 @@ namespace WebUI.Controllers
 
             return RedirectToAction(nameof(List));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Student(int id)
+        {
+            var viewModels = await _missedClassService.GetStudentMissedClassesAsync(id);
+
+            return View("List", viewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Lecturer(int id)
+        {
+            var viewModels = await _missedClassService.GetLecturerMissedClassesAsync(id);
+
+            return View("List", viewModels);
+        }
     }
 }

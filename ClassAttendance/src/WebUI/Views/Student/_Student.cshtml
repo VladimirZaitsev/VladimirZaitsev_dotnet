@@ -21,4 +21,10 @@
         </button>
     </form>
 
+    <form asp-action="Student" asp-controller="MissedClass" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-primary">
+            Get missed lectures
+        </button>
+    </form>
+
 </div>

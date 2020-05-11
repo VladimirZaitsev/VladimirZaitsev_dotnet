@@ -30,26 +30,7 @@ namespace WebUI.Services
         public async Task<IEnumerable<MissedClassViewModel>> GetMissedLecturesAsync()
         {
             var missedClasses = _missedClassService.GetAll();
-            var viewModels = new List<MissedClassViewModel>();
-            foreach (var missedClass in missedClasses)
-            {
-                var group = await _studentService.GetStudentGroupAsync(missedClass.StudentId);
-                var student = await _studentService.GetByIdAsync(missedClass.StudentId);
-                var cls = await _classService.GetByIdAsync(missedClass.ClassId);
-                var subject = await _subjectService.GetByIdAsync(cls.SubjectId);
-
-
-                viewModels.Add(new MissedClassViewModel
-                {
-                    Id = missedClass.Id,
-                    ClassId = missedClass.ClassId,
-                    Date = cls.StartDate,
-                    GroupName = group.Name,
-                    StudentId = missedClass.StudentId,
-                    StudentName = student.FirstName + " " + student.LastName,
-                    SubjectName = subject.Name,
-                });
-            }
+            var viewModels = await GetMissedClassViewModelsAsync(missedClasses);
 
             return viewModels;
         }
@@ -93,6 +74,22 @@ namespace WebUI.Services
 
         public async Task DeleteAsync(int id) => await _missedClassService.DeleteAsync(id);
 
+        public async Task<IEnumerable<MissedClassViewModel>> GetStudentMissedClassesAsync(int studentId)
+        {
+            var missedClasses = await _missedClassService.GetMissedLecturesByStudentAsync(studentId);
+            var viewModels = await GetMissedClassViewModelsAsync(missedClasses);
+
+            return viewModels;
+        }
+
+        public async Task<IEnumerable<MissedClassViewModel>> GetLecturerMissedClassesAsync(int studentId)
+        {
+            var missedClasses = await _missedClassService.GetMissedLecturesByLecturerAsync(studentId);
+            var viewModels = await GetMissedClassViewModelsAsync(missedClasses);
+
+            return viewModels;
+        }
+
         private async Task<IEnumerable<ClassDisplayModel>> GetDisplayModelsAsync()
         {
             var classes = _classService.GetAll();
@@ -109,6 +106,32 @@ namespace WebUI.Services
             }
 
             return displayModels;
+        }
+
+        private async Task<List<MissedClassViewModel>> GetMissedClassViewModelsAsync(IEnumerable<MissedClass> missedClasses)
+        {
+            var viewModels = new List<MissedClassViewModel>();
+            foreach (var missedClass in missedClasses)
+            {
+                var group = await _studentService.GetStudentGroupAsync(missedClass.StudentId);
+                var student = await _studentService.GetByIdAsync(missedClass.StudentId);
+                var cls = await _classService.GetByIdAsync(missedClass.ClassId);
+                var subject = await _subjectService.GetByIdAsync(cls.SubjectId);
+
+
+                viewModels.Add(new MissedClassViewModel
+                {
+                    Id = missedClass.Id,
+                    ClassId = missedClass.ClassId,
+                    Date = cls.StartDate,
+                    GroupName = group.Name,
+                    StudentId = missedClass.StudentId,
+                    StudentName = student.FirstName + " " + student.LastName,
+                    SubjectName = subject.Name,
+                });
+            }
+
+            return viewModels;
         }
     }
 }

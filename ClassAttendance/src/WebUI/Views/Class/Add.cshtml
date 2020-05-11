@@ -1,16 +1,17 @@
 ﻿@using WebUI.Models.ViewModels.ClassModel
+@using BLL.Models
 @model ClassManageViewModel
 
 <form asp-action="Add" asp-controller="Class" asp-antiforgery="true">
     <div>
         <div>
             <label asp-for="SubjectId"></label>
-            <select asp-for="SubjectId" asp-items="@(new SelectList(Model.Subjects, "Id", "Name"))"></select>
+            <select asp-for="SubjectId" asp-items="@(new SelectList(Model.Subjects, nameof(Subject.Id), nameof(Subject.Name)))"></select>
         </div>
 
         <div>
             <label asp-for="LecturerId"></label>
-            <select asp-for="LecturerId" asp-items="@(new SelectList(Model.Lecturers, "Id", "LastName"))"></select>
+            <select asp-for="LecturerId" asp-items="@(new SelectList(Model.Lecturers, nameof(Lecturer.Id), nameof(Lecturer.LastName)))"></select>
         </div>
 
         <div>

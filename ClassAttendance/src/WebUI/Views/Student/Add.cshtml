@@ -1,4 +1,5 @@
 ﻿@using WebUI.Models.ViewModels.StudentModel
+@using BLL.Models
 @model StudentManageViewModel
 
 <form asp-action="Add" asp-controller="Student" asp-antiforgery="true">
@@ -17,8 +18,8 @@
         </div>
         <div>
             <label asp-for="Student.GroupId"></label>
-            <select asp-for="@Model.Student.GroupId" asp-items="@(new SelectList(Model.Groups, "Id", "Name"))"></select>
-</div>
+            <select asp-for="@Model.Student.GroupId" asp-items="@(new SelectList(Model.Groups, nameof(Group.Id), nameof(Group.Name)))"></select>
+        </div>
         <div>
             <input type="submit" value="Save" />
         </div>

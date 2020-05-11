@@ -1,4 +1,6 @@
 ﻿@using WebUI.Models.ViewModels.MissedClass
+@using WebUI.Models.ViewModels.ClassModel
+@using BLL.Models
 @model MissedClassManageViewModel
 
 <form asp-action="Update" asp-controller="MissedClass" asp-antiforgery="true">
@@ -6,11 +8,11 @@
         <input type="hidden" asp-for="Id" />
         <div>
             <label asp-for="@Model.StudentId"></label>
-            <select asp-for="@Model.StudentId" asp-items="@(new SelectList(Model.Students, "Id", "LastName"))"></select>
+            <select asp-for="@Model.StudentId" asp-items="@(new SelectList(Model.Students, nameof(Student.Id), nameof(Student.LastName)))"></select>
         </div>
         <div>
             <label asp-for="@Model.ClassId"></label>
-            <select asp-for="@Model.ClassId" asp-items="@(new SelectList(Model.Classes, "Id", "DisplayName"))"></select>
+            <select asp-for="@Model.ClassId" asp-items="@(new SelectList(Model.Classes, nameof(ClassDisplayModel.Id), nameof(ClassDisplayModel.DisplayName)))"></select>
         </div>
         <div>
             <input type="submit" value="Save" />

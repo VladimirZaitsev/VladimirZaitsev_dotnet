@@ -36,31 +36,12 @@ namespace ConsoleUI.Views.Implementations.SubMenus
 
         public Group GetFromInput(GroupViewModel model)
         {
-            Console.WriteLine("Input lecturer id");
-            foreach (var lecturer in model.Lecturers)
-            {
-                Console.WriteLine(lecturer.ToStringWithId());
-            }
-            var lecturerId = ((IGroupMenuView<Group, GroupViewModel>)this).GetIdFromInput();
-
             Console.WriteLine("Input group name");
             var name = Console.ReadLine();
 
-            Console.WriteLine("Input students ids (separate it with ' ')");
-            foreach (var student in model.Students)
-            {
-                Console.WriteLine(student.ToStringWithId());
-            }
-            var idInput = Console.ReadLine();
-            var studentIds = idInput.Split(' ')
-                .Select(id => Convert.ToInt32(id))
-                .ToList();
-
             var group = new Group
             {
-                LecturerId = lecturerId,
                 Name = name,
-                StudentIds = studentIds,
             };
 
             return group;

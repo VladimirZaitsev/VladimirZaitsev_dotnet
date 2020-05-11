@@ -32,7 +32,7 @@ namespace WebUI.Services
                     FirstName = student.FirstName,
                     LastName = student.LastName,
                     Address = student.Address,
-                    GroupName = await GetGroupNameAsync(student.GroupId),
+                    GroupName = await GetGroupNameAsync(student.Id),
                 });
             }
 
@@ -76,9 +76,9 @@ namespace WebUI.Services
             await _studentService.DeleteAsync(studentId);
         }
 
-        private async Task<string> GetGroupNameAsync(int groupId)
+        private async Task<string> GetGroupNameAsync(int studentId)
         {
-            var group = await _studentService.GetStudentGroupAsync(groupId);
+            var group = await _studentService.GetStudentGroupAsync(studentId);
 
             return group.Name;
         }

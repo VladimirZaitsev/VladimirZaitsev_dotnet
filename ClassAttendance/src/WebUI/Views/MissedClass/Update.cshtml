@@ -1,0 +1,19 @@
+﻿@using WebUI.Models.ViewModels.MissedClass
+@model MissedClassManageViewModel
+
+<form asp-action="Update" asp-controller="MissedClass" asp-antiforgery="true">
+    <div>
+        <input type="hidden" asp-for="Id" />
+        <div>
+            <label asp-for="@Model.StudentId"></label>
+            <select asp-for="@Model.StudentId" asp-items="@(new SelectList(Model.Students, "Id", "LastName"))"></select>
+        </div>
+        <div>
+            <label asp-for="@Model.ClassId"></label>
+            <select asp-for="@Model.ClassId" asp-items="@(new SelectList(Model.Classes, "Id", "DisplayName"))"></select>
+        </div>
+        <div>
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>

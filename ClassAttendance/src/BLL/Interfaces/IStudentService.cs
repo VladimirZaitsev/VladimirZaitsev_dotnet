@@ -5,6 +5,6 @@ namespace BLL.Interfaces
 {
     public interface IStudentService : IService<Student>
     {
-        Task<Group> GetStudentGroupAsync(int groupId);
+        Task<Group> GetStudentGroupAsync(int studentId);
     }
 }

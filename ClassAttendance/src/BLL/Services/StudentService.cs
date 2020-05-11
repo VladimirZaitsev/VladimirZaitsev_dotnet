@@ -102,9 +102,10 @@ namespace BLL.Services
             await _students.UpdateAsync(dto);
         }
 
-        public async Task<Group> GetStudentGroupAsync(int groupId)
+        public async Task<Group> GetStudentGroupAsync(int studentId)
         {
-            var group =  await _groups.GetByIdAsync(groupId);
+            var student = await _students.GetByIdAsync(studentId);
+            var group =  await _groups.GetByIdAsync(student.GroupId);
 
             var result = _mapper.Map<Group>(group);
 

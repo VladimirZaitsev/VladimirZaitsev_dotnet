@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class SubjectService : ISubjectService
+    internal class SubjectService : ISubjectService
     {
         private readonly IStore<SubjectDto> _subjects;
         private readonly IStore<ClassDto> _classes;

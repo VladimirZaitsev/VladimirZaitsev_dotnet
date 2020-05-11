@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class GroupService : IGroupService
+    internal class GroupService : IGroupService
     {
         private readonly IStore<GroupDto> _groups;
         private readonly IStore<StudentDto> _students;

@@ -11,7 +11,7 @@ using AutoMapper;
 
 namespace BLL.Services
 {
-    public class ClassService : IService<Class>
+    internal class ClassService : IService<Class>
     {
         private readonly IStore<ClassDto> _classes;
         private readonly IStore<MissedLecturesDto> _lectures;

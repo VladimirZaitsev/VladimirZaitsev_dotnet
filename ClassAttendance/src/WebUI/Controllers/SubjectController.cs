@@ -31,6 +31,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(Subject subject)
         {
             if (ModelState.IsValid)
@@ -52,6 +53,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(Subject subject)
         {
             if (ModelState.IsValid)

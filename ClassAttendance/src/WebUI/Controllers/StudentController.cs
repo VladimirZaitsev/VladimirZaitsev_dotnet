@@ -37,6 +37,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(StudentManageViewModel model)
         {
             if (ModelState.IsValid)
@@ -58,6 +59,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(StudentManageViewModel model)
         {
             if (ModelState.IsValid)

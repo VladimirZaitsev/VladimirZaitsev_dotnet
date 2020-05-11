@@ -21,5 +21,7 @@ namespace WebUI.Services
         public async Task UpdateLecturerAsync(Lecturer lecturer) => await _lecturerService.UpdateAsync(lecturer);
 
         public async Task DeleteLecturerAsync(int lecturerId) => await _lecturerService.DeleteAsync(lecturerId);
+
+        public async Task<Lecturer> GetByIdAsync(int id) => await _lecturerService.GetByIdAsync(id);
     }
 }

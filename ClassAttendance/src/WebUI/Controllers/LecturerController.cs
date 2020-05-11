@@ -31,6 +31,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(Lecturer lecturer)
         {
             if (ModelState.IsValid)
@@ -44,14 +45,15 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Update()
+        public async Task<IActionResult> Update(int id)
         {
-            var lecturer = new Lecturer();
+            var lecturer = await _lecturerService.GetByIdAsync(id);
 
             return View(lecturer);
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(Lecturer lecturer)
         {
             if (ModelState.IsValid)

@@ -1,4 +1,4 @@
-﻿namespace WebUI.Models.ViewModels.Students
+﻿namespace WebUI.Models.ViewModels.StudentModel
 {
     public class StudentViewModel
     {

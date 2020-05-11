@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using WebUI.Models.ViewModels.Students;
+using WebUI.Models.ViewModels.StudentModel;
 using WebUI.Services;
 
 namespace WebUI.Controllers

@@ -3,6 +3,7 @@ using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,16 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class GroupService : IService<Group>
+    public class GroupService : IGroupService
     {
         private readonly IStore<GroupDto> _groups;
+        private readonly IStore<StudentDto> _students;
         private readonly IMapper _mapper;
 
-        public GroupService(IStore<GroupDto> groups, IMapper mapper)
+        public GroupService(IStore<GroupDto> groups, IStore<StudentDto> students, IMapper mapper)
         {
             _groups = groups;
+            _students = students;
             _mapper = mapper;
         }
 
@@ -49,6 +52,17 @@ namespace BLL.Services
             var models = _mapper.Map<IEnumerable<Group>>(dtos);
 
             return models;
+        }
+
+        public async Task<IEnumerable<Student>> GetAllStudentsAsync(int groupId)
+        {
+            var students = await _students.GetAll()
+                .Where(student => student.GroupId == groupId)
+                .ToListAsync();
+
+            var result = _mapper.Map<IEnumerable<Student>>(students);
+
+            return result;
         }
 
         public async Task<Group> GetByIdAsync(int id)

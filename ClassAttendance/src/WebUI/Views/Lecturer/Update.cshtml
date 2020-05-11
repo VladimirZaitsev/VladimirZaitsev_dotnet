@@ -1,0 +1,23 @@
+﻿@using BLL.Models
+@model Lecturer
+
+<form asp-action="Add" asp-controller="Lecturer" asp-antiforgery="true">
+    <div>
+        <input asp-for="Id" type="hidden" />
+        <div>
+            <label asp-for="FirstName"></label>
+            <input type="text" asp-for="FirstName" />
+        </div>
+        <div>
+            <label asp-for="LastName"></label>
+            <input type="text" asp-for="LastName" />
+        </div>
+        <div>
+            <label asp-for="Position"></label>
+            <input type="text" asp-for="Position" />
+        </div>
+        <div>
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>

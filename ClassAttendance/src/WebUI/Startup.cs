@@ -46,6 +46,7 @@ namespace WebUI
                     .WithTransientLifetime());
 
             services.AddTransient<StudentService>();
+            services.AddTransient<LecturerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

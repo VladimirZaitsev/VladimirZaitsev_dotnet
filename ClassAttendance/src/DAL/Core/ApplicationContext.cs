@@ -26,11 +26,6 @@ namespace DAL.Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GroupDto>()
-                .Property(group => group.StudentIds)
-                .HasConversion(
-                    id => string.Join(',', id),
-                    id => id.Split(',', System.StringSplitOptions.RemoveEmptyEntries).ToInts());
             modelBuilder.Entity<ClassDto>()
                 .Property(cls => cls.GroupIds)
                 .HasConversion(

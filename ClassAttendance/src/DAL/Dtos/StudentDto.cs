@@ -11,5 +11,7 @@ namespace DAL.Dtos
         public string LastName { get; set; }
 
         public string Address { get; set; }
+
+        public int GroupId { get; set; }
     }
 }

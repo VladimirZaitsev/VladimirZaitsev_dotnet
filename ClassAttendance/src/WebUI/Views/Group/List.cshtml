@@ -1,0 +1,7 @@
+﻿@using WebUI.Models.ViewModels.GroupModel;
+@model IEnumerable<GroupViewModel>
+
+@foreach (var group in Model)
+{
+    @await Html.PartialAsync("_Group", group)
+}

@@ -11,16 +11,21 @@ using AutoMapper;
 
 namespace BLL.Services
 {
-    internal class StudentService : IService<Student>
+    internal class StudentService : IStudentService
     {
         private readonly IStore<StudentDto> _students;
         private readonly IStore<MissedLecturesDto> _lectures;
+        private readonly IStore<GroupDto> _groups;
         private readonly IMapper _mapper;
 
-        public StudentService(IStore<StudentDto> persons, IStore<MissedLecturesDto> lectures, IMapper mapper)
+        public StudentService(IStore<StudentDto> students,
+            IStore<MissedLecturesDto> lectures,
+            IStore<GroupDto> groups,
+            IMapper mapper)
         {
-            _students = persons;
+            _students = students;
             _lectures = lectures;
+            _groups = groups;
             _mapper = mapper;
         }
 
@@ -90,11 +95,21 @@ namespace BLL.Services
 
             if (result == null)
             {
-                throw new ArgumentException("Class not found");
+                throw new ArgumentException("Student not found");
             }
 
             var dto = _mapper.Map<StudentDto>(student);
             await _students.UpdateAsync(dto);
+        }
+
+        public async Task<Group> GetStudentGroupAsync(int studentId)
+        {
+            var student = await _students.GetByIdAsync(studentId);
+            var group =  await _groups.GetByIdAsync(student.GroupId);
+
+            var result = _mapper.Map<Group>(group);
+
+            return result;
         }
     }
 }

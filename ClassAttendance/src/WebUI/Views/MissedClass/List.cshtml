@@ -1,0 +1,7 @@
+﻿@using WebUI.Models.ViewModels.MissedClass
+@model IEnumerable<MissedClassViewModel>
+
+@foreach (var missedClass in Model)
+{
+    @await Html.PartialAsync("_MissedClass", missedClass)
+}

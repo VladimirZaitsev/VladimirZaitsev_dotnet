@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class LecturerService : IService<Lecturer>
+    internal class LecturerService : IService<Lecturer>
     {
         private readonly IStore<MissedLecturesDto> _missedClasses;
         private readonly IStore<LecturerDto> _persons;

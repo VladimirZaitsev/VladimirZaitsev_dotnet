@@ -1,0 +1,22 @@
+﻿@using WebUI.Models.ViewModels.MissedClass
+@model MissedClassViewModel
+
+<div class="card card-body bg-dark my-auto text-light" style="width: 60%">
+    <h4>@Model.StudentName</h4>
+    <h3>@Model.GroupName</h3>
+    <h3>@Model.SubjectName</h3>
+    <h3>@Model.Date</h3>
+
+    <form asp-action="Update" asp-controller="MissedClass" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-success">
+            Update missed class
+        </button>
+    </form>
+
+    <form asp-action="Delete" asp-controller="MissedClass" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-danger">
+            Delete missed class
+        </button>
+    </form>
+
+</div>

@@ -1,0 +1,7 @@
+﻿@using BLL.Models
+@model IEnumerable<Subject>
+
+@foreach (var subject in Model)
+{
+    @await Html.PartialAsync("_Subject", subject)
+}

@@ -1,0 +1,14 @@
+﻿@using BLL.Models
+@model Subject
+
+<form asp-action="Add" asp-controller="Subject" asp-antiforgery="true">
+    <div>
+        <div>
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" />
+        </div>
+    </div>
+    <button type="submit">
+        Save
+    </button>
+</form>

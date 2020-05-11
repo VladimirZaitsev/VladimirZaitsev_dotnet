@@ -29,7 +29,7 @@ namespace WebUI
 
             var connectionString = Configuration.GetConnectionString("local");
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+                options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
             services.AddAutoMapper(typeof(AutomapperBLLConfig));
 
@@ -47,6 +47,7 @@ namespace WebUI
 
             services.AddTransient<StudentService>();
             services.AddTransient<LecturerService>();
+            services.AddTransient<SubjectService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

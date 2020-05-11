@@ -104,8 +104,13 @@ namespace BLL.Services
 
         public async Task<Group> GetStudentGroupAsync(int studentId)
         {
-            var student = await _students.GetByIdAsync(studentId);
+            var student = await GetByIdAsync(studentId);
             var group =  await _groups.GetByIdAsync(student.GroupId);
+
+            if (group == null)
+            {
+                throw new ArgumentException("Group not found");
+            }
 
             var result = _mapper.Map<Group>(group);
 

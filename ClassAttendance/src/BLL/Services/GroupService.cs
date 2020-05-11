@@ -43,6 +43,13 @@ namespace BLL.Services
 
         public async Task DeleteAsync(int id)
         {
+            var hasRelatedRecords = _students.GetAll()
+                .Any(student => student.GroupId == id);
+            if (hasRelatedRecords) 
+            { 
+                throw new ArgumentException("Group have related records"); 
+            }
+
             await _groups.DeleteAsync(id);
         }
 

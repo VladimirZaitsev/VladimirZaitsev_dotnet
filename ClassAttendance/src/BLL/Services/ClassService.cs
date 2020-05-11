@@ -32,7 +32,7 @@ namespace BLL.Services
             }
 
             var sameTimeClasses = await _classes.GetAll()
-                .Where(lesson => lesson.BeginDate < item.EndDate || item.StartDate < lesson.EndDate)
+                .Where(lesson => lesson.StartDate < item.EndDate || item.StartDate < lesson.EndDate)
                 .ToListAsync();
 
             var isCabinetTaken = sameTimeClasses

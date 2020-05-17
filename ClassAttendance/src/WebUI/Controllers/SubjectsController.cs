@@ -1,23 +1,29 @@
 ﻿using BLL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 using WebUI.Facades;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
     public class SubjectsController : Controller
     {
         private readonly SubjectsFacade _subjectsFacade;
+        private readonly ILogger<SubjectsController> _logger;
 
-        public SubjectsController(SubjectsFacade subjectsFacade)
+        public SubjectsController(SubjectsFacade subjectsFacade, ILogger<SubjectsController> logger)
         {
             _subjectsFacade = subjectsFacade;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult List()
         {
             var models = _subjectsFacade.GetSubjects();
+            _logger.LogInformation("Fetched subject");
 
             return View(models);
         }
@@ -36,9 +42,23 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _subjectsFacade.AddSubjectAsync(subject);
+                try
+                {
+                    await _subjectsFacade.AddSubjectAsync(subject);
+                    _logger.LogInformation("Added subject");
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }
             }
 
             return View(subject);
@@ -58,9 +78,23 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _subjectsFacade.UpdateSubjectAsync(subject);
+                try
+                {
+                    await _subjectsFacade.UpdateSubjectAsync(subject);
+                    _logger.LogInformation("Updated subject");
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }
             }
 
             return View(subject);
@@ -69,9 +103,23 @@ namespace WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _subjectsFacade.DeleteSubjectAsync(id);
+            try
+            {
+                await _subjectsFacade.DeleteSubjectAsync(id);
+                _logger.LogInformation("Deleted subject");
 
-            return RedirectToAction(nameof(List));
+                return RedirectToAction(nameof(List));
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex.Message);
+                var error = new ErrorViewModel
+                {
+                    ErrorMessage = ex.Message,
+                };
+
+                return View("Error", error);
+            }
         }
     }
 }

@@ -1,23 +1,29 @@
 ﻿using BLL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 using WebUI.Facades;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
     public class LecturersController : Controller
     {
         private readonly LecturersFacade _lecturersFacade;
+        private readonly ILogger<LecturersController> _logger;
 
-        public LecturersController(LecturersFacade lecturersFacade)
+        public LecturersController(LecturersFacade lecturersFacade, ILogger<LecturersController> logger)
         {
             _lecturersFacade = lecturersFacade;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult List()
         {
             var models = _lecturersFacade.GetLecturers();
+            _logger.LogInformation("Fetched lecturers");
 
             return View(models);
         }
@@ -36,9 +42,23 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _lecturersFacade.AddLecturerAsync(lecturer);
+                try
+                {
+                    await _lecturersFacade.AddLecturerAsync(lecturer);
+                    _logger.LogInformation("Added new lecturer");
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }
             }
 
             return View(lecturer);
@@ -58,9 +78,23 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _lecturersFacade.UpdateLecturerAsync(lecturer);
+                try
+                {
+                    await _lecturersFacade.UpdateLecturerAsync(lecturer);
+                    _logger.LogInformation("Updated lecturer");
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }
             }
 
             return View(lecturer);
@@ -69,9 +103,22 @@ namespace WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _lecturersFacade.DeleteLecturerAsync(id);
+            try
+            {
+                await _lecturersFacade.DeleteLecturerAsync(id);
+                _logger.LogInformation("Deleted lecturer");
+                return RedirectToAction(nameof(List));
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex.Message);
+                var error = new ErrorViewModel
+                {
+                    ErrorMessage = ex.Message,
+                };
 
-            return RedirectToAction(nameof(List));
+                return View("Error", error);
+            }
         }
     }
 }

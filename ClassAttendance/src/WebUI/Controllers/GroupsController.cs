@@ -1,23 +1,29 @@
 ﻿using BLL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 using WebUI.Facades;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
     public class GroupsController : Controller
     {
         private readonly GroupsFacade _groupFacade;
+        private readonly ILogger<GroupsController> _logger;
 
-        public GroupsController(GroupsFacade groupService)
+        public GroupsController(GroupsFacade groupFacade, ILogger<GroupsController> logger)
         {
-            _groupFacade = groupService;
+            _groupFacade = groupFacade;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> List()
         {
             var models = await _groupFacade.GetGroupViewModelsAsync();
+            _logger.LogInformation("Fetched groups");
 
             return View(models);
         }
@@ -36,9 +42,22 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _groupFacade.AddGroupAsync(group);
+                try
+                {
+                    await _groupFacade.AddGroupAsync(group);
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }  
             }
 
             return View(group);
@@ -58,9 +77,22 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _groupFacade.UpdateGroupAsync(group);
+                try
+                {
+                    await _groupFacade.UpdateGroupAsync(group);
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }
             }
 
             return View(group);
@@ -69,9 +101,22 @@ namespace WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _groupFacade.DeleteGroupAsync(id);
+            try
+            {
+                await _groupFacade.DeleteGroupAsync(id);
 
-            return RedirectToAction(nameof(List));
+                return RedirectToAction(nameof(List));
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex.Message);
+                var error = new ErrorViewModel
+                {
+                    ErrorMessage = ex.Message,
+                };
+
+                return View("Error", error);
+            }
         }
     }
 }

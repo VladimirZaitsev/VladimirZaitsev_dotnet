@@ -2,16 +2,21 @@
 using System.Threading.Tasks;
 using WebUI.Models.ViewModels.StudentModel;
 using WebUI.Facades;
+using Microsoft.Extensions.Logging;
+using System;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
     public class StudentsController : Controller
     {
         private readonly StudentsFacade _studentsFacade;
+        private readonly ILogger<StudentsController> _logger;
 
-        public StudentsController(StudentsFacade studentsFacade)
+        public StudentsController(StudentsFacade studentsFacade, ILogger<StudentsController> logger)
         {
             _studentsFacade = studentsFacade;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -24,6 +29,7 @@ namespace WebUI.Controllers
         public async Task<IActionResult> List()
         {
             var studentList = await _studentsFacade.GetStudentListAsync();
+            _logger.LogInformation("Fetched students");
 
             return View(studentList);
         }
@@ -42,9 +48,23 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _studentsFacade.AddStudentAsync(model.Student);
+                try
+                {
+                    await _studentsFacade.AddStudentAsync(model.Student);
+                    _logger.LogInformation("Added student");
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }
             }
 
             return View(model);
@@ -64,9 +84,23 @@ namespace WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _studentsFacade.EditStudentAsync(model.Student);
+                try
+                {
+                    await _studentsFacade.EditStudentAsync(model.Student);
+                    _logger.LogInformation("Updated student");
 
-                return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(List));
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    var error = new ErrorViewModel
+                    {
+                        ErrorMessage = ex.Message,
+                    };
+
+                    return View("Error", error);
+                }
             }
 
             return View(model);
@@ -75,9 +109,23 @@ namespace WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _studentsFacade.DeleteStudentAsync(id);
+            try
+            {
+                await _studentsFacade.DeleteStudentAsync(id);
+                _logger.LogInformation("Deleted student");
 
-            return RedirectToAction(nameof(List));
+                return RedirectToAction(nameof(List));
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex.Message);
+                var error = new ErrorViewModel
+                {
+                    ErrorMessage = ex.Message,
+                };
+
+                return View("Error", error);
+            }
         }
     }
 }

@@ -65,13 +65,15 @@ namespace BLL.Services
             {
                 throw new InvalidOperationException("Class has related records");
             }
+            var cls = await GetByIdAsync(id);
 
-            await _classes.DeleteAsync(id);
+            await _classes.DeleteAsync(cls.Id);
         }
 
         public async Task<Class> GetByIdAsync(int id)
         {
-            var dto = await _classes.GetByIdAsync(id);
+            var dto = await _classes.GetAll()
+                .FirstOrDefaultAsync(cls => cls.Id == id);
 
             if (dto == null)
             {

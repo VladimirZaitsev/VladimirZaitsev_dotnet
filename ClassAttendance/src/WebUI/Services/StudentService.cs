@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using BLL.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebUI.Models.ViewModels.StudentModel;
 
@@ -43,7 +44,7 @@ namespace WebUI.Services
         {
             var model = new StudentManageViewModel
             {
-                Groups = _groupService.GetAll(),
+                Groups = _groupService.GetAll().ToList(),
                 Student = new Student(),
             };
 
@@ -54,7 +55,7 @@ namespace WebUI.Services
         {
             var model = new StudentManageViewModel
             {
-                Groups = _groupService.GetAll(),
+                Groups = _groupService.GetAll().ToList(),
                 Student = await _studentService.GetByIdAsync(studentId),
             };
 

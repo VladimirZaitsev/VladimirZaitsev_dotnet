@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using BLL.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebUI.Models.ViewModels.GroupModel;
 
@@ -44,7 +45,7 @@ namespace WebUI.Services
             var viewModel = new GroupViewModel
             {
                 Group = group,
-                Students = students,
+                Students = students.ToList(),
             };
 
             return viewModel;

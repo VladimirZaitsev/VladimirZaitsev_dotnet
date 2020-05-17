@@ -91,7 +91,7 @@ namespace WebUI.Controllers
         {
             var viewModels = await _missedClassService.GetStudentMissedClassesAsync(id);
 
-            return View("List", viewModels);
+            return View(nameof(List), viewModels);
         }
 
         [HttpGet]
@@ -99,7 +99,7 @@ namespace WebUI.Controllers
         {
             var viewModels = await _missedClassService.GetLecturerMissedClassesAsync(id);
 
-            return View("List", viewModels);
+            return View(nameof(List), viewModels);
         }
     }
 }

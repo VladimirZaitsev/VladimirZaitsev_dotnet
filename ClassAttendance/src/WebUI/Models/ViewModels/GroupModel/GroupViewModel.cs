@@ -7,6 +7,6 @@ namespace WebUI.Models.ViewModels.GroupModel
     {
         public Group Group { get; set; }
 
-        public IEnumerable<Student> Students { get; set; }
+        public List<Student> Students { get; set; }
     }
 }

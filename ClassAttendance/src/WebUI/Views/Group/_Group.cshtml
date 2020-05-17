@@ -11,8 +11,7 @@
         <h3>Students:</h3>
         @foreach (var student in Model.Students)
         {
-           var name = student.FirstName + " " + student.LastName;
-           <h4>@name</h4>
+           <h4>@($"{student.FirstName} {student.LastName}")</h4>
         }
     }
     

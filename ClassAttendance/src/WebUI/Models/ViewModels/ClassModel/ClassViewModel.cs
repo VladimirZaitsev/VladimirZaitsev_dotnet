@@ -11,7 +11,7 @@ namespace WebUI.Models.ViewModels.ClassModel
 
         public string SubjectName { get; set; }
 
-        public IEnumerable<string> GroupNames { get; set; }
+        public List<string> GroupNames { get; set; }
 
     }
 }

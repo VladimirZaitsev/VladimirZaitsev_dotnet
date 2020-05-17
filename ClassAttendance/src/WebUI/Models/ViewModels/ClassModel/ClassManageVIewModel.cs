@@ -8,11 +8,11 @@ namespace WebUI.Models.ViewModels.ClassModel
     {
         public int Id { get; set; }
 
-        public IEnumerable<Lecturer> Lecturers { get; set; }
+        public List<Lecturer> Lecturers { get; set; }
 
         public int LecturerId { get; set; }
 
-        public IEnumerable<Subject> Subjects { get; set; }
+        public List<Subject> Subjects { get; set; }
 
         public int SubjectId { get; set; }
 

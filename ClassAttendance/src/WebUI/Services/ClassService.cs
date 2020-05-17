@@ -63,8 +63,8 @@ namespace WebUI.Services
 
         public ClassManageViewModel GetClassManageViewModel()
         {
-            var lecturers = _lecturerService.GetAll();
-            var subjects = _subjectService.GetAll();
+            var lecturers = _lecturerService.GetAll().ToList();
+            var subjects = _subjectService.GetAll().ToList();
             var groups = _groupService.GetAll().ToList();
 
             var viewModel = new ClassManageViewModel
@@ -80,8 +80,8 @@ namespace WebUI.Services
         public async Task<ClassManageViewModel> GetClassManageViewModel(int id)
         {
             var item = await _classService.GetByIdAsync(id);
-            var lecturers = _lecturerService.GetAll();
-            var subjects = _subjectService.GetAll();
+            var lecturers = _lecturerService.GetAll().ToList();
+            var subjects = _subjectService.GetAll().ToList();
             var groups = _groupService.GetAll().ToList();
 
             var viewModel = new ClassManageViewModel

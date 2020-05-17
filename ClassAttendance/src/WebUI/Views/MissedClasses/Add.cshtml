@@ -1,0 +1,20 @@
+﻿@using WebUI.Models.ViewModels.MissedClass
+@using WebUI.Models.ViewModels.ClassModel
+@using BLL.Models
+@model MissedClassManageViewModel
+
+<form asp-action="Add" asp-controller="MissedClasses" asp-antiforgery="true">
+    <div>
+        <div>
+            <label asp-for="@Model.StudentId"></label>
+            <select asp-for="@Model.StudentId" asp-items="@(new SelectList(Model.Students, nameof(Student.Id), nameof(Student.LastName)))"></select>
+        </div>
+        <div>
+            <label asp-for="@Model.ClassId"></label>
+            <select asp-for="@Model.ClassId" asp-items="@(new SelectList(Model.Classes, nameof(ClassDisplayModel.Id), nameof(ClassDisplayModel.DisplayName)))"></select>
+        </div>
+        <div>
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>

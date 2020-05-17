@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebUI.Services;
 
 namespace WebUI
 {
@@ -47,7 +46,7 @@ namespace WebUI
 
             services.Scan(scan => scan
                 .FromAssembliesOf(typeof(Startup))
-                    .AddClasses(classes => classes.Where(cls => cls.Name.EndsWith("Service")))
+                    .AddClasses(classes => classes.Where(cls => cls.Name.EndsWith("Facade")))
                     .AsSelf()
                     .WithTransientLifetime());
         }

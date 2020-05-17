@@ -1,0 +1,28 @@
+﻿@using WebUI.Models.ViewModels.StudentModel
+@using BLL.Models
+@model StudentManageViewModel
+
+<form asp-action="Update" asp-controller="Students" asp-antiforgery="true">
+    <div>
+        <input type="hidden" asp-for="Student.Id" />
+        <div>
+            <label asp-for="Student.FirstName"></label>
+            <input type="text" asp-for="Student.FirstName" />
+        </div>
+        <div>
+            <label asp-for="Student.LastName"></label>
+            <input type="text" asp-for="Student.LastName" />
+        </div>
+        <div>
+            <label asp-for="Student.Address"></label>
+            <input type="text" asp-for="Student.Address" />
+        </div>
+        <div>
+            <label asp-for="Student.GroupId"></label>
+            <select asp-for="@Model.Student.GroupId" asp-items="@(new SelectList(Model.Groups, nameof(Group.Id), nameof(Group.Name)))"></select>
+        </div>
+        <div>
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>

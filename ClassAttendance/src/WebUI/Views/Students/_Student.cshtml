@@ -1,0 +1,27 @@
+﻿@using WebUI.Models.ViewModels.StudentModel
+@model StudentViewModel
+
+<div class="card card-body bg-dark my-auto text-light" style="width: 60%">
+    <h4>@($"{Model.FirstName} {Model.LastName}")</h4>
+    <h3>@Model.Address</h3>
+    <h3>@Model.GroupName</h3>
+
+    <form asp-action="Update" asp-controller="Students" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-success">
+            Update student
+        </button>
+    </form>
+
+    <form asp-action="Delete" asp-controller="Students" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-danger">
+            Delete student
+        </button>
+    </form>
+
+    <form asp-action="Student" asp-controller="MissedClasses" asp-route-id="@Model.Id" method="get">
+        <button type="submit" class="btn btn-primary">
+            Get missed lectures
+        </button>
+    </form>
+
+</div>

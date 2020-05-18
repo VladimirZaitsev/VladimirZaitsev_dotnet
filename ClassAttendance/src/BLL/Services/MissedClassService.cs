@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,21 +37,21 @@ namespace BLL.Services
         {
             if (missedClass == null)
             {
-                throw new ArgumentNullException(nameof(missedClass));
+                throw new BusinessLogicException(nameof(missedClass));
             }
 
             var student = await _students.GetByIdAsync(missedClass.StudentId);
 
             if (student == null)
             {
-                throw new ArgumentException("Student not found");
+                throw new BusinessLogicException("Student not found");
             }
 
             var lesson = await _classes.GetByIdAsync(missedClass.ClassId);
 
             if (lesson == null)
             {
-                throw new ArgumentException("Class not found");
+                throw new BusinessLogicException("Class not found");
             }
 
             var dto = _mapper.Map<MissedLecturesDto>(missedClass);
@@ -73,21 +73,21 @@ namespace BLL.Services
 
             if (missedClass == null)
             {
-                throw new ArgumentNullException(nameof(missedClass));
+                throw new BusinessLogicException(nameof(missedClass));
             }
 
             var student = await _students.GetByIdAsync(missedClass.StudentId);
 
             if (student == null)
             {
-                throw new ArgumentException("Student not found");
+                throw new BusinessLogicException("Student not found");
             }
 
             var lesson = await _classes.GetByIdAsync(missedClass.ClassId);
 
             if (lesson == null)
             {
-                throw new ArgumentException("Class not found");
+                throw new BusinessLogicException("Class not found");
             }
 
             var dto = _mapper.Map<MissedLecturesDto>(missedClass);
@@ -100,7 +100,7 @@ namespace BLL.Services
 
             if (missedClass == null)
             {
-                throw new ArgumentException("Lecture not found");
+                throw new BusinessLogicException("Lecture not found");
             }
 
             var model = _mapper.Map<MissedClass>(missedClass);
@@ -122,7 +122,7 @@ namespace BLL.Services
 
             if (student == null)
             {
-                throw new ArgumentException("Student not found");
+                throw new BusinessLogicException("Student not found");
             }
 
             var missedClasses = _missedClasses
@@ -157,7 +157,7 @@ namespace BLL.Services
 
             if (lecturer == null)
             {
-                throw new ArgumentException("Lecturer not found");
+                throw new BusinessLogicException("Lecturer not found");
             }
 
             var lectures = from lecture in _missedClasses.GetAll()

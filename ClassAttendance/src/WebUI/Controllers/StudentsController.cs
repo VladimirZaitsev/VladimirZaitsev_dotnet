@@ -5,6 +5,7 @@ using WebUI.Facades;
 using Microsoft.Extensions.Logging;
 using System;
 using WebUI.Models;
+using BLL.Exceptions;
 
 namespace WebUI.Controllers
 {
@@ -18,6 +19,8 @@ namespace WebUI.Controllers
             _studentsFacade = studentsFacade;
             _logger = logger;
         }
+
+        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
 
         [HttpGet]
         public IActionResult Index()
@@ -55,12 +58,13 @@ namespace WebUI.Controllers
 
                     return RedirectToAction(nameof(List));
                 }
-                catch (ArgumentException ex)
+                catch (BusinessLogicException ex)
                 {
                     _logger.LogError(ex.Message);
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
+                        ReturnUrl = Referer,
                     };
 
                     return View("Error", error);
@@ -91,12 +95,13 @@ namespace WebUI.Controllers
 
                     return RedirectToAction(nameof(List));
                 }
-                catch (ArgumentException ex)
+                catch (BusinessLogicException ex)
                 {
                     _logger.LogError(ex.Message);
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
+                        ReturnUrl = Referer,
                     };
 
                     return View("Error", error);
@@ -116,12 +121,13 @@ namespace WebUI.Controllers
 
                 return RedirectToAction(nameof(List));
             }
-            catch (ArgumentException ex)
+            catch (BusinessLogicException ex)
             {
                 _logger.LogError(ex.Message);
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
+                    ReturnUrl = Referer,
                 };
 
                 return View("Error", error);

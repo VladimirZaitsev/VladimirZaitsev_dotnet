@@ -1,13 +1,13 @@
 ﻿using BLL.Interfaces;
 using DAL.Dtos;
 using DAL.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BLL.Models;
 using AutoMapper;
+using BLL.Exceptions;
 
 namespace BLL.Services
 {
@@ -28,7 +28,7 @@ namespace BLL.Services
         {
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new BusinessLogicException(nameof(item));
             }
 
             var sameTimeClasses = await _classes.GetAll()
@@ -40,7 +40,7 @@ namespace BLL.Services
 
             if (isCabinetTaken)
             {
-                throw new ArgumentException("Cabinet is already taken");
+                throw new BusinessLogicException("Cabinet is already taken");
             }
 
             var isLecturerBusy = sameTimeClasses
@@ -48,7 +48,7 @@ namespace BLL.Services
 
             if (isLecturerBusy)
             {
-                throw new ArgumentException("Lecturer has other class at that time");
+                throw new BusinessLogicException("Lecturer has other class at that time");
             }
 
             var dto = _mapper.Map<ClassDto>(item);
@@ -63,7 +63,7 @@ namespace BLL.Services
 
             if (hasRecords)
             {
-                throw new InvalidOperationException("Class has related records");
+                throw new BusinessLogicException("Class has related records");
             }
             var cls = await GetByIdAsync(id);
 
@@ -77,7 +77,7 @@ namespace BLL.Services
 
             if (dto == null)
             {
-                throw new ArgumentException("Class not found");
+                throw new BusinessLogicException("Class not found");
             }
 
             var model = _mapper.Map<Class>(dto);
@@ -98,7 +98,7 @@ namespace BLL.Services
 
             if (lesson == null)
             {
-                throw new ArgumentException("Class not found");
+                throw new BusinessLogicException("Class not found");
             }
 
             var dto = _mapper.Map<ClassDto>(item);

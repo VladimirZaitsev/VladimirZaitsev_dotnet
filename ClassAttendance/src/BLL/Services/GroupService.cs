@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,12 +28,12 @@ namespace BLL.Services
         {
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new BusinessLogicException(nameof(item));
             }
 
             if (string.IsNullOrEmpty(item.Name))
             {
-                throw new ArgumentException("Group name can't be empty");
+                throw new BusinessLogicException("Group name can't be empty");
             }
 
             var dto = _mapper.Map<GroupDto>(item);
@@ -47,7 +47,7 @@ namespace BLL.Services
                 .Any(student => student.GroupId == id);
             if (hasRelatedRecords) 
             { 
-                throw new ArgumentException("Group have related records"); 
+                throw new BusinessLogicException("Group have related records"); 
             }
 
             await _groups.DeleteAsync(id);
@@ -78,7 +78,7 @@ namespace BLL.Services
 
             if (group == null)
             {
-                throw new ArgumentException("Group not found");
+                throw new BusinessLogicException("Group not found");
             }
 
             var model = _mapper.Map<Group>(group);
@@ -89,12 +89,12 @@ namespace BLL.Services
         {
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new BusinessLogicException(nameof(item));
             }
 
             if (string.IsNullOrEmpty(item.Name))
             {
-                throw new ArgumentException("Group name can't be empty");
+                throw new BusinessLogicException("Group name can't be empty");
             }
 
             var dto = _mapper.Map<GroupDto>(item);

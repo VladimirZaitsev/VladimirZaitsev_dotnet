@@ -1,4 +1,5 @@
-﻿using BLL.Models;
+﻿using BLL.Exceptions;
+using BLL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,6 +19,8 @@ namespace WebUI.Controllers
             _subjectsFacade = subjectsFacade;
             _logger = logger;
         }
+
+        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
 
         [HttpGet]
         public IActionResult List()
@@ -49,12 +52,13 @@ namespace WebUI.Controllers
 
                     return RedirectToAction(nameof(List));
                 }
-                catch (ArgumentException ex)
+                catch (BusinessLogicException ex)
                 {
                     _logger.LogError(ex.Message);
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
+                        ReturnUrl = Referer,
                     };
 
                     return View("Error", error);
@@ -85,12 +89,13 @@ namespace WebUI.Controllers
 
                     return RedirectToAction(nameof(List));
                 }
-                catch (ArgumentException ex)
+                catch (BusinessLogicException ex)
                 {
                     _logger.LogError(ex.Message);
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
+                        ReturnUrl = Referer,
                     };
 
                     return View("Error", error);
@@ -110,12 +115,13 @@ namespace WebUI.Controllers
 
                 return RedirectToAction(nameof(List));
             }
-            catch (ArgumentException ex)
+            catch (BusinessLogicException ex)
             {
                 _logger.LogError(ex.Message);
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
+                    ReturnUrl = Referer,
                 };
 
                 return View("Error", error);

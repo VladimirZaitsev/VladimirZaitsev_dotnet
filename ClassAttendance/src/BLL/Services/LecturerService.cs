@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,17 +38,17 @@ namespace BLL.Services
         {
             if (lecturer == null)
             {
-                throw new ArgumentNullException(nameof(lecturer));
+                throw new BusinessLogicException(nameof(lecturer));
             }
 
             if (string.IsNullOrEmpty(lecturer.FirstName))
             {
-                throw new ArgumentException(nameof(lecturer.FirstName));
+                throw new BusinessLogicException(nameof(lecturer.FirstName));
             }
 
             if (string.IsNullOrEmpty(lecturer.LastName))
             {
-                throw new ArgumentException(nameof(lecturer.LastName));
+                throw new BusinessLogicException(nameof(lecturer.LastName));
             }
 
             var dto = _mapper.Map<LecturerDto>(lecturer);
@@ -66,7 +66,7 @@ namespace BLL.Services
 
             if (hasRecords)
             {
-                throw new InvalidOperationException("Student has related records");
+                throw new BusinessLogicException("Student has related records");
             }
 
             await _persons.DeleteAsync(id);
@@ -78,7 +78,7 @@ namespace BLL.Services
 
             if (lecturer == null)
             {
-                throw new ArgumentException("Student not found");
+                throw new BusinessLogicException("Student not found");
             }
 
             var model = _mapper.Map<Lecturer>(lecturer);
@@ -89,17 +89,17 @@ namespace BLL.Services
         {
             if (lecturer == null)
             {
-                throw new ArgumentNullException(nameof(lecturer));
+                throw new BusinessLogicException(nameof(lecturer));
             }
 
             if (string.IsNullOrEmpty(lecturer.FirstName))
             {
-                throw new ArgumentException(nameof(lecturer.FirstName));
+                throw new BusinessLogicException(nameof(lecturer.FirstName));
             }
 
             if (string.IsNullOrEmpty(lecturer.LastName))
             {
-                throw new ArgumentException(nameof(lecturer.LastName));
+                throw new BusinessLogicException(nameof(lecturer.LastName));
             }
 
             var dto = _mapper.Map<LecturerDto>(lecturer);

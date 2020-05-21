@@ -12,15 +12,15 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 {
     public class StudentController : IStudentController
     {
-        private readonly IService<Student> _studentService;
-        private readonly IGroupService _groupService;
+        private readonly IStudentService _studentService;
+        private readonly IService<Group> _groupService;
         private readonly IMenuView<Student, StudentViewModel> _studentMenu;
         private readonly IMapper _mapper;
 
         private bool exitFlag;
 
-        public StudentController(IService<Student> studentService,
-            IGroupService groupService,
+        public StudentController(IStudentService studentService,
+            IService<Group> groupService,
             IMenuView<Student, StudentViewModel> studentMenu,
             IMapper mapper)
         {
@@ -100,7 +100,7 @@ namespace ConsoleUI.Contollers.Implementations.SubControllers
 
             foreach (var student in students)
             {
-                var group = await _groupService.GetGroupByStudentIdAsync(student.Id);
+                var group = await _studentService.GetStudentGroupAsync(student.Id);
                 var viewModel = _mapper.Map<StudentViewModel>(student);
                 viewModel.GroupName = group.Name;
 

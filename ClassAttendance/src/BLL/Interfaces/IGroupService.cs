@@ -6,8 +6,6 @@ namespace BLL.Interfaces
 {
     public interface IGroupService : IService<Group>
     {
-        Task<Group> GetGroupByStudentIdAsync(int studentId);
-
-        Task<IEnumerable<Group>> GetGroupsByLecturerIdAsync(int lecturerId);
+        Task<IEnumerable<Student>> GetAllStudentsAsync(int groupId);
     }
 }

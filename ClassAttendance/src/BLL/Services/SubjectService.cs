@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class SubjectService : ISubjectService
+    internal class SubjectService : ISubjectService
     {
         private readonly IStore<SubjectDto> _subjects;
         private readonly IStore<ClassDto> _classes;
@@ -32,12 +32,12 @@ namespace BLL.Services
         {
             if (subject == null)
             {
-                throw new ArgumentNullException(nameof(subject));
+                throw new BusinessLogicException(nameof(subject));
             }
 
             if (string.IsNullOrEmpty(subject.Name))
             {
-                throw new ArgumentException(nameof(subject.Name));
+                throw new BusinessLogicException(nameof(subject.Name));
             }
 
             var dto = _mapper.Map<SubjectDto>(subject);
@@ -53,7 +53,7 @@ namespace BLL.Services
 
             if (hasRecords)
             {
-                throw new InvalidOperationException("Student has related records");
+                throw new BusinessLogicException("Student has related records");
             }
 
             await _subjects.DeleteAsync(subjectId);
@@ -65,7 +65,7 @@ namespace BLL.Services
 
             if (result == null)
             {
-                throw new ArgumentException("Subject not found");
+                throw new BusinessLogicException("Subject not found");
             }
 
             var model = _mapper.Map<Subject>(result);
@@ -85,7 +85,7 @@ namespace BLL.Services
         {
             if (subject == null)
             {
-                throw new ArgumentNullException(nameof(subject));
+                throw new BusinessLogicException(nameof(subject));
             }
 
             var dto = _mapper.Map<SubjectDto>(subject);

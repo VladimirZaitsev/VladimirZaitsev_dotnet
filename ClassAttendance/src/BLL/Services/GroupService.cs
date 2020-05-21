@@ -1,24 +1,26 @@
 ﻿using AutoMapper;
+using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class GroupService : IGroupService
+    internal class GroupService : IGroupService
     {
         private readonly IStore<GroupDto> _groups;
+        private readonly IStore<StudentDto> _students;
         private readonly IMapper _mapper;
 
-        public GroupService(IStore<GroupDto> groups, IMapper mapper)
+        public GroupService(IStore<GroupDto> groups, IStore<StudentDto> students, IMapper mapper)
         {
             _groups = groups;
+            _students = students;
             _mapper = mapper;
         }
 
@@ -26,12 +28,12 @@ namespace BLL.Services
         {
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new BusinessLogicException(nameof(item));
             }
 
             if (string.IsNullOrEmpty(item.Name))
             {
-                throw new ArgumentException("Group name can't be empty");
+                throw new BusinessLogicException("Group name can't be empty");
             }
 
             var dto = _mapper.Map<GroupDto>(item);
@@ -41,6 +43,13 @@ namespace BLL.Services
 
         public async Task DeleteAsync(int id)
         {
+            var hasRelatedRecords = _students.GetAll()
+                .Any(student => student.GroupId == id);
+            if (hasRelatedRecords) 
+            { 
+                throw new BusinessLogicException("Group have related records"); 
+            }
+
             await _groups.DeleteAsync(id);
         }
 
@@ -52,52 +61,27 @@ namespace BLL.Services
             return models;
         }
 
+        public async Task<IEnumerable<Student>> GetAllStudentsAsync(int groupId)
+        {
+            var students = await _students.GetAll()
+                .Where(student => student.GroupId == groupId)
+                .ToListAsync();
+
+            var result = _mapper.Map<IEnumerable<Student>>(students);
+
+            return result;
+        }
+
         public async Task<Group> GetByIdAsync(int id)
         {
             var group = await _groups.GetByIdAsync(id);
 
             if (group == null)
             {
-                throw new ArgumentException("Group not found");
+                throw new BusinessLogicException("Group not found");
             }
 
             var model = _mapper.Map<Group>(group);
-            return model;
-        }
-
-        public async Task<IEnumerable<Group>> GetGroupsByLecturerIdAsync(int lecturerId)
-        {
-            var groups = await _groups.GetAll()
-                .Where(group => group.LecturerId == lecturerId)
-                .ToListAsync();
-
-            var hasRecords = groups.Any();
-
-            if (!hasRecords)
-            {
-                throw new ArgumentException("Groups are not found");
-            }
-
-            var models = _mapper.Map<IEnumerable<Group>>(groups);
-
-            return models;
-        }
-
-        public async Task<Group> GetGroupByStudentIdAsync(int studentId)
-        {
-            var groupQuery = from grp in _groups.GetAll()
-                             where grp.StudentIds.Contains(studentId)
-                             select grp;
-
-            var group = await groupQuery.SingleOrDefaultAsync();
-
-            if (group == null)
-            {
-                throw new ArgumentException("Group not found");
-            }
-
-            var model = _mapper.Map<Group>(group);
-
             return model;
         }
 
@@ -105,12 +89,12 @@ namespace BLL.Services
         {
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new BusinessLogicException(nameof(item));
             }
 
             if (string.IsNullOrEmpty(item.Name))
             {
-                throw new ArgumentException("Group name can't be empty");
+                throw new BusinessLogicException("Group name can't be empty");
             }
 
             var dto = _mapper.Map<GroupDto>(item);

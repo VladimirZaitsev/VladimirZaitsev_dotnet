@@ -5,10 +5,13 @@ using DAL.Core;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebUI.Identity;
+using WebUI.Models.Account;
 
 namespace WebUI
 {
@@ -30,6 +33,10 @@ namespace WebUI
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
+            var identityConnectionString = Configuration.GetConnectionString("identity");
+            services.AddDbContext<UserContext>(options =>
+                options.UseSqlServer(identityConnectionString), ServiceLifetime.Scoped);
+
             services.AddAutoMapper(typeof(AutomapperBLLConfig));
 
             services.Scan(scan => scan
@@ -49,6 +56,10 @@ namespace WebUI
                     .AddClasses(classes => classes.Where(cls => cls.Name.EndsWith("Facade")))
                     .AsSelf()
                     .WithTransientLifetime());
+
+            services.AddIdentity<User, IdentityRole>()
+              .AddEntityFrameworkStores<UserContext>()
+              .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +67,8 @@ namespace WebUI
         {
             if (env.IsDevelopment())
             {
+                var context = app?.ApplicationServices.GetService<UserContext>();
+                DBIntializer.Seed(context).GetAwaiter().GetResult();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -66,6 +79,9 @@ namespace WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

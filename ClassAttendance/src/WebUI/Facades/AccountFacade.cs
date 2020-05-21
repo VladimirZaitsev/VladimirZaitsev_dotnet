@@ -11,6 +11,12 @@ namespace WebUI.Facades
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
 
+        public AccountFacade(SignInManager<User> signInManager, UserManager<User> userManager)
+        {
+            _signInManager = signInManager;
+            _userManager = userManager;
+        }
+
         public async Task RegisterAsync(RegisterModel model)
         {
             var user = new User
@@ -18,7 +24,7 @@ namespace WebUI.Facades
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
-                UserName = $"{model.FirstName} {model.LastName}",
+                UserName = $"{model.FirstName}{model.LastName}",
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

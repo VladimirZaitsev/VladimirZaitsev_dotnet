@@ -19,17 +19,17 @@ namespace StudentApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Students()
+        [HttpGet("Students")]
+        public IActionResult GetAll()
         {
             var result = _studentService.GetAll();
             _logger.LogInformation("Fetched students");
 
-            return Json(result);
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Student(int id)
+        [HttpGet("Student")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
             {
@@ -40,11 +40,12 @@ namespace StudentApi.Controllers
             }
             catch (BusinessLogicException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] Student student)
         {
             try
@@ -56,11 +57,12 @@ namespace StudentApi.Controllers
             }
             catch (BusinessLogicException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -72,24 +74,44 @@ namespace StudentApi.Controllers
             }
             catch (BusinessLogicException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Updated([FromBody] Student student)
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] Student student)
         {
             try
             {
-               await _studentService.UpdateAsync(student);
+                await _studentService.UpdateAsync(student);
                 _logger.LogInformation("Added new student");
 
                 return Ok();
             }
             catch (BusinessLogicException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("StudentGroup")]
+        public async Task<IActionResult> StudentGroup(int id)
+        {
+            try
+            {
+                var group = await _studentService.GetStudentGroupAsync(id);
+                _logger.LogInformation("Fetched student group");
+
+                return Ok(group);
+            }
+            catch (BusinessLogicException ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }

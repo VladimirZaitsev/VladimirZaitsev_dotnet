@@ -1,26 +1,36 @@
 ﻿using BLL.Interfaces;
 using BLL.Models;
+using RestEase;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using WebUI.Api;
 using WebUI.Models.ViewModels.StudentModel;
 
 namespace WebUI.Facades
 {
     public class StudentsFacade
     {
-        private readonly IStudentService _studentService;
+        private const string ClientName = "StudentApi";
+        private readonly IStudentApi _studentApi;
         private readonly IService<Group> _groupService;
 
-        public StudentsFacade(IStudentService studentService, IService<Group> groupService)
+        public StudentsFacade(IHttpClientFactory httpClientFactory, IService<Group> groupService)
         {
-            _studentService = studentService;
+            if (httpClientFactory is null)
+            {
+                throw new System.ArgumentNullException(nameof(httpClientFactory));
+            }
+
+            var client = httpClientFactory.CreateClient(ClientName);
+            _studentApi = new RestClient(client).For<IStudentApi>();
             _groupService = groupService;
         }
 
         public async Task<IEnumerable<StudentViewModel>> GetStudentListAsync()
         {
-            var students = _studentService.GetAll();
+            var students = await _studentApi.GetStudents();
 
             // Unable to do this using Select because i'm getting error of running second operation
             // Before first was completed
@@ -56,7 +66,7 @@ namespace WebUI.Facades
             var model = new StudentManageViewModel
             {
                 Groups = _groupService.GetAll().ToList(),
-                Student = await _studentService.GetByIdAsync(studentId),
+                Student = await _studentApi.GetStudentAsync(studentId),
             };
 
             return model;
@@ -64,22 +74,22 @@ namespace WebUI.Facades
 
         public async Task AddStudentAsync(Student student)
         {
-            await _studentService.AddAsync(student);
+            await _studentApi.AddStudentAsync(student);
         }
 
         public async Task EditStudentAsync(Student student)
         {
-            await _studentService.UpdateAsync(student);
+            await _studentApi.UpdateStudentAsync(student);
         }
 
         public async Task DeleteStudentAsync(int studentId)
         {
-            await _studentService.DeleteAsync(studentId);
+            await _studentApi.DeleteStudentAsync(studentId);
         }
 
         private async Task<string> GetGroupNameAsync(int studentId)
         {
-            var group = await _studentService.GetStudentGroupAsync(studentId);
+            var group = await _studentApi.GetStudentGroupAsync(studentId);
 
             return group.Name;
         }

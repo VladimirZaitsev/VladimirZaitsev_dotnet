@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using DAL.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +34,9 @@ namespace StudentApi
                     .AddClasses(classes => classes.AssignableTo(typeof(IStudentService)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
+            var connectionString = Configuration.GetConnectionString("local");
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using BLL.Exceptions;
 using BLL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,6 +24,7 @@ namespace WebUI.Controllers
 
         public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -32,6 +34,7 @@ namespace WebUI.Controllers
             return View(models);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -40,6 +43,7 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(Class item, List<string> groups)
@@ -69,6 +73,7 @@ namespace WebUI.Controllers
             return View(item);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -77,6 +82,7 @@ namespace WebUI.Controllers
             return View(item);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(Class item, List<string> groups)
@@ -106,6 +112,7 @@ namespace WebUI.Controllers
             return View(item);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

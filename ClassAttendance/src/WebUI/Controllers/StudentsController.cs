@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using WebUI.Models;
 using BLL.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers
 {
@@ -22,12 +23,7 @@ namespace WebUI.Controllers
 
         public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -37,6 +33,7 @@ namespace WebUI.Controllers
             return View(studentList);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -45,6 +42,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(StudentManageViewModel model)
@@ -74,6 +72,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -82,6 +81,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(StudentManageViewModel model)
@@ -111,6 +111,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

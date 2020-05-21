@@ -1,4 +1,5 @@
 ﻿using BLL.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,6 +23,7 @@ namespace WebUI.Controllers
 
         public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
@@ -30,6 +32,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
@@ -58,6 +61,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
@@ -66,6 +70,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
@@ -94,6 +99,7 @@ namespace WebUI.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> SignOut()
         {

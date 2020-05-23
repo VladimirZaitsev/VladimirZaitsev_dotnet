@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "src\DAL\DAL.csproj",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "src\WebUI\WebUI.csproj", "{28B4010A-53F8-4AFA-A038-5B55AC8D1F80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentApi", "src\StudentApi\StudentApi.csproj", "{AE3BCE43-B139-4D12-BCC7-44F582050F22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassAttendanceAPI", "src\StudentApi\ClassAttendanceAPI.csproj", "{AE3BCE43-B139-4D12-BCC7-44F582050F22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

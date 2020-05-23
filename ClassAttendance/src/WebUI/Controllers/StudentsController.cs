@@ -3,12 +3,15 @@ using System.Threading.Tasks;
 using WebUI.Models.ViewModels.StudentModel;
 using WebUI.Facades;
 using Microsoft.Extensions.Logging;
-using System;
 using WebUI.Models;
 using BLL.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using WebUI.Identity;
+using WebUI.Extensions;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class StudentsController : Controller
     {
         private readonly StudentsFacade _studentsFacade;
@@ -20,14 +23,7 @@ namespace WebUI.Controllers
             _logger = logger;
         }
 
-        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
-
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -64,7 +60,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -101,7 +97,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -127,7 +123,7 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);

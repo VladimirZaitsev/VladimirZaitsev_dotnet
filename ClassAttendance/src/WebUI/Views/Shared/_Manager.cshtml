@@ -1,0 +1,23 @@
+﻿@using WebUI.Helpers
+
+<div class="navbar-collapse collapse">
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            @Html.CreateMenu("Students")
+            @Html.CreateMenu("Lecturers")
+            @Html.CreateMenu("Subjects")
+            @Html.CreateMenu("Groups")
+            @Html.CreateMenu("Classes")
+            @Html.CreateMenu("MissedClasses")
+            <li class="nav-item my-auto">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="List">View users</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="SignOut">Sign Out</a>
+        </ul>
+    </div>
+</div>

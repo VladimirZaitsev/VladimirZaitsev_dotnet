@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WebUI.Identity
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +8,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
+@{
+    var isUser = User.IsInRole(Roles.User);
+    var isManager = User.IsInRole(Roles.Manager);
+}
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -16,79 +22,18 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <div class="dropdown">
-                                <button type="button" class="dropdown-toggle" style="background: none; border:none" data-toggle="dropdown">
-                                    Students
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="List">View students</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Add">Add new student</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <div class="dropdown">
-                                <button type="button" class="dropdown-toggle" style="background: none; border:none" data-toggle="dropdown">
-                                    Lecturers
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Lecturers" asp-action="List">View lecturers</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Lecturers" asp-action="Add">Add new lecturer</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <div class="dropdown">
-                                <button type="button" class="dropdown-toggle" style="background: none; border:none" data-toggle="dropdown">
-                                    Subject
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Subjects" asp-action="List">View subjects</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Subjects" asp-action="Add">Add new subject</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <div class="dropdown">
-                                <button type="button" class="dropdown-toggle" style="background: none; border:none" data-toggle="dropdown">
-                                    Groups
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="List">View groups</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="Add">Add new group</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <div class="dropdown">
-                                <button type="button" class="dropdown-toggle" style="background: none; border:none" data-toggle="dropdown">
-                                    Classes
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Classes" asp-action="List">View classes</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Classes" asp-action="Add">Add new class</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <div class="dropdown">
-                                <button type="button" class="dropdown-toggle" style="background: none; border:none" data-toggle="dropdown">
-                                    Missed classes
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="MissedClasses" asp-action="List">View missed classes</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="MissedClasses" asp-action="Add">Add new missed classes</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <partial name="_AnonymousUser" />
+                }
+                else if (isUser)
+                {
+                    <partial name="_User" />
+                }
+                else if (isManager)
+                {
+                    <partial name="_Manager" />
+                }
             </div>
         </nav>
     </header>
@@ -100,8 +45,9 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - WebUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - WebUI
         </div>
+        <author></author>
     </footer>
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

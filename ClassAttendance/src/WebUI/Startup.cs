@@ -1,14 +1,18 @@
 using AutoMapper;
 using BLL.Automapper;
 using BLL.Interfaces;
+using BLL.Models;
 using DAL.Core;
+using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebUI.Identity;
 
 namespace WebUI
 {
@@ -49,6 +53,18 @@ namespace WebUI
                     .AddClasses(classes => classes.Where(cls => cls.Name.EndsWith("Facade")))
                     .AsSelf()
                     .WithTransientLifetime());
+
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(IIdentityService))
+                    .AddClasses(classes => classes.AssignableTo(typeof(IIdentityService)))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime());
+
+            services.AddSingleton<DBIntializer>();
+
+            services.AddIdentity<UserDto, IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationContext>()
+              .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +72,8 @@ namespace WebUI
         {
             if (env.IsDevelopment())
             {
+                var dbInitilizer = app?.ApplicationServices.GetService<DBIntializer>();
+                dbInitilizer.Seed().GetAwaiter().GetResult();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -66,6 +84,9 @@ namespace WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,0 +1,20 @@
+﻿@using WebUI.Models.Account
+@model LoginModel
+
+<form asp-action="Login" asp-controller="Account" asp-antiforgery="true" method="post">
+    <div>
+        <div>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" />
+        </div>
+
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" />
+        </div>
+
+        <div>
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+</form>

@@ -6,11 +6,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebUI.Extensions;
 using WebUI.Facades;
+using WebUI.Identity;
 using WebUI.Models;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class ClassesController : Controller
     {
         private readonly ClassesFacade _classesFacade;
@@ -22,8 +25,6 @@ namespace WebUI.Controllers
             _logger = logger;
         }
 
-        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
-
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> List()
@@ -34,7 +35,6 @@ namespace WebUI.Controllers
             return View(models);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -43,7 +43,6 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(Class item, List<string> groups)
@@ -63,7 +62,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -73,7 +72,6 @@ namespace WebUI.Controllers
             return View(item);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -82,7 +80,6 @@ namespace WebUI.Controllers
             return View(item);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(Class item, List<string> groups)
@@ -102,7 +99,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -112,7 +109,6 @@ namespace WebUI.Controllers
             return View(item);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -130,7 +126,7 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);

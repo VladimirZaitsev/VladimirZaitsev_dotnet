@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BLL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using WebUI.Extensions;
 using WebUI.Facades;
+using WebUI.Identity;
 using WebUI.Models;
-using WebUI.Models.Account;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class UsersController : Controller
     {
         private readonly UsersFacade _usersFacade;
@@ -20,10 +23,7 @@ namespace WebUI.Controllers
             _logger = logger;
         }
 
-        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
-
         [HttpGet]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> List()
         {
             var users = await _usersFacade.GetUsersAsync();
@@ -32,7 +32,6 @@ namespace WebUI.Controllers
             return View(users);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(string id)
         {
@@ -41,7 +40,6 @@ namespace WebUI.Controllers
             return View(user);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         public async Task<IActionResult> Update(User user)
         {
@@ -58,14 +56,13 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);
             }
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
@@ -82,7 +79,7 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);

@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
+using WebUI.Extensions;
 using WebUI.Facades;
 using WebUI.Models;
 using WebUI.Models.Account;
@@ -12,16 +12,14 @@ namespace WebUI.Controllers
 {
     public class AccountController : Controller
     {
-        private ILogger<AccountController> _logger;
-        private AccountFacade _accountFacade;
+        private readonly ILogger<AccountController> _logger;
+        private readonly AccountFacade _accountFacade;
 
         public AccountController(ILogger<AccountController> logger, AccountFacade accountFacade)
         {
             _logger = logger;
             _accountFacade = accountFacade;
         }
-
-        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
 
         [AllowAnonymous]
         [HttpGet]
@@ -51,7 +49,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -89,7 +87,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);

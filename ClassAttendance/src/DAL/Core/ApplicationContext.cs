@@ -1,10 +1,11 @@
 ﻿using DAL.Dtos;
 using DAL.Extensions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Core
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : IdentityDbContext<UserDto>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

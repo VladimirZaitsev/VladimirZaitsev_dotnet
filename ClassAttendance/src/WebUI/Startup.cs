@@ -1,7 +1,9 @@
 using AutoMapper;
 using BLL.Automapper;
 using BLL.Interfaces;
+using BLL.Models;
 using DAL.Core;
+using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using WebUI.Identity;
-using WebUI.Models.Account;
 
 namespace WebUI
 {
@@ -34,10 +35,6 @@ namespace WebUI
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
-            var identityConnectionString = Configuration.GetConnectionString("identity");
-            services.AddDbContext<UserContext>(options =>
-                options.UseSqlServer(identityConnectionString), ServiceLifetime.Scoped);
-
             services.AddAutoMapper(typeof(AutomapperBLLConfig));
 
             services.Scan(scan => scan
@@ -58,8 +55,16 @@ namespace WebUI
                     .AsSelf()
                     .WithTransientLifetime());
 
-            services.AddIdentity<User, IdentityRole>()
-              .AddEntityFrameworkStores<UserContext>()
+            services.Scan(scan => scan
+                .FromAssembliesOf(typeof(IIdentityService))
+                    .AddClasses(classes => classes.AssignableTo(typeof(IIdentityService)))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime());
+
+            services.AddSingleton<DBIntializer>();
+
+            services.AddIdentity<UserDto, IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationContext>()
               .AddDefaultTokenProviders();
 
             services.AddHttpClient("StudentApi", options => options.BaseAddress = new Uri(Configuration["ApiUrls:StudentApi"]));
@@ -71,8 +76,8 @@ namespace WebUI
         {
             if (env.IsDevelopment())
             {
-                var context = app?.ApplicationServices.GetService<UserContext>();
-                DBIntializer.Seed(context).GetAwaiter().GetResult();
+                var dbInitilizer = app?.ApplicationServices.GetService<DBIntializer>();
+                dbInitilizer.Seed().GetAwaiter().GetResult();
                 app.UseDeveloperExceptionPage();
             }
             else

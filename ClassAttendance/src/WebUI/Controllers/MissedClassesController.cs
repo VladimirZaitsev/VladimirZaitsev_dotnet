@@ -3,14 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebUI.Models.ViewModels.MissedClass;
 using WebUI.Facades;
-using System;
 using WebUI.Models;
 using Microsoft.Extensions.Logging;
 using BLL.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using WebUI.Identity;
+using WebUI.Extensions;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class MissedClassesController : Controller
     {
         private readonly MissedClassesFacade _missedClassesFacade;
@@ -22,8 +24,6 @@ namespace WebUI.Controllers
             _logger = logger;
         }
 
-        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
-
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> List()
@@ -34,7 +34,6 @@ namespace WebUI.Controllers
             return View(models);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -43,7 +42,6 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(MissedClassManageViewModel model)
@@ -70,7 +68,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -80,7 +78,6 @@ namespace WebUI.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -89,7 +86,6 @@ namespace WebUI.Controllers
             return View(item);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(MissedClassManageViewModel model)
@@ -116,17 +112,16 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
-                }   
+                }
             }
 
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -144,14 +139,14 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);
             }
         }
 
-        [Authorize(Roles = "User,Manager")]
+        [Authorize(Roles = Roles.UserAndManager)]
         [HttpGet]
         public async Task<IActionResult> Student(int id)
         {
@@ -168,14 +163,14 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);
             }
         }
 
-        [Authorize(Roles = "User,Manager")]
+        [Authorize(Roles = Roles.UserAndManager)]
         [HttpGet]
         public async Task<IActionResult> Lecturer(int id)
         {
@@ -192,7 +187,7 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);

@@ -51,11 +51,15 @@ namespace BLL.Services
         public async Task SignInAsync(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new BusinessLogicException("Invalid email or password");
+            }
             var result = await _signInManager.PasswordSignInAsync(user.UserName, password, false, false);
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException("Invalid login or password");
+                throw new BusinessLogicException("Invalid email or password");
             }
         }
 

@@ -3,20 +3,21 @@ using BLL.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebUI.Api;
 using WebUI.Models.ViewModels.ClassModel;
 
 namespace WebUI.Facades
 {
     public class ClassesFacade
     {
-        private readonly IService<Class> _classService;
+        private readonly IClassesApi _classesApi;
         private readonly IGroupService _groupService;
         private readonly IService<Lecturer> _lecturerService;
         private readonly ISubjectService _subjectService;
 
-        public ClassesFacade(IService<Class> classService, IGroupService groupService, IService<Lecturer> lecturerService, ISubjectService subjectService)
+        public ClassesFacade(IClassesApi classesApi, IGroupService groupService, IService<Lecturer> lecturerService, ISubjectService subjectService)
         {
-            _classService = classService;
+            _classesApi = classesApi;
             _groupService = groupService;
             _lecturerService = lecturerService;
             _subjectService = subjectService;
@@ -24,7 +25,7 @@ namespace WebUI.Facades
 
         public async Task<IEnumerable<ClassViewModel>> GetClassViewModelsAsync()
         {
-            var classes = _classService.GetAll();
+            var classes = await _classesApi.GetClasses();
             var viewModels = new List<ClassViewModel>();
 
             foreach (var item in classes)
@@ -43,7 +44,7 @@ namespace WebUI.Facades
 
             item.GroupIds = groupIds.ToList();
 
-            await _classService.AddAsync(item);
+            await _classesApi.CreateClassAsync(item);
         }
 
         public async Task UpdateClassAsync(Class item, List<string> groupNames)
@@ -54,12 +55,12 @@ namespace WebUI.Facades
 
             item.GroupIds = groupIds.ToList();
 
-            await _classService.UpdateAsync(item);
+            await _classesApi.UpdateClassAsync(item);
         }
 
-        public async Task DeleteClassAsync(int id) => await _classService.DeleteAsync(id);
+        public async Task DeleteClassAsync(int id) => await _classesApi.DeleteClassAsync(id);
 
-        public async Task<Class> GetByIdAsync(int id) => await _classService.GetByIdAsync(id);
+        public async Task<Class> GetByIdAsync(int id) => await _classesApi.GetClassAsync(id);
 
         public ClassManageViewModel GetClassManageViewModel()
         {
@@ -79,7 +80,7 @@ namespace WebUI.Facades
 
         public async Task<ClassManageViewModel> GetClassManageViewModel(int id)
         {
-            var item = await _classService.GetByIdAsync(id);
+            var item = await _classesApi.GetClassAsync(id);
             var lecturers = _lecturerService.GetAll().ToList();
             var subjects = _subjectService.GetAll().ToList();
             var groups = _groupService.GetAll().ToList();

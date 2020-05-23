@@ -12,7 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RestEase;
 using System;
+using WebUI.Api;
 using WebUI.Identity;
 
 namespace WebUI
@@ -67,7 +69,9 @@ namespace WebUI
               .AddEntityFrameworkStores<ApplicationContext>()
               .AddDefaultTokenProviders();
 
-            services.AddHttpClient("StudentApi", options => options.BaseAddress = new Uri(Configuration["ApiUrls:StudentApi"]));
+            services.AddHttpClient("name")
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration["ApiUrls:ClassAttendanceAPI"]))
+                .AddTypedClient(RestClient.For<IStudentApi>);
 
         }
 

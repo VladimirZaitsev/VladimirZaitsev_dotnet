@@ -8,33 +8,33 @@ using Microsoft.Extensions.Logging;
 namespace ClassAttendanceAPI.Controllers
 {
     [Route("[controller]")]
-    public class StudentsController : Controller
+    public class ClassesController : Controller
     {
-        private readonly IStudentService _studentService;
-        private readonly ILogger<StudentsController> _logger;
+        private readonly IService<Class> _classService;
+        private readonly ILogger<ClassesController> _logger;
 
-        public StudentsController(IStudentService studentService, ILogger<StudentsController> logger)
+        public ClassesController(IService<Class> classService, ILogger<ClassesController> logger)
         {
-            _studentService = studentService;
+            _classService = classService;
             _logger = logger;
         }
 
-        [HttpGet("Students")]
+        [HttpGet("Classes")]
         public IActionResult GetAll()
         {
-            var result = _studentService.GetAll();
-            _logger.LogInformation("Fetched students");
+            var result = _classService.GetAll();
+            _logger.LogInformation("Fetched Classes");
 
             return Ok(result);
         }
 
-        [HttpGet("Student")]
+        [HttpGet("Class")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
             {
-                var user = await _studentService.GetByIdAsync(id);
-                _logger.LogInformation("Searched for student");
+                var user = await _classService.GetByIdAsync(id);
+                _logger.LogInformation("Searched for Class");
 
                 return Ok(user);
             }
@@ -46,12 +46,12 @@ namespace ClassAttendanceAPI.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody] Student student)
+        public async Task<IActionResult> Add([FromBody] Class item)
         {
             try
             {
-                var id = await _studentService.AddAsync(student);
-                _logger.LogInformation("Added new student");
+                var id = await _classService.AddAsync(item);
+                _logger.LogInformation("Added new class");
 
                 return Ok(id);
             }
@@ -67,8 +67,8 @@ namespace ClassAttendanceAPI.Controllers
         {
             try
             {
-                await _studentService.DeleteAsync(id);
-                _logger.LogInformation("Deleted student");
+                await _classService.DeleteAsync(id);
+                _logger.LogInformation("Deleted class");
 
                 return Ok();
             }
@@ -80,12 +80,12 @@ namespace ClassAttendanceAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> Update([FromBody] Student student)
+        public async Task<IActionResult> Update([FromBody] Class item)
         {
             try
             {
-                await _studentService.UpdateAsync(student);
-                _logger.LogInformation("Added new student");
+                await _classService.UpdateAsync(item);
+                _logger.LogInformation("Added new class");
 
                 return Ok();
             }
@@ -94,24 +94,6 @@ namespace ClassAttendanceAPI.Controllers
                 _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
-        }
-
-        [HttpGet("StudentGroup")]
-        public async Task<IActionResult> StudentGroup(int id)
-        {
-            try
-            {
-                var group = await _studentService.GetStudentGroupAsync(id);
-                _logger.LogInformation("Fetched student group");
-
-                return Ok(group);
-            }
-            catch (BusinessLogicException ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
-            }
-
         }
     }
 }

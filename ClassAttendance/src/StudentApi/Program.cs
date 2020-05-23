@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace StudentApi
+namespace ClassAttendanceAPI
 {
     public class Program
     {

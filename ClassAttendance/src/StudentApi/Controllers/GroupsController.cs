@@ -1,40 +1,39 @@
-﻿using System.Threading.Tasks;
-using BLL.Exceptions;
+﻿using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace ClassAttendanceAPI.Controllers
 {
-    [Route("[controller]")]
-    public class ClassesController : Controller
+    public class GroupsController : Controller
     {
-        private readonly IService<Class> _classService;
-        private readonly ILogger<ClassesController> _logger;
+        private readonly IGroupService _groupService;
+        private readonly ILogger<GroupsController> _logger;
 
-        public ClassesController(IService<Class> classService, ILogger<ClassesController> logger)
+        public GroupsController(IGroupService groupService, ILogger<GroupsController> logger)
         {
-            _classService = classService;
+            _groupService = groupService;
             _logger = logger;
         }
 
-        [HttpGet("Classes")]
+        [HttpGet("Groups")]
         public IActionResult GetAll()
         {
-            var result = _classService.GetAll();
-            _logger.LogInformation("Fetched classes");
+            var result = _groupService.GetAll();
+            _logger.LogInformation("Fetched groups");
 
             return Ok(result);
         }
 
-        [HttpGet("Class")]
+        [HttpGet("Group")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
             {
-                var user = await _classService.GetByIdAsync(id);
-                _logger.LogInformation("Searched for class");
+                var user = await _groupService.GetByIdAsync(id);
+                _logger.LogInformation("Searched for Group");
 
                 return Ok(user);
             }
@@ -46,11 +45,11 @@ namespace ClassAttendanceAPI.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody] Class item)
+        public async Task<IActionResult> Add([FromBody] Group group)
         {
             try
             {
-                var id = await _classService.AddAsync(item);
+                var id = await _groupService.AddAsync(group);
                 _logger.LogInformation("Added new class");
 
                 return Ok(id);
@@ -67,7 +66,7 @@ namespace ClassAttendanceAPI.Controllers
         {
             try
             {
-                await _classService.DeleteAsync(id);
+                await _groupService.DeleteAsync(id);
                 _logger.LogInformation("Deleted class");
 
                 return Ok();
@@ -80,11 +79,11 @@ namespace ClassAttendanceAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> Update([FromBody] Class item)
+        public async Task<IActionResult> Update([FromBody] Group group)
         {
             try
             {
-                await _classService.UpdateAsync(item);
+                await _groupService.UpdateAsync(group);
                 _logger.LogInformation("Added new class");
 
                 return Ok();
@@ -94,6 +93,14 @@ namespace ClassAttendanceAPI.Controllers
                 _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("GetAllStudents")]
+        public async Task<IActionResult> GetAllStudentsAsync(int groupId)
+        {
+            var students = await _groupService.GetAllStudentsAsync(groupId);
+
+            return Ok(students);
         }
     }
 }

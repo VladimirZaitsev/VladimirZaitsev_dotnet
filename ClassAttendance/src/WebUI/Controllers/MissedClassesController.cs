@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebUI.Models.ViewModels.MissedClass;
 using WebUI.Facades;
-using System;
 using WebUI.Models;
 using Microsoft.Extensions.Logging;
 using BLL.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using WebUI.Identity;
+using WebUI.Extensions;
 
 namespace WebUI.Controllers
 {
@@ -23,8 +23,6 @@ namespace WebUI.Controllers
             _missedClassesFacade = missedClassesFacade;
             _logger = logger;
         }
-
-        public Uri Referer => new Uri(Request.Headers["Referer"].ToString());
 
         [AllowAnonymous]
         [HttpGet]
@@ -70,7 +68,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -114,7 +112,7 @@ namespace WebUI.Controllers
                     var error = new ErrorViewModel
                     {
                         ErrorMessage = ex.Message,
-                        ReturnUrl = Referer,
+                        ReturnUrl = Request.GetReferer(),
                     };
 
                     return View("Error", error);
@@ -141,7 +139,7 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);
@@ -165,7 +163,7 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);
@@ -189,7 +187,7 @@ namespace WebUI.Controllers
                 var error = new ErrorViewModel
                 {
                     ErrorMessage = ex.Message,
-                    ReturnUrl = Referer,
+                    ReturnUrl = Request.GetReferer(),
                 };
 
                 return View("Error", error);

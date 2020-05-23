@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BLL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +8,6 @@ using WebUI.Extensions;
 using WebUI.Facades;
 using WebUI.Identity;
 using WebUI.Models;
-using WebUI.Models.Account;
 
 namespace WebUI.Controllers
 {

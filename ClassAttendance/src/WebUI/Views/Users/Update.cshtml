@@ -1,7 +1,7 @@
-﻿@using WebUI.Models.Account
+﻿@using BLL.Models
 @model User
 
-<form asp-action="Update" asp-controller="User" asp-antiforgery="true">
+<form asp-action="Update" asp-controller="Users" asp-antiforgery="true">
     <div>
         <input type="hidden" asp-for="Id" />
 

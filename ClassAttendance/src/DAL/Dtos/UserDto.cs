@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace WebUI.Models.Account
+namespace DAL.Dtos
 {
-    public class User : IdentityUser
+    public class UserDto : IdentityUser
     {
         public string FirstName { get; set; }
 

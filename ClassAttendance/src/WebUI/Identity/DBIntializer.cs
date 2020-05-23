@@ -1,13 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using BLL.Interfaces;
+using BLL.Models;
+using DAL.Core;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using WebUI.Models.Account;
 
 namespace WebUI.Identity
 {
-    public static class DBIntializer
+    public class DBIntializer
     {
-        public static async Task Seed(UserContext context)
+        private readonly IIdentityService _identityService;
+
+        public DBIntializer(IIdentityService identityService)
+        {
+            _identityService = identityService;
+        }
+
+        public async Task Seed()
         {
             var password = "Password123+";
 
@@ -36,23 +44,21 @@ namespace WebUI.Identity
                 Roles.Manager,
             };
 
-            var userManager = context.GetService<UserManager<User>>();
-            var roleManager = context.GetService<RoleManager<IdentityRole>>();
             foreach (var role in roles)
             {
-                if (!await roleManager.RoleExistsAsync(role))
+                if (!await _identityService.RoleExistsAsync(role))
                 {
-                    await roleManager.CreateAsync(new IdentityRole(role));
+                    await _identityService.CreateRoleAsync(new IdentityRole(role));
                 }
             }
 
             var i = 0;
             foreach (var user in users)
             {
-                if (await userManager.FindByEmailAsync(user.Email) == null)
+                if (await _identityService.FindByEmailAsync(user.Email) == null)
                 {
-                    await userManager.CreateAsync(user, password);
-                    await userManager.AddToRoleAsync(user, roles[i++]);
+                    await _identityService.RegisterAsync(user, password);
+                    await _identityService.AddToRoleAsync(user, roles[i++]);
                 }
             }
         }

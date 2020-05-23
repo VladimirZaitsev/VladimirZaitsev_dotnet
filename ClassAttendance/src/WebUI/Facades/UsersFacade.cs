@@ -1,31 +1,25 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using BLL.Interfaces;
+using BLL.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WebUI.Models.Account;
 
 namespace WebUI.Facades
 {
     public class UsersFacade
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IIdentityService _userService;
 
-        public UsersFacade(UserManager<User> userManager)
+        public UsersFacade(IIdentityService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
-        public async Task<User> GetUserAsync(string id) => await _userManager.FindByIdAsync(id);
+        public async Task<User> GetUserAsync(string id) => await _userService.GetByIdAsync(id);
 
-        public async Task<List<User>> GetUsersAsync() => await _userManager.Users.ToListAsync();
+        public async Task<List<User>> GetUsersAsync() => await _userService.GetUsersAsync();
 
-        public async Task UpdateUserAsync(User user) => await _userManager.UpdateAsync(user);
+        public async Task UpdateUserAsync(User user) => await _userService.UpdateAsync(user);
 
-        public async Task DeleteUserAsync(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            await _userManager.DeleteAsync(user);
-        }
+        public async Task DeleteUserAsync(string id) => await _userService.DeleteAsync(id);
     }
 }

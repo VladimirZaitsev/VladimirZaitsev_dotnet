@@ -13,13 +13,13 @@ namespace WebUI.Api
         [Get("Classes/Class")]
         Task<Class> GetClassAsync(int id);
 
-        [Post("Classes/Add")]
+        [Post("Classes/Class")]
         Task<int> CreateClassAsync([Body] Class item);
 
-        [Put("Classes/Update")]
+        [Put("Classes/Class")]
         Task UpdateClassAsync([Body] Class item);
 
-        [Delete("Classes/Delete")]
+        [Delete("Classes/Class")]
         Task DeleteClassAsync(int id);
     }
 }

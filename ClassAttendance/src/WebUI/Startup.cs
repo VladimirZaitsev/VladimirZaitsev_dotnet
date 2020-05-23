@@ -69,9 +69,12 @@ namespace WebUI
               .AddEntityFrameworkStores<ApplicationContext>()
               .AddDefaultTokenProviders();
 
-            services.AddHttpClient("name")
+            services.AddHttpClient("ClassAttendanceAPI")
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration["ApiUrls:ClassAttendanceAPI"]))
-                .AddTypedClient(RestClient.For<IStudentApi>);
+                .AddTypedClient(RestClient.For<IGroupApi>)
+                .AddTypedClient(RestClient.For<IStudentApi>)
+                .AddTypedClient(RestClient.For<IUserApi>)
+                .AddTypedClient(RestClient.For<IClassesApi>);
 
         }
 

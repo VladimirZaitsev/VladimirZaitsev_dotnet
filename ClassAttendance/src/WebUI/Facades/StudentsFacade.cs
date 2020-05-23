@@ -1,9 +1,5 @@
-﻿using BLL.Interfaces;
-using BLL.Models;
-using RestEase;
+﻿using BLL.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using WebUI.Api;
 using WebUI.Models.ViewModels.StudentModel;
@@ -12,20 +8,13 @@ namespace WebUI.Facades
 {
     public class StudentsFacade
     {
-        private const string ClientName = "StudentApi";
         private readonly IStudentApi _studentApi;
-        private readonly IService<Group> _groupService;
+        private readonly IGroupApi _groupApi;
 
-        public StudentsFacade(IHttpClientFactory httpClientFactory, IService<Group> groupService)
+        public StudentsFacade(IStudentApi studentApi, IGroupApi groupApi)
         {
-            if (httpClientFactory is null)
-            {
-                throw new System.ArgumentNullException(nameof(httpClientFactory));
-            }
-
-            var client = httpClientFactory.CreateClient(ClientName);
-            _studentApi = new RestClient(client).For<IStudentApi>();
-            _groupService = groupService;
+            _studentApi = studentApi;
+            _groupApi = groupApi;
         }
 
         public async Task<IEnumerable<StudentViewModel>> GetStudentListAsync()
@@ -50,11 +39,11 @@ namespace WebUI.Facades
             return list;
         }
 
-        public StudentManageViewModel GetViewModel()
+        public async Task<StudentManageViewModel> GetViewModel()
         {
             var model = new StudentManageViewModel
             {
-                Groups = _groupService.GetAll().ToList(),
+                Groups = await _groupApi.GetAll(),
                 Student = new Student(),
             };
 
@@ -65,7 +54,7 @@ namespace WebUI.Facades
         {
             var model = new StudentManageViewModel
             {
-                Groups = _groupService.GetAll().ToList(),
+                Groups = await _groupApi.GetAll(),
                 Student = await _studentApi.GetStudentAsync(studentId),
             };
 

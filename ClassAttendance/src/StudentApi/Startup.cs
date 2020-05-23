@@ -2,9 +2,11 @@ using AutoMapper;
 using BLL.Automapper;
 using BLL.Interfaces;
 using DAL.Core;
+using DAL.Dtos;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,10 +28,17 @@ namespace ClassAttendanceAPI
         {
             services.AddControllers();
             services.Scan(scan => scan
-                .FromAssembliesOf(typeof(IStudentService))
-                    .AddClasses(classes => classes.AssignableTo(typeof(IStudentService)))
+                .FromAssembliesOf(typeof(IService<>))
+                    .AddClasses(classes => classes.AssignableTo(typeof(IService<>)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
+
+            services.Scan(scan => scan
+                 .FromAssembliesOf(typeof(IIdentityService))
+                     .AddClasses(classes => classes.AssignableTo(typeof(IIdentityService)))
+                     .AsImplementedInterfaces()
+                     .WithTransientLifetime());
+
             var connectionString = Configuration.GetConnectionString("local");
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
@@ -39,6 +48,10 @@ namespace ClassAttendanceAPI
                     .AddClasses(classes => classes.AssignableTo(typeof(IStore<>)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
+
+            services.AddIdentity<UserDto, IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationContext>()
+              .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(AutomapperBLLConfig));
         }

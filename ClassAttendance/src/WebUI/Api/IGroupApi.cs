@@ -7,10 +7,10 @@ namespace WebUI.Api
 {
     public interface IGroupApi
     {
-        [Get("Groups/Add")]
+        [Get("Groups/Group")]
         Task<int> AddAsync(Group item);
 
-        [Delete("Groups/Delete")]
+        [Delete("Groups/Group")]
         Task DeleteAsync(int id);
 
         [Get("Groups/Groups")]
@@ -22,7 +22,7 @@ namespace WebUI.Api
         [Get("Groups/Group")]
         Task<Group> GetByIdAsync(int id);
 
-        [Get("Groups/Update")]
+        [Get("Groups/Group")]
         Task UpdateAsync(Group item);
     }
 }

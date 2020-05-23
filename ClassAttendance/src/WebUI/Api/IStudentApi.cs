@@ -14,13 +14,13 @@ namespace WebUI.Api
         [Get("Students/Student")]
         Task<Student> GetStudentAsync(int id);
 
-        [Post("Students/Add")]
+        [Post("Students/Student")]
         Task<int> AddStudentAsync([Body] Student student);
 
-        [Put("Students/Update")]
+        [Put("Students/Student")]
         Task UpdateStudentAsync([Body] Student student);
 
-        [Delete("Students/Delete")]
+        [Delete("Students/Student")]
         Task DeleteStudentAsync(int id);
 
         [Get("Students/StudentGroup")]

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassAttendanceAPI.Controllers
 {
+    [Route("[controller]")]
     public class GroupsController : Controller
     {
         private readonly IGroupService _groupService;
@@ -44,7 +45,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPost("Add")]
+        [HttpPost("Group")]
         public async Task<IActionResult> Add([FromBody] Group group)
         {
             try
@@ -61,7 +62,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("Group")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -78,7 +79,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPut("Update")]
+        [HttpPut("Group")]
         public async Task<IActionResult> Update([FromBody] Group group)
         {
             try

@@ -12,8 +12,8 @@ namespace WebUI.Controllers
 {
     public class AccountController : Controller
     {
-        private ILogger<AccountController> _logger;
-        private AccountFacade _accountFacade;
+        private readonly ILogger<AccountController> _logger;
+        private readonly AccountFacade _accountFacade;
 
         public AccountController(ILogger<AccountController> logger, AccountFacade accountFacade)
         {

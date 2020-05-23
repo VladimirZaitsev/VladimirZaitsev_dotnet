@@ -32,8 +32,8 @@ namespace WebUI.Identity
 
             var roles = new string[]
             {
-                "User",
-                "Manager",
+                Roles.User,
+                Roles.Manager,
             };
 
             var userManager = context.GetService<UserManager<User>>();

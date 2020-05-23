@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WebUI.Identity
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,8 +9,8 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 @{
-    var isUser = User.IsInRole("User");
-    var isManager = User.IsInRole("Manager");
+    var isUser = User.IsInRole(Roles.User);
+    var isManager = User.IsInRole(Roles.Manager);
 }
 
 <body>

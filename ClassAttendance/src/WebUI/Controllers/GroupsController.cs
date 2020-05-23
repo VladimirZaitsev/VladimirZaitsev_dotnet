@@ -6,10 +6,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WebUI.Facades;
+using WebUI.Identity;
 using WebUI.Models;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class GroupsController : Controller
     {
         private readonly GroupsFacade _groupFacade;
@@ -33,7 +35,6 @@ namespace WebUI.Controllers
             return View(models);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -42,7 +43,6 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(Group group)
@@ -71,7 +71,6 @@ namespace WebUI.Controllers
             return View(group);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -80,7 +79,6 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(Group group)
@@ -109,7 +107,6 @@ namespace WebUI.Controllers
             return View(group);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

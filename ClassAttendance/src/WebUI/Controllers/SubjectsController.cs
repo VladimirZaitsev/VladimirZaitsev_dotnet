@@ -6,10 +6,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WebUI.Facades;
+using WebUI.Identity;
 using WebUI.Models;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class SubjectsController : Controller
     {
         private readonly SubjectsFacade _subjectsFacade;
@@ -33,7 +35,6 @@ namespace WebUI.Controllers
             return View(models);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -42,7 +43,6 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(Subject subject)
@@ -72,7 +72,6 @@ namespace WebUI.Controllers
             return View(subject);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -81,7 +80,6 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(Subject subject)
@@ -111,7 +109,6 @@ namespace WebUI.Controllers
             return View(subject);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

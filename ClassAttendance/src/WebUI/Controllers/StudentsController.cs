@@ -7,9 +7,11 @@ using System;
 using WebUI.Models;
 using BLL.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using WebUI.Identity;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class StudentsController : Controller
     {
         private readonly StudentsFacade _studentsFacade;
@@ -33,7 +35,6 @@ namespace WebUI.Controllers
             return View(studentList);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -42,7 +43,6 @@ namespace WebUI.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(StudentManageViewModel model)
@@ -72,7 +72,6 @@ namespace WebUI.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -81,7 +80,6 @@ namespace WebUI.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(StudentManageViewModel model)
@@ -111,7 +109,6 @@ namespace WebUI.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

@@ -8,9 +8,11 @@ using WebUI.Models;
 using Microsoft.Extensions.Logging;
 using BLL.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using WebUI.Identity;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles = Roles.Manager)]
     public class MissedClassesController : Controller
     {
         private readonly MissedClassesFacade _missedClassesFacade;
@@ -34,7 +36,6 @@ namespace WebUI.Controllers
             return View(models);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -43,7 +44,6 @@ namespace WebUI.Controllers
             return View(lecturer);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add(MissedClassManageViewModel model)
@@ -80,7 +80,6 @@ namespace WebUI.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -89,7 +88,6 @@ namespace WebUI.Controllers
             return View(item);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(MissedClassManageViewModel model)
@@ -120,13 +118,12 @@ namespace WebUI.Controllers
                     };
 
                     return View("Error", error);
-                }   
+                }
             }
 
             return View(model);
         }
 
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -151,7 +148,7 @@ namespace WebUI.Controllers
             }
         }
 
-        [Authorize(Roles = "User,Manager")]
+        [Authorize(Roles = Roles.UserAndManager)]
         [HttpGet]
         public async Task<IActionResult> Student(int id)
         {
@@ -175,7 +172,7 @@ namespace WebUI.Controllers
             }
         }
 
-        [Authorize(Roles = "User,Manager")]
+        [Authorize(Roles = Roles.UserAndManager)]
         [HttpGet]
         public async Task<IActionResult> Lecturer(int id)
         {

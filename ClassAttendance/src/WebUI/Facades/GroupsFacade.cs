@@ -46,7 +46,7 @@ namespace WebUI.Facades
             var viewModel = new GroupViewModel
             {
                 Group = group,
-                Students = students.ToList(),
+                Students = students,
             };
 
             return viewModel;

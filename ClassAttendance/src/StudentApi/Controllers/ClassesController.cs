@@ -7,7 +7,8 @@ using Microsoft.Extensions.Logging;
 
 namespace ClassAttendanceAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class ClassesController : Controller
     {
         private readonly IService<Class> _classService;

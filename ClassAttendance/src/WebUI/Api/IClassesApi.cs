@@ -10,8 +10,8 @@ namespace WebUI.Api
         [Get("Classes")]
         Task<List<Class>> GetClasses();
 
-        [Get("Classes")]
-        Task<Class> GetClassAsync(int id);
+        [Get("Classes/{id}")]
+        Task<Class> GetClassAsync([Path] int id);
 
         [Post("Classes")]
         Task<int> CreateClassAsync([Body] Class item);

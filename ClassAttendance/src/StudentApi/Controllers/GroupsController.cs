@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ClassAttendanceAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class GroupsController : Controller
     {
         private readonly IGroupService _groupService;

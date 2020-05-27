@@ -11,8 +11,8 @@ namespace WebUI.Api
         [Get("Students")]
         Task<List<Student>> GetStudents();
 
-        [Get("Students")]
-        Task<Student> GetStudentAsync(int id);
+        [Get("Students/{id}")]
+        Task<Student> GetStudentAsync([Path] int id);
 
         [Post("Students")]
         Task<int> AddStudentAsync([Body] Student student);

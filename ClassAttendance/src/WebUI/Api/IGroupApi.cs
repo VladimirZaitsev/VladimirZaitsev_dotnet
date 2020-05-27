@@ -7,22 +7,22 @@ namespace WebUI.Api
 {
     public interface IGroupApi
     {
+        [Get("Groups")]
+        Task<List<Group>> GetAll();
+
+        [Get("Groups/{id}")]
+        Task<Group> GetByIdAsync([Path] int id);
+
         [Post("Groups")]
         Task<int> AddAsync([Body] Group item);
 
         [Delete("Groups")]
         Task DeleteAsync(int id);
 
-        [Get("Groups")]
-        Task<List<Group>> GetAll();
-
         [Get("Groups/GetAllStudents")]
-        Task<IEnumerable<Student>> GetAllStudentsAsync(int groupId);
+        Task<List<Student>> GetAllStudentsAsync(int groupId);
 
-        [Get("Groups")]
-        Task<Group> GetByIdAsync(int id);
-
-        [Get("Groups")]
+        [Put("Groups")]
         Task UpdateAsync(Group item);
     }
 }

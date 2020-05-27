@@ -26,9 +26,9 @@ namespace WebUI.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            var models = _subjectsFacade.GetSubjects();
+            var models = await _subjectsFacade.GetSubjects();
             _logger.LogInformation("Fetched subject");
 
             return View(models);

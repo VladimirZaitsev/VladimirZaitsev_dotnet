@@ -1,25 +1,25 @@
-﻿using BLL.Models;
+﻿using BLL.Interfaces;
+using BLL.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebUI.Api;
 
 namespace WebUI.Facades
 {
     public class UsersFacade
     {
-        private readonly IUserApi _userApi;
+        private readonly IIdentityService _identityService;
 
-        public UsersFacade(IUserApi userService)
+        public UsersFacade(IIdentityService identityService)
         {
-            _userApi = userService;
+            _identityService = identityService;
         }
 
-        public async Task<User> GetUserAsync(string id) => await _userApi.GetByIdAsync(id);
+        public async Task<User> GetUserAsync(string id) => await _identityService.GetByIdAsync(id);
 
-        public async Task<List<User>> GetUsersAsync() => await _userApi.GetUsersAsync();
+        public async Task<List<User>> GetUsersAsync() => await _identityService.GetUsersAsync();
 
-        public async Task UpdateUserAsync(User user) => await _userApi.UpdateAsync(user);
+        public async Task UpdateUserAsync(User user) => await _identityService.UpdateAsync(user);
 
-        public async Task DeleteUserAsync(string id) => await _userApi.DeleteAsync(id);
+        public async Task DeleteUserAsync(string id) => await _identityService.DeleteAsync(id);
     }
 }

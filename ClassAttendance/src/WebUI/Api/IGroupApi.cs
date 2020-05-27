@@ -7,8 +7,8 @@ namespace WebUI.Api
 {
     public interface IGroupApi
     {
-        [Get("Groups/Group")]
-        Task<int> AddAsync(Group item);
+        [Post("Groups/Group")]
+        Task<int> AddAsync([Body] Group item);
 
         [Delete("Groups/Group")]
         Task DeleteAsync(int id);

@@ -1,6 +1,6 @@
-﻿using BLL.Models;
+﻿using BLL.Interfaces;
+using BLL.Models;
 using System.Threading.Tasks;
-using WebUI.Api;
 using WebUI.Identity;
 using WebUI.Models.Account;
 
@@ -8,11 +8,11 @@ namespace WebUI.Facades
 {
     public class AccountFacade
     {
-        private readonly IUserApi _userApi;
+        private readonly IIdentityService _identityService;
 
-        public AccountFacade(IUserApi userApi)
+        public AccountFacade(IIdentityService identityService)
         {
-            _userApi = userApi;
+            _identityService = identityService;
         }
 
         public async Task RegisterAsync(RegisterModel model)
@@ -25,12 +25,12 @@ namespace WebUI.Facades
                 UserName = $"{model.FirstName}{model.LastName}",
             };
 
-            await _userApi.RegisterAsync(user, model.Password);
-            await _userApi.AddToRoleAsync(user, Roles.User);
+            await _identityService.RegisterAsync(user, model.Password);
+            await _identityService.AddToRoleAsync(user, Roles.User);
         }
 
-        public async Task SignInAsync(LoginModel model) => await _userApi.SignInAsync(model.Email, model.Password);
+        public async Task SignInAsync(LoginModel model) => await _identityService.SignInAsync(model.Email, model.Password);
 
-        public async Task SignOutAsync() => await _userApi.SignOutAsync();
+        public async Task SignOutAsync() => await _identityService.SignOutAsync();
     }
 }

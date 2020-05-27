@@ -45,7 +45,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPost("Add")]
+        [HttpPost("Student")]
         public async Task<IActionResult> Add([FromBody] Student student)
         {
             try
@@ -62,7 +62,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("Student")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -79,7 +79,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPut("Update")]
+        [HttpPut("Student")]
         public async Task<IActionResult> Update([FromBody] Student student)
         {
             try

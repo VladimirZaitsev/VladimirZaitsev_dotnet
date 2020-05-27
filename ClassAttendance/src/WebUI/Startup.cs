@@ -73,6 +73,7 @@ namespace WebUI
                 .AddTypedClient(RestClient.For<IGroupApi>)
                 .AddTypedClient(RestClient.For<IStudentApi>)
                 .AddTypedClient(RestClient.For<ILecturerApi>)
+                .AddTypedClient(RestClient.For<IMissedClassesApi>)
                 .AddTypedClient(RestClient.For<IClassesApi>);
 
         }

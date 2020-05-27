@@ -116,7 +116,7 @@ namespace WebUI.Facades
             {
                 Class = item,
                 GroupNames = groupNames,
-                LecturerName = lecturer.FirstName + " " + lecturer.LastName,
+                LecturerName = $"{lecturer.FirstName} {lecturer.LastName}",
                 SubjectName = await GetSubjectName(item.SubjectId),
             };
 

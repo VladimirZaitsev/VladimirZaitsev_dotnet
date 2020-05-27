@@ -2,26 +2,27 @@
 using BLL.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebUI.Api;
 
 namespace WebUI.Facades
 {
     public class LecturersFacade
     {
-        private readonly IService<Lecturer> _lecturerService;
+        private readonly ILecturerApi _lecturerApi;
 
-        public LecturersFacade(IService<Lecturer> lecturerService)
+        public LecturersFacade(ILecturerApi lecturerApi)
         {
-            _lecturerService = lecturerService;
+            _lecturerApi = lecturerApi;
         }
 
-        public IEnumerable<Lecturer> GetLecturers() => _lecturerService.GetAll();
+        public async Task<IEnumerable<Lecturer>> GetLecturers() => await _lecturerApi.GetAll();
 
-        public async Task AddLecturerAsync(Lecturer lecturer) => await _lecturerService.AddAsync(lecturer);
+        public async Task AddLecturerAsync(Lecturer lecturer) => await _lecturerApi.AddAsync(lecturer);
 
-        public async Task UpdateLecturerAsync(Lecturer lecturer) => await _lecturerService.UpdateAsync(lecturer);
+        public async Task UpdateLecturerAsync(Lecturer lecturer) => await _lecturerApi.UpdateAsync(lecturer);
 
-        public async Task DeleteLecturerAsync(int lecturerId) => await _lecturerService.DeleteAsync(lecturerId);
+        public async Task DeleteLecturerAsync(int lecturerId) => await _lecturerApi.DeleteAsync(lecturerId);
 
-        public async Task<Lecturer> GetByIdAsync(int id) => await _lecturerService.GetByIdAsync(id);
+        public async Task<Lecturer> GetByIdAsync(int id) => await _lecturerApi.GetByIdAsync(id);
     }
 }

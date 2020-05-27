@@ -1,7 +1,6 @@
 using AutoMapper;
 using BLL.Automapper;
 using BLL.Interfaces;
-using BLL.Models;
 using DAL.Core;
 using DAL.Dtos;
 using DAL.Interfaces;
@@ -73,6 +72,7 @@ namespace WebUI
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration["ApiUrls:ClassAttendanceAPI"]))
                 .AddTypedClient(RestClient.For<IGroupApi>)
                 .AddTypedClient(RestClient.For<IStudentApi>)
+                .AddTypedClient(RestClient.For<ILecturerApi>)
                 .AddTypedClient(RestClient.For<IClassesApi>);
 
         }

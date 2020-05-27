@@ -19,7 +19,7 @@ namespace ClassAttendanceAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet("Groups")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _groupService.GetAll();
@@ -28,7 +28,7 @@ namespace ClassAttendanceAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("Group")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
@@ -45,7 +45,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPost("Group")]
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] Group group)
         {
             try
@@ -62,7 +62,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpDelete("Group")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -79,7 +79,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPut("Group")]
+        [HttpPut]
         public async Task<IActionResult> Update([FromBody] Group group)
         {
             try

@@ -19,7 +19,7 @@ namespace ClassAttendanceAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet("Students")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _studentService.GetAll();
@@ -28,7 +28,7 @@ namespace ClassAttendanceAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("Student")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
@@ -45,7 +45,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPost("Student")]
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] Student student)
         {
             try
@@ -62,7 +62,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpDelete("Student")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -79,7 +79,7 @@ namespace ClassAttendanceAPI.Controllers
             }
         }
 
-        [HttpPut("Student")]
+        [HttpPut]
         public async Task<IActionResult> Update([FromBody] Student student)
         {
             try

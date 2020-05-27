@@ -8,19 +8,19 @@ namespace WebUI.Api
     [AllowAnyStatusCode]
     public interface IStudentApi
     {
-        [Get("Students/Students")]
+        [Get("Students")]
         Task<List<Student>> GetStudents();
 
-        [Get("Students/Student")]
+        [Get("Students")]
         Task<Student> GetStudentAsync(int id);
 
-        [Post("Students/Student")]
+        [Post("Students")]
         Task<int> AddStudentAsync([Body] Student student);
 
-        [Put("Students/Student")]
+        [Put("Students")]
         Task UpdateStudentAsync([Body] Student student);
 
-        [Delete("Students/Student")]
+        [Delete("Students")]
         Task DeleteStudentAsync(int id);
 
         [Get("Students/StudentGroup")]

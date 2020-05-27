@@ -36,9 +36,9 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            var lecturer = _classesFacade.GetClassManageViewModel();
+            var lecturer = await _classesFacade.GetClassManageViewModel();
 
             return View(lecturer);
         }

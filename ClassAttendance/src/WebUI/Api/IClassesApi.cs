@@ -8,18 +8,18 @@ namespace WebUI.Api
     public interface IClassesApi
     {
         [Get("Classes")]
-        Task<List<Class>> GetClasses();
+        Task<List<Class>> GetAll();
 
         [Get("Classes/{id}")]
-        Task<Class> GetClassAsync([Path] int id);
+        Task<Class> GetByIdAsync([Path] int id);
 
         [Post("Classes")]
-        Task<int> CreateClassAsync([Body] Class item);
+        Task<int> AddAsync([Body] Class item);
 
         [Put("Classes")]
-        Task UpdateClassAsync([Body] Class item);
+        Task UpdateAsync([Body] Class item);
 
         [Delete("Classes")]
-        Task DeleteClassAsync(int id);
+        Task DeleteAsync(int id);
     }
 }

@@ -19,7 +19,7 @@ namespace WebUI.Facades
 
         public async Task<IEnumerable<StudentViewModel>> GetStudentListAsync()
         {
-            var students = await _studentApi.GetStudents();
+            var students = await _studentApi.GetAll();
 
             // Unable to do this using Select because i'm getting error of running second operation
             // Before first was completed
@@ -55,7 +55,7 @@ namespace WebUI.Facades
             var model = new StudentManageViewModel
             {
                 Groups = await _groupApi.GetAll(),
-                Student = await _studentApi.GetStudentAsync(studentId),
+                Student = await _studentApi.GetByIdAsync(studentId),
             };
 
             return model;
@@ -63,17 +63,17 @@ namespace WebUI.Facades
 
         public async Task AddStudentAsync(Student student)
         {
-            await _studentApi.AddStudentAsync(student);
+            await _studentApi.AddAsync(student);
         }
 
         public async Task EditStudentAsync(Student student)
         {
-            await _studentApi.UpdateStudentAsync(student);
+            await _studentApi.UpdateAsync(student);
         }
 
         public async Task DeleteStudentAsync(int studentId)
         {
-            await _studentApi.DeleteStudentAsync(studentId);
+            await _studentApi.DeleteAsync(studentId);
         }
 
         private async Task<string> GetGroupNameAsync(int studentId)

@@ -1,7 +1,5 @@
-﻿using BLL.Interfaces;
-using BLL.Models;
+﻿using BLL.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebUI.Api;
 using WebUI.Models.ViewModels.GroupModel;

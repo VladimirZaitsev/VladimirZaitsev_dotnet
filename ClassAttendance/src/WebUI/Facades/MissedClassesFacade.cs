@@ -14,18 +14,17 @@ namespace WebUI.Facades
         private readonly IMissedClassesApi _missedClassesApi;
         private readonly IStudentApi _studentApi;
         private readonly IClassesApi _classesApi;
-        private readonly ISubjectService _subjectService;
+        private readonly ISubjectApi _subjectApi;
 
-        public MissedClassesFacade(
-            IMissedClassesApi missedClassesApi,
+        public MissedClassesFacade(IMissedClassesApi missedClassesApi,
             IStudentApi studentApi,
             IClassesApi classesApi,
-            ISubjectService subjectService)
+            ISubjectApi subjectApi)
         {
             _missedClassesApi = missedClassesApi;
             _studentApi = studentApi;
             _classesApi = classesApi;
-            _subjectService = subjectService;
+            _subjectApi = subjectApi;
         }
 
         public async Task<IEnumerable<MissedClassViewModel>> GetMissedLecturesAsync()
@@ -40,7 +39,7 @@ namespace WebUI.Facades
         {
             var classDisplayModels = await GetDisplayModelsAsync();
 
-            var students = await _studentApi.GetStudents();
+            var students = await _studentApi.GetAll();
 
             var viewModel = new MissedClassManageViewModel
             {
@@ -55,7 +54,7 @@ namespace WebUI.Facades
         {
             var missedClass = await _missedClassesApi.GetByIdAsync(id);
             var classDisplayModels = await GetDisplayModelsAsync();
-            var students = await _studentApi.GetStudents();
+            var students = await _studentApi.GetAll();
 
             var viewModel = new MissedClassManageViewModel
             {
@@ -93,12 +92,12 @@ namespace WebUI.Facades
 
         private async Task<IEnumerable<ClassDisplayModel>> GetDisplayModelsAsync()
         {
-            var classes = await _classesApi.GetClasses();
+            var classes = await _classesApi.GetAll();
             var displayModels = new List<ClassDisplayModel>();
 
             foreach (var cls in classes)
             {
-                var subject = await _subjectService.GetByIdAsync(cls.SubjectId);
+                var subject = await _subjectApi.GetByIdAsync(cls.SubjectId);
                 displayModels.Add(new ClassDisplayModel
                 {
                     Id = cls.Id,
@@ -115,9 +114,9 @@ namespace WebUI.Facades
             foreach (var missedClass in missedClasses)
             {
                 var group = await _studentApi.GetStudentGroupAsync(missedClass.StudentId);
-                var student = await _studentApi.GetStudentAsync(missedClass.StudentId);
-                var cls = await _classesApi.GetClassAsync(missedClass.ClassId);
-                var subject = await _subjectService.GetByIdAsync(cls.SubjectId);
+                var student = await _studentApi.GetByIdAsync(missedClass.StudentId);
+                var cls = await _classesApi.GetByIdAsync(missedClass.ClassId);
+                var subject = await _subjectApi.GetByIdAsync(cls.SubjectId);
 
 
                 viewModels.Add(new MissedClassViewModel

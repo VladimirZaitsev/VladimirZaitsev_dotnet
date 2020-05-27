@@ -11,21 +11,21 @@ namespace WebUI.Facades
     public class ClassesFacade
     {
         private readonly IClassesApi _classesApi;
-        private readonly IGroupService _groupService;
-        private readonly IService<Lecturer> _lecturerService;
-        private readonly ISubjectService _subjectService;
+        private readonly IGroupApi _groupApi;
+        private readonly ILecturerApi _lecturerApi;
+        private readonly ISubjectApi _subjectApi;
 
-        public ClassesFacade(IClassesApi classesApi, IGroupService groupService, IService<Lecturer> lecturerService, ISubjectService subjectService)
+        public ClassesFacade(IClassesApi classesApi, IGroupApi groupApi, ILecturerApi lecturerApi, ISubjectApi subjectApi)
         {
             _classesApi = classesApi;
-            _groupService = groupService;
-            _lecturerService = lecturerService;
-            _subjectService = subjectService;
+            _groupApi = groupApi;
+            _lecturerApi = lecturerApi;
+            _subjectApi = subjectApi;
         }
 
         public async Task<IEnumerable<ClassViewModel>> GetClassViewModelsAsync()
         {
-            var classes = await _classesApi.GetClasses();
+            var classes = await _classesApi.GetAll();
             var viewModels = new List<ClassViewModel>();
 
             foreach (var item in classes)
@@ -38,35 +38,36 @@ namespace WebUI.Facades
 
         public async Task AddClassAsync(Class item, List<string> groupNames)
         {
-            var groupIds = from grp in _groupService.GetAll().ToList()
+            var groups = await _groupApi.GetAll();
+            var groupIds = from grp in groups
                            join name in groupNames on grp.Name equals name
                            select grp.Id;
 
             item.GroupIds = groupIds.ToList();
 
-            await _classesApi.CreateClassAsync(item);
+            await _classesApi.AddAsync(item);
         }
 
         public async Task UpdateClassAsync(Class item, List<string> groupNames)
         {
-            var groupIds = from grp in _groupService.GetAll().ToList()
+            var groupIds = from grp in await _groupApi.GetAll()
                            join name in groupNames on grp.Name equals name
                            select grp.Id;
 
             item.GroupIds = groupIds.ToList();
 
-            await _classesApi.UpdateClassAsync(item);
+            await _classesApi.UpdateAsync(item);
         }
 
-        public async Task DeleteClassAsync(int id) => await _classesApi.DeleteClassAsync(id);
+        public async Task DeleteClassAsync(int id) => await _classesApi.DeleteAsync(id);
 
-        public async Task<Class> GetByIdAsync(int id) => await _classesApi.GetClassAsync(id);
+        public async Task<Class> GetByIdAsync(int id) => await _classesApi.GetByIdAsync(id);
 
-        public ClassManageViewModel GetClassManageViewModel()
+        public async Task<ClassManageViewModel> GetClassManageViewModel()
         {
-            var lecturers = _lecturerService.GetAll().ToList();
-            var subjects = _subjectService.GetAll().ToList();
-            var groups = _groupService.GetAll().ToList();
+            var lecturers = await _lecturerApi.GetAll();
+            var subjects = await _subjectApi.GetAll();
+            var groups = await _groupApi.GetAll();
 
             var viewModel = new ClassManageViewModel
             {
@@ -80,10 +81,10 @@ namespace WebUI.Facades
 
         public async Task<ClassManageViewModel> GetClassManageViewModel(int id)
         {
-            var item = await _classesApi.GetClassAsync(id);
-            var lecturers = _lecturerService.GetAll().ToList();
-            var subjects = _subjectService.GetAll().ToList();
-            var groups = _groupService.GetAll().ToList();
+            var item = await _classesApi.GetByIdAsync(id);
+            var lecturers = await _lecturerApi.GetAll();
+            var subjects = await _subjectApi.GetAll();
+            var groups = await _groupApi.GetAll();
 
             var viewModel = new ClassManageViewModel
             {
@@ -105,7 +106,7 @@ namespace WebUI.Facades
         private async Task<ClassViewModel> GetClassViewModelAsync(int id)
         {
             var item = await GetByIdAsync(id);
-            var lecturer = await _lecturerService.GetByIdAsync(item.LecturerId);
+            var lecturer = await _lecturerApi.GetByIdAsync(item.LecturerId);
             var groupNames = new List<string>();
             foreach (var groupId in item.GroupIds)
             {
@@ -125,14 +126,14 @@ namespace WebUI.Facades
 
         private async Task<string> GetGroupName(int id)
         {
-            var group = await _groupService.GetByIdAsync(id);
+            var group = await _groupApi.GetByIdAsync(id);
 
             return group.Name;
         }
 
         private async Task<string> GetSubjectName(int id)
         {
-            var subject = await _subjectService.GetByIdAsync(id);
+            var subject = await _subjectApi.GetByIdAsync(id);
 
             return subject.Name;
         }

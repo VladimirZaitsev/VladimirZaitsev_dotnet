@@ -9,19 +9,19 @@ namespace WebUI.Api
     public interface IStudentApi
     {
         [Get("Students")]
-        Task<List<Student>> GetStudents();
+        Task<List<Student>> GetAll();
 
         [Get("Students/{id}")]
-        Task<Student> GetStudentAsync([Path] int id);
+        Task<Student> GetByIdAsync([Path] int id);
 
         [Post("Students")]
-        Task<int> AddStudentAsync([Body] Student student);
+        Task<int> AddAsync([Body] Student student);
 
         [Put("Students")]
-        Task UpdateStudentAsync([Body] Student student);
+        Task UpdateAsync([Body] Student student);
 
         [Delete("Students")]
-        Task DeleteStudentAsync(int id);
+        Task DeleteAsync(int id);
 
         [Get("Students/StudentGroup")]
         Task<Group> GetStudentGroupAsync(int id);

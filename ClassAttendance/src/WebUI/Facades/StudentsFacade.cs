@@ -1,26 +1,25 @@
-﻿using BLL.Interfaces;
-using BLL.Models;
+﻿using BLL.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using WebUI.Api;
 using WebUI.Models.ViewModels.StudentModel;
 
 namespace WebUI.Facades
 {
     public class StudentsFacade
     {
-        private readonly IStudentService _studentService;
-        private readonly IService<Group> _groupService;
+        private readonly IStudentApi _studentApi;
+        private readonly IGroupApi _groupApi;
 
-        public StudentsFacade(IStudentService studentService, IService<Group> groupService)
+        public StudentsFacade(IStudentApi studentApi, IGroupApi groupApi)
         {
-            _studentService = studentService;
-            _groupService = groupService;
+            _studentApi = studentApi;
+            _groupApi = groupApi;
         }
 
         public async Task<IEnumerable<StudentViewModel>> GetStudentListAsync()
         {
-            var students = _studentService.GetAll();
+            var students = await _studentApi.GetAll();
 
             // Unable to do this using Select because i'm getting error of running second operation
             // Before first was completed
@@ -40,11 +39,11 @@ namespace WebUI.Facades
             return list;
         }
 
-        public StudentManageViewModel GetViewModel()
+        public async Task<StudentManageViewModel> GetViewModel()
         {
             var model = new StudentManageViewModel
             {
-                Groups = _groupService.GetAll().ToList(),
+                Groups = await _groupApi.GetAll(),
                 Student = new Student(),
             };
 
@@ -55,8 +54,8 @@ namespace WebUI.Facades
         {
             var model = new StudentManageViewModel
             {
-                Groups = _groupService.GetAll().ToList(),
-                Student = await _studentService.GetByIdAsync(studentId),
+                Groups = await _groupApi.GetAll(),
+                Student = await _studentApi.GetByIdAsync(studentId),
             };
 
             return model;
@@ -64,22 +63,22 @@ namespace WebUI.Facades
 
         public async Task AddStudentAsync(Student student)
         {
-            await _studentService.AddAsync(student);
+            await _studentApi.AddAsync(student);
         }
 
         public async Task EditStudentAsync(Student student)
         {
-            await _studentService.UpdateAsync(student);
+            await _studentApi.UpdateAsync(student);
         }
 
         public async Task DeleteStudentAsync(int studentId)
         {
-            await _studentService.DeleteAsync(studentId);
+            await _studentApi.DeleteAsync(studentId);
         }
 
         private async Task<string> GetGroupNameAsync(int studentId)
         {
-            var group = await _studentService.GetStudentGroupAsync(studentId);
+            var group = await _studentApi.GetStudentGroupAsync(studentId);
 
             return group.Name;
         }

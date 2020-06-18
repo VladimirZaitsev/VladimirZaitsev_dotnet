@@ -34,9 +34,9 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            var model = _studentsFacade.GetViewModel();
+            var model = await  _studentsFacade.GetViewModel();
 
             return View(model);
         }

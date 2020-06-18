@@ -1,7 +1,6 @@
 using AutoMapper;
 using BLL.Automapper;
 using BLL.Interfaces;
-using BLL.Models;
 using DAL.Core;
 using DAL.Dtos;
 using DAL.Interfaces;
@@ -12,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RestEase;
+using System;
+using WebUI.Api;
 using WebUI.Identity;
 
 namespace WebUI
@@ -65,6 +67,16 @@ namespace WebUI
             services.AddIdentity<UserDto, IdentityRole>()
               .AddEntityFrameworkStores<ApplicationContext>()
               .AddDefaultTokenProviders();
+
+            services.AddHttpClient("ClassAttendanceAPI")
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration["ApiUrls:ClassAttendanceAPI"]))
+                .AddTypedClient(RestClient.For<IGroupApi>)
+                .AddTypedClient(RestClient.For<IStudentApi>)
+                .AddTypedClient(RestClient.For<ILecturerApi>)
+                .AddTypedClient(RestClient.For<IMissedClassesApi>)
+                .AddTypedClient(RestClient.For<ISubjectApi>)
+                .AddTypedClient(RestClient.For<IClassesApi>);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

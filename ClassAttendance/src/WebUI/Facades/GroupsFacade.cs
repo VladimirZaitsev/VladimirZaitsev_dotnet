@@ -1,24 +1,23 @@
-﻿using BLL.Interfaces;
-using BLL.Models;
+﻿using BLL.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using WebUI.Api;
 using WebUI.Models.ViewModels.GroupModel;
 
 namespace WebUI.Facades
 {
     public class GroupsFacade
     {
-        private readonly IGroupService _groupService;
+        private readonly IGroupApi _groupApi;
 
-        public GroupsFacade(IGroupService groupService)
+        public GroupsFacade(IGroupApi groupApi)
         {
-            _groupService = groupService;
+            _groupApi = groupApi;
         }
 
         public async Task<IEnumerable<GroupViewModel>> GetGroupViewModelsAsync()
         {
-            var groups = _groupService.GetAll();
+            var groups = await _groupApi.GetAll();
             var viewModels = new List<GroupViewModel>();
 
             foreach (var group in groups)
@@ -29,23 +28,23 @@ namespace WebUI.Facades
             return viewModels;
         }
 
-        public async Task AddGroupAsync(Group subject) => await _groupService.AddAsync(subject);
+        public async Task AddGroupAsync(Group subject) => await _groupApi.AddAsync(subject);
 
-        public async Task UpdateGroupAsync(Group subject) => await _groupService.UpdateAsync(subject);
+        public async Task UpdateGroupAsync(Group subject) => await _groupApi.UpdateAsync(subject);
 
-        public async Task DeleteGroupAsync(int id) => await _groupService.DeleteAsync(id);
+        public async Task DeleteGroupAsync(int id) => await _groupApi.DeleteAsync(id);
 
-        public async Task<Group> GetByIdAsync(int id) => await _groupService.GetByIdAsync(id);
+        public async Task<Group> GetByIdAsync(int id) => await _groupApi.GetByIdAsync(id);
 
         private async Task<GroupViewModel> GetGroupViewModelAsync(int id)
         {
             var group = await GetByIdAsync(id);
-            var students = await _groupService.GetAllStudentsAsync(id);
+            var students = await _groupApi.GetAllStudentsAsync(id);
 
             var viewModel = new GroupViewModel
             {
                 Group = group,
-                Students = students.ToList(),
+                Students = students,
             };
 
             return viewModel;

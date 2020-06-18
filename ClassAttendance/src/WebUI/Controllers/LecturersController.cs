@@ -25,9 +25,9 @@ namespace WebUI.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            var models = _lecturersFacade.GetLecturers();
+            var models = await _lecturersFacade.GetLecturers();
             _logger.LogInformation("Fetched lecturers");
 
             return View(models);

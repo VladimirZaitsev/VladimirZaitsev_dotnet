@@ -1,27 +1,27 @@
-﻿using BLL.Interfaces;
-using BLL.Models;
+﻿using BLL.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebUI.Api;
 
 namespace WebUI.Facades
 {
     public class SubjectsFacade
     {
-        private readonly ISubjectService _subjectService;
+        private readonly ISubjectApi _subjectApi;
 
-        public SubjectsFacade(ISubjectService subjectService)
+        public SubjectsFacade(ISubjectApi subjectApi)
         {
-            _subjectService = subjectService;
+            _subjectApi = subjectApi;
         }
 
-        public IEnumerable<Subject> GetSubjects() => _subjectService.GetAll();
+        public async Task<IEnumerable<Subject>> GetSubjects() => await _subjectApi.GetAll();
 
-        public async Task AddSubjectAsync(Subject subject) => await _subjectService.AddAsync(subject);
+        public async Task AddSubjectAsync(Subject subject) => await _subjectApi.AddAsync(subject);
 
-        public async Task UpdateSubjectAsync(Subject subject) => await _subjectService.UpdateAsync(subject);
+        public async Task UpdateSubjectAsync(Subject subject) => await _subjectApi.UpdateAsync(subject);
 
-        public async Task DeleteSubjectAsync(int id) => await _subjectService.DeleteAsync(id);
+        public async Task DeleteSubjectAsync(int id) => await _subjectApi.DeleteAsync(id);
 
-        public async Task<Subject> GetByIdAsync(int id) => await _subjectService.GetByIdAsync(id);
+        public async Task<Subject> GetByIdAsync(int id) => await _subjectApi.GetByIdAsync(id);
     }
 }

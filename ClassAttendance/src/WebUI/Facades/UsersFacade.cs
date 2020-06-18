@@ -7,19 +7,19 @@ namespace WebUI.Facades
 {
     public class UsersFacade
     {
-        private readonly IIdentityService _userService;
+        private readonly IIdentityService _identityService;
 
-        public UsersFacade(IIdentityService userService)
+        public UsersFacade(IIdentityService identityService)
         {
-            _userService = userService;
+            _identityService = identityService;
         }
 
-        public async Task<User> GetUserAsync(string id) => await _userService.GetByIdAsync(id);
+        public async Task<User> GetUserAsync(string id) => await _identityService.GetByIdAsync(id);
 
-        public async Task<List<User>> GetUsersAsync() => await _userService.GetUsersAsync();
+        public async Task<List<User>> GetUsersAsync() => await _identityService.GetUsersAsync();
 
-        public async Task UpdateUserAsync(User user) => await _userService.UpdateAsync(user);
+        public async Task UpdateUserAsync(User user) => await _identityService.UpdateAsync(user);
 
-        public async Task DeleteUserAsync(string id) => await _userService.DeleteAsync(id);
+        public async Task DeleteUserAsync(string id) => await _identityService.DeleteAsync(id);
     }
 }
